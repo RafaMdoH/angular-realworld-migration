@@ -89,6 +89,7 @@
     }
   },
   "cli": {
-    "analytics": "2fd54eca-0009-4dc9-83e2-5c7512ec2ed8"
+    "analytics": "2fd54eca-0009-4dc9-83e2-5c7512ec2ed8",
+    "packageManager": "npm"
   }
 }

@@ -1,10 +1,14 @@
 import { TestBed } from "@angular/core/testing";
-import { HttpClientTestingModule } from "@angular/common/http/testing";
+import { provideHttpClientTesting } from "@angular/common/http/testing";
 import { provideLocationMocks } from "@angular/common/testing";
 import { Router } from "@angular/router";
 import { BehaviorSubject } from "rxjs";
 import { AppRoutingModule } from "./app-routing.module";
 import { UserService } from "./core/services/user.service";
+import {
+  provideHttpClient,
+  withInterceptorsFromDi,
+} from "@angular/common/http";
 
 describe("AppRoutingModule guards (characterization)", () => {
   let router: Router;
@@ -13,10 +17,12 @@ describe("AppRoutingModule guards (characterization)", () => {
   beforeEach(() => {
     isAuthenticated = new BehaviorSubject<boolean>(false);
     TestBed.configureTestingModule({
-      imports: [AppRoutingModule, HttpClientTestingModule],
+      imports: [AppRoutingModule],
       providers: [
         provideLocationMocks(),
         { provide: UserService, useValue: { isAuthenticated } },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     });
     router = TestBed.inject(Router);

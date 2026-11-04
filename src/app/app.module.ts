@@ -8,7 +8,11 @@ import { HeaderComponent } from "./core/layout/header.component";
 import { JwtService } from "./core/services/jwt.service";
 import { UserService } from "./core/services/user.service";
 import { EMPTY } from "rxjs";
-import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http";
+import {
+  HTTP_INTERCEPTORS,
+  provideHttpClient,
+  withInterceptorsFromDi,
+} from "@angular/common/http";
 import { TokenInterceptor } from "./core/interceptors/token.interceptor";
 import { ErrorInterceptor } from "./core/interceptors/error.interceptor";
 import { ApiInterceptor } from "./core/interceptors/api.interceptor";
@@ -19,13 +23,8 @@ export function initAuth(jwtService: JwtService, userService: UserService) {
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [
-    BrowserModule,
-    FooterComponent,
-    HeaderComponent,
-    AppRoutingModule,
-    HttpClientModule,
-  ],
+  bootstrap: [AppComponent],
+  imports: [BrowserModule, FooterComponent, HeaderComponent, AppRoutingModule],
   providers: [
     {
       provide: APP_INITIALIZER,
@@ -36,7 +35,7 @@ export function initAuth(jwtService: JwtService, userService: UserService) {
     { provide: HTTP_INTERCEPTORS, useClass: ApiInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    provideHttpClient(withInterceptorsFromDi()),
   ],
-  bootstrap: [AppComponent],
 })
 export class AppModule {}

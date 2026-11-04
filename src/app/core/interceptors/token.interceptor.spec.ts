@@ -1,8 +1,13 @@
 import { TestBed } from "@angular/core/testing";
-import { HTTP_INTERCEPTORS, HttpClient } from "@angular/common/http";
 import {
-  HttpClientTestingModule,
+  HTTP_INTERCEPTORS,
+  HttpClient,
+  provideHttpClient,
+  withInterceptorsFromDi,
+} from "@angular/common/http";
+import {
   HttpTestingController,
+  provideHttpClientTesting,
 } from "@angular/common/http/testing";
 import { JwtService } from "../services/jwt.service";
 import { TokenInterceptor } from "./token.interceptor";
@@ -15,9 +20,11 @@ describe("TokenInterceptor (characterization)", () => {
   beforeEach(() => {
     window.localStorage.clear();
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [],
       providers: [
         { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     });
     http = TestBed.inject(HttpClient);

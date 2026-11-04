@@ -1,12 +1,16 @@
 import { TestBed } from "@angular/core/testing";
 import {
-  HttpClientTestingModule,
   HttpTestingController,
+  provideHttpClientTesting,
 } from "@angular/common/http/testing";
 import { Router } from "@angular/router";
 import { User } from "../models/user.model";
 import { JwtService } from "./jwt.service";
 import { UserService } from "./user.service";
+import {
+  provideHttpClient,
+  withInterceptorsFromDi,
+} from "@angular/common/http";
 
 describe("UserService (characterization)", () => {
   const user: User = {
@@ -27,8 +31,12 @@ describe("UserService (characterization)", () => {
     router = jasmine.createSpyObj<Router>("Router", ["navigate"]);
     router.navigate.and.resolveTo(true);
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [{ provide: Router, useValue: router }],
+      imports: [],
+      providers: [
+        { provide: Router, useValue: router },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+      ],
     });
     service = TestBed.inject(UserService);
     jwt = TestBed.inject(JwtService);

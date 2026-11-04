@@ -1,12 +1,16 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import {
-  HttpClientTestingModule,
   HttpTestingController,
+  provideHttpClientTesting,
 } from "@angular/common/http/testing";
 import { Router, provideRouter } from "@angular/router";
 import { BehaviorSubject } from "rxjs";
 import { HomeComponent } from "./home.component";
 import { UserService } from "../../core/services/user.service";
+import {
+  provideHttpClient,
+  withInterceptorsFromDi,
+} from "@angular/common/http";
 
 // rx-angular's *rxLet renders through its own scheduler, outside the
 // synchronous detectChanges() cycle, so the DOM is checked after a macrotask.
@@ -25,13 +29,15 @@ describe("HomeComponent (characterization)", () => {
   const setup = (authenticated: boolean) => {
     isAuthenticated$ = new BehaviorSubject<boolean>(authenticated);
     TestBed.configureTestingModule({
-      imports: [HomeComponent, HttpClientTestingModule],
+      imports: [HomeComponent],
       providers: [
         provideRouter([]),
         {
           provide: UserService,
           useValue: { isAuthenticated: isAuthenticated$.asObservable() },
         },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     });
     controller = TestBed.inject(HttpTestingController);

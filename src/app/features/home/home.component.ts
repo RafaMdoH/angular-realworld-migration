@@ -2,7 +2,7 @@ import { Component, inject, OnDestroy, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { TagsService } from "../../core/services/tags.service";
 import { ArticleListConfig } from "../../core/models/article-list-config.model";
-import { AsyncPipe, NgClass, NgForOf } from "@angular/common";
+import { NgClass, NgForOf } from "@angular/common";
 import { ArticleListComponent } from "../../shared/article-helpers/article-list.component";
 import { takeUntil, tap } from "rxjs/operators";
 import { Subject } from "rxjs";
@@ -14,14 +14,7 @@ import { ShowAuthedDirective } from "../../shared/show-authed.directive";
   selector: "app-home-page",
   templateUrl: "./home.component.html",
   styleUrls: ["./home.component.css"],
-  imports: [
-    NgClass,
-    ArticleListComponent,
-    AsyncPipe,
-    RxLet,
-    NgForOf,
-    ShowAuthedDirective,
-  ],
+  imports: [NgClass, ArticleListComponent, RxLet, NgForOf, ShowAuthedDirective],
 })
 export class HomeComponent implements OnInit, OnDestroy {
   isAuthenticated = false;

@@ -63,6 +63,6 @@ Documented, real Angular migration (v15 → current, one major at a time) as a r
 
 ## Next step
 
-Stage 07 (Angular 19.2 → 20.3) done on `feature/upgrade-angular-20`; pending merge `--no-ff` + tag `v20-upgraded` (with user approval). Next: stage 08, upgrade Angular 20 → 21 (the next major). Open follow-ups (see `docs/tasks/upgrade-angular-20.md`): builder package `@angular-devkit/build-angular` → `@angular/build` (`use-application-builder`); `*ngIf` / `*ngFor` → built-in control flow (`control-flow-migration`); `APP_INITIALIZER` → `provideAppInitializer()`; unused `AsyncPipe` imports (NG8113, formerly TS-998113); Node 24 (now officially supported); `npm audit` 65 findings (2 critical), pre-existing.
+Stage 07 (Angular 19.2 → 20.3) complete, tag `v20-upgraded`. Unused `AsyncPipe` imports (NG8113) removed in a follow-up refactor; the build has no compiler warnings. Next: stage 08, upgrade Angular 20 → 21 (the next major). Open follow-ups (see `docs/tasks/upgrade-angular-20.md`): builder package `@angular-devkit/build-angular` → `@angular/build` (`use-application-builder`); `*ngIf` / `*ngFor` → built-in control flow (`control-flow-migration`); `APP_INITIALIZER` → `provideAppInitializer()`; Node 24 (now officially supported); `npm audit` 65 findings (2 critical), pre-existing.
 
 Every step: diagnosis checklist (Node/TS/zone.js matrix, third-party peers, test coverage of touched code, smoke test) → feature branch + `docs/tasks/*.md` → verify build + tests → compare with upstream → migration log es/en → merge with `--no-ff` + tag.

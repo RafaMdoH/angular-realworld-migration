@@ -33,7 +33,7 @@ This stage rewrites the safety net itself (122 specs use Jasmine APIs), so it ca
 - [x] T4 Step 2: `refactor-jasmine-vitest` + manual fixes; suite green
 - [x] T5 Safety-net equivalence: title diff, mutation sample, coverage comparison
 - [x] T6 CI update; migration log `docs/migration-log/{es,en}/14-*.md`, README, `PROJECT_CONTEXT.md`
-- [ ] T7 Merge `--no-ff` + tag (with user approval); CI green on GitHub
+- [x] T7 Merge `--no-ff` + tag (with user approval); CI green on GitHub
 
 ## Acceptance criteria
 
@@ -73,4 +73,4 @@ This stage rewrites the safety net itself (122 specs use Jasmine APIs), so it ca
 
 ## Next step
 
-T7: merge `--no-ff` + tag `v22-vitest` (with user approval); CI green on GitHub.
+Done. Merged into `main` (`c1cc12f`), tagged `v22-vitest`; CI green on GitHub (19 files, 122/122). CI coverage differs by one statement (`markdown.pipe.ts`); see `docs/tasks/zoneless.md`.

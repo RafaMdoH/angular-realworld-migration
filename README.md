@@ -1,5 +1,7 @@
 # Angular RealWorld — incremental migration
 
+[![CI](https://github.com/RafaMdoH/angular-realworld-migration/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/RafaMdoH/angular-realworld-migration/actions/workflows/ci.yml)
+
 A documented, real-world Angular upgrade of the [RealWorld "Conduit" example app](https://github.com/gothinkster/angular-realworld-example-app), from **Angular 15 to the current version, one major version at a time**.
 
 Every stage is a separate, merged and tagged unit with its own decision record: what was diagnosed before touching anything, what `ng update` changed, what broke, how it was verified, and how the result compares with the upstream project's own upgrade.

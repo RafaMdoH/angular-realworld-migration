@@ -46,7 +46,7 @@ The planned sequence is complete (stages 00–15: Angular 15 → 22.2, TypeScrip
 - [x] T1 Classify `npm audit` findings; decision per finding; fix the stale count
 - [x] T2 End-to-end flow with mocked API, or documented limitation (decide after a short spike)
 - [x] T3 Final README (results, limitations, out of scope)
-- [ ] T4 Technical closure document (incl. AI-assisted section from verified incidents)
+- [x] T4 Technical closure document (incl. AI-assisted section from verified incidents)
 - [ ] T5 Close stage 15 T8; final `PROJECT_CONTEXT.md`; tag `v1.0.0` + GitHub Release (with user approval)
 
 ## Acceptance criteria
@@ -87,7 +87,10 @@ The planned sequence is complete (stages 00–15: Angular 15 → 22.2, TypeScrip
   - Sources, "before": Angular 15.2.3 / TypeScript ~4.8.2 / zone.js ~0.12.0 / Karma / `@angular-devkit/build-angular:browser` from `git show v15-baseline:{package.json,angular.json}`; Node 18, 67 specs, coverage 44.78 / 56 / 41.46 / 42.02, `dist` 508 KB from `docs/migration-log/en/00-characterization-tests.md` §8. Not measured on v15 (first recorded value shown instead): initial bundle raw / transfer (332.17 / 92.64 kB, stage 03 log), installed packages / `node_modules` (1093 / 511 MB, stage 10 log), `npm audit` (65, 2 critical, stage 06 log).
   - Sources, "after" (measured 2026-11-05, Node 24.19.0, npm 11): `npx ng build` initial total 319.70 kB raw / 87.46 kB transfer, `du -sh dist/angular-conduit` 528K; `npx ng test --watch=false --coverage` 32 files, 143/143, 87.17 / 79.66 / 77.45 / 85.82; clean `npm ci` (same method as stages 10 and 13) "added 460 packages", `du -sh node_modules` 321M; `npm audit` 4 (2 moderate, 2 high); `npm run e2e` 1 passed.
   - Not verifiable: how the stage 00 `dist` size (508 KB) was measured (the README marks it); no v15 value exists for initial bundle, package count or `npm audit`. The E2E home-feed behavior was matched to locked finding 7 (`home.component.spec.ts` "KNOWN BUG (locked): redirects an authenticated user to /login on init", which also asserts `listConfig.type` `"all"`).
+- T4 (delegated writer; trigger: preparation reading across many docs). `docs/technical-closure.md` (EN) and `docs/technical-closure.es.md` (ES): problem, approach, six hardest decisions (characterization specs first, migrating ≠ fixing, control flow on v20, `@angular/build` as its own stage, Karma → Vitest equivalence, zoneless ADR) linked to the stage logs, results (links the README table), company-setting differences, AI-assisted incidents. Link added to `README.md`. Test-first exception: documentation only; structural checks (relative links resolve, Prettier).
+  - AI incidents included, with evidence: (a) "Angular 21 is the latest major": claim added in `32776f7` (`PROJECT_CONTEXT.md`), replaced after the npm check in `68ffe76`, plan note in `docs/migration-log/en/11-upgrade-angular-22.md`; (b) upstream answer-key hash: `PROJECT_CONTEXT.md` listed `2351be8` as the v20 answer key, corrected to `a420aa2` in `c560d30` (Engram `realworld-migration/stage-07-angular-20`); (c) `refactor-jasmine-vitest` report "No Manual Changes Required" (`docs/tasks/evidence/jasmine-vitest-20261105T190035550Z.md`) vs 16 type errors (`docs/migration-log/en/14-karma-to-vitest.md` section 4, `docs/tasks/karma-to-vitest.md` T4); recorded as a deterministic schematic, not an AI agent; (d) `git checkout` reverted an uncommitted fix (`docs/tasks/zoneless.md` T5, `docs/migration-log/en/15-zoneless.md` section 6).
+  - Dropped for lack of evidence: that (b) was caught by a documentation agent (the record shows only the correction), and the "bundle baselines" contradiction (no recorded contradiction; only that the v15 bundle was never measured, used in the company-setting section instead). How (d) was noticed is not recorded and the document says so.
 
 ## Next step
 
-T4 (technical closure document).
+T5 (close stage 15 T8; final `PROJECT_CONTEXT.md`; tag `v1.0.0` + GitHub Release, with user approval).

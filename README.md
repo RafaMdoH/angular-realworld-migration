@@ -38,6 +38,8 @@ Every stage is a separate, merged and tagged unit with its own decision record: 
 
 Task checklists with verification evidence for each stage live in [`docs/tasks/`](docs/tasks/). Current state and next step: [`PROJECT_CONTEXT.md`](PROJECT_CONTEXT.md).
 
+Technical closure (problem, hardest decisions, results, lessons, AI-assisted development): [`docs/technical-closure.md`](docs/technical-closure.md) ([ES](docs/technical-closure.es.md)).
+
 ## Results (before / after)
 
 "Before" is the Angular 15 baseline (stage 00, tag `v15-baseline`) unless a later stage is named; a metric first recorded at a later stage is marked "not measured" for v15 and its first recorded value is given instead. "After" is `main` after stage 15 plus the closure changes, measured on 2026-11-05 with Node 24.19.0 / npm 11.

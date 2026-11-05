@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, ChangeDetectionStrategy } from "@angular/core";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { By } from "@angular/platform-browser";
 import { BehaviorSubject } from "rxjs";
@@ -7,6 +7,7 @@ import { ShowAuthedDirective } from "./show-authed.directive";
 
 @Component({
   imports: [ShowAuthedDirective],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <p id="authed" *appShowAuthed="true">authed</p>
     <p id="guest" *appShowAuthed="false">guest</p>

@@ -1,4 +1,9 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+  ChangeDetectionStrategy,
+} from "@angular/core";
 import {
   FormControl,
   FormGroup,
@@ -22,6 +27,7 @@ interface ArticleForm {
 @Component({
   selector: "app-editor-page",
   templateUrl: "./editor.component.html",
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ListErrorsComponent, ReactiveFormsModule],
 })
 export class EditorComponent implements OnInit, OnDestroy {

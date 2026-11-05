@@ -1,4 +1,9 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+  ChangeDetectionStrategy,
+} from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { ArticleListComponent } from "../../shared/article-helpers/article-list.component";
 import { takeUntil } from "rxjs/operators";
@@ -10,6 +15,7 @@ import { Subject } from "rxjs";
 @Component({
   selector: "app-profile-articles",
   templateUrl: "./profile-articles.component.html",
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ArticleListComponent],
 })
 export class ProfileArticlesComponent implements OnInit, OnDestroy {

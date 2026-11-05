@@ -8,6 +8,7 @@ import { UserService } from "./core/services/user.service";
 import {
   provideHttpClient,
   withInterceptorsFromDi,
+  withXhr,
 } from "@angular/common/http";
 
 describe("AppRoutingModule guards (characterization)", () => {
@@ -21,7 +22,7 @@ describe("AppRoutingModule guards (characterization)", () => {
       providers: [
         provideLocationMocks(),
         { provide: UserService, useValue: { isAuthenticated } },
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
     });

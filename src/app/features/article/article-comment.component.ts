@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, Output, inject } from "@angular/core";
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  inject,
+  ChangeDetectionStrategy,
+} from "@angular/core";
 import { UserService } from "../../core/services/user.service";
 import { User } from "../../core/models/user.model";
 import { RouterLink } from "@angular/router";
@@ -9,6 +16,7 @@ import { AsyncPipe, DatePipe } from "@angular/common";
 @Component({
   selector: "app-article-comment",
   templateUrl: "./article-comment.component.html",
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [RouterLink, DatePipe, AsyncPipe],
 })
 export class ArticleCommentComponent {

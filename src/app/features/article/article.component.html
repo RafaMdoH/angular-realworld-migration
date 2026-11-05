@@ -105,7 +105,11 @@
               </div>
               <div class="card-footer">
                 <img
-                  [src]="currentUser?.image === null ? '' : currentUser?.image"
+                  [src]="
+                    $safeNavigationMigration(currentUser?.image) === null
+                      ? ''
+                      : $safeNavigationMigration(currentUser?.image)
+                  "
                   class="comment-author-img"
                 />
                 <button class="btn btn-sm btn-primary" type="submit">

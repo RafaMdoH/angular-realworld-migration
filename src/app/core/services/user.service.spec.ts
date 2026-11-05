@@ -10,6 +10,7 @@ import { UserService } from "./user.service";
 import {
   provideHttpClient,
   withInterceptorsFromDi,
+  withXhr,
 } from "@angular/common/http";
 
 describe("UserService (characterization)", () => {
@@ -34,7 +35,7 @@ describe("UserService (characterization)", () => {
       imports: [],
       providers: [
         { provide: Router, useValue: router },
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
     });

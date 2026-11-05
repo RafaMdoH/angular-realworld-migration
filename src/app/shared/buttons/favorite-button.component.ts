@@ -5,6 +5,7 @@ import {
   OnDestroy,
   Output,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
 } from "@angular/core";
 import { Router } from "@angular/router";
 import { EMPTY, Subject, switchMap } from "rxjs";
@@ -30,7 +31,8 @@ export class FavoriteButtonComponent implements OnDestroy {
   constructor(
     private readonly articleService: ArticlesService,
     private readonly router: Router,
-    private readonly userService: UserService
+    private readonly userService: UserService,
+    private readonly cdr: ChangeDetectorRef
   ) {}
 
   ngOnDestroy() {
@@ -62,7 +64,10 @@ export class FavoriteButtonComponent implements OnDestroy {
           this.isSubmitting = false;
           this.toggle.emit(!this.article.favorited);
         },
-        error: () => (this.isSubmitting = false),
+        error: () => {
+          this.isSubmitting = false;
+          this.cdr.markForCheck();
+        },
       });
   }
 }

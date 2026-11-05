@@ -17,7 +17,6 @@
               "base": "dist/angular-conduit"
             },
             "index": "src/index.html",
-            "polyfills": ["zone.js"],
             "tsConfig": "tsconfig.app.json",
             "assets": [
               "src/favicon.ico",
@@ -58,8 +57,7 @@
               "aot": false,
               "optimization": false,
               "extractLicenses": false,
-              "assets": ["src/favicon.ico", "src/assets"],
-              "polyfills": ["zone.js", "zone.js/testing"]
+              "assets": ["src/favicon.ico", "src/assets"]
             }
           },
           "defaultConfiguration": "production"

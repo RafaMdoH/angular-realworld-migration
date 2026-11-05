@@ -175,6 +175,8 @@ describe("ArticleComponent (characterization)", () => {
       const before = commentEls();
 
       component.comments = [comment("1", "edited 1"), comment("2")];
+      // Zoneless: a direct field write does not notify Angular; mark the view first.
+      fixture.componentRef.changeDetectorRef.markForCheck();
       fixture.detectChanges();
 
       const after = commentEls();
@@ -189,6 +191,8 @@ describe("ArticleComponent (characterization)", () => {
       const [first, second] = commentEls();
 
       component.comments = [comment("3"), comment("2"), comment("1")];
+      // Zoneless: a direct field write does not notify Angular; mark the view first.
+      fixture.componentRef.changeDetectorRef.markForCheck();
       fixture.detectChanges();
 
       const after = commentEls();

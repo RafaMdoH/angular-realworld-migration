@@ -3,6 +3,7 @@ import {
   Input,
   OnDestroy,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
 } from "@angular/core";
 import { ArticlesService } from "../../core/services/articles.service";
 import { ArticleListConfig } from "../../core/models/article-list-config.model";
@@ -39,7 +40,10 @@ export class ArticleListComponent implements OnDestroy {
     }
   }
 
-  constructor(private articlesService: ArticlesService) {}
+  constructor(
+    private articlesService: ArticlesService,
+    private readonly cdr: ChangeDetectorRef
+  ) {}
 
   ngOnDestroy() {
     this.destroy$.next();
@@ -73,6 +77,7 @@ export class ArticleListComponent implements OnDestroy {
           new Array(Math.ceil(data.articlesCount / this.limit)),
           (val, index) => index + 1
         );
+        this.cdr.markForCheck();
       });
   }
 }

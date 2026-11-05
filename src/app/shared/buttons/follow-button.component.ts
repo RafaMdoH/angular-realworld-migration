@@ -5,6 +5,7 @@ import {
   OnDestroy,
   Output,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
 } from "@angular/core";
 import { Router } from "@angular/router";
 import { switchMap, takeUntil } from "rxjs/operators";
@@ -29,7 +30,8 @@ export class FollowButtonComponent implements OnDestroy {
   constructor(
     private readonly profileService: ProfileService,
     private readonly router: Router,
-    private readonly userService: UserService
+    private readonly userService: UserService,
+    private readonly cdr: ChangeDetectorRef
   ) {}
 
   ngOnDestroy(): void {
@@ -61,7 +63,10 @@ export class FollowButtonComponent implements OnDestroy {
           this.isSubmitting = false;
           this.toggle.emit(profile);
         },
-        error: () => (this.isSubmitting = false),
+        error: () => {
+          this.isSubmitting = false;
+          this.cdr.markForCheck();
+        },
       });
   }
 }

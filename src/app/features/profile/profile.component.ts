@@ -3,6 +3,7 @@ import {
   OnDestroy,
   OnInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
 } from "@angular/core";
 import {
   ActivatedRoute,
@@ -33,7 +34,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
     private readonly route: ActivatedRoute,
     private readonly router: Router,
     private readonly userService: UserService,
-    private readonly profileService: ProfileService
+    private readonly profileService: ProfileService,
+    private readonly cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -52,6 +54,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
       .subscribe(([profile, user]) => {
         this.profile = profile;
         this.isUser = profile.username === user?.username;
+        this.cdr.markForCheck();
       });
   }
 

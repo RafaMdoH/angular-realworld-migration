@@ -27,7 +27,7 @@ Ninth stage. Upgrade only: zoneless change detection, signal forms, Vitest and o
 - [x] T3 `@rx-angular/cdk@21.1.1` + `@rx-angular/template@21.2.1`
 - [x] T4 Verify: tests, build, metrics; compare with upstream `33bf8c3`
 - [x] T5 Migration log `docs/migration-log/{es,en}/09-*.md`, README, `PROJECT_CONTEXT.md`
-- [ ] T6 Merge `--no-ff` + tag `v21-upgraded` (with user approval); CI green on GitHub
+- [x] T6 Merge `--no-ff` + tag `v21-upgraded` (with user approval); CI green on GitHub
 
 ## Acceptance criteria
 
@@ -60,4 +60,4 @@ Ninth stage. Upgrade only: zoneless change detection, signal forms, Vitest and o
 
 ## Next step
 
-T6 merge `--no-ff` + tag `v21-upgraded` (with user approval).
+Done. Merged into `main` (`9a07f8c`), tagged `v21-upgraded`; CI green on GitHub (120/120).

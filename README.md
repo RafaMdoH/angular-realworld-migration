@@ -1,74 +1,52 @@
-[![RealWorld Frontend](https://img.shields.io/badge/realworld-frontend-%23783578.svg)](http://realworld.io)
-[![Build Status](https://travis-ci.org/gothinkster/angular-realworld-example-app.svg?branch=master)](https://travis-ci.org/gothinkster/angular-realworld-example-app)
+# Angular RealWorld — incremental migration
 
-# ![Angular Example App](logo.png)
+A documented, real-world Angular upgrade of the [RealWorld "Conduit" example app](https://github.com/gothinkster/angular-realworld-example-app), from **Angular 15 to the current version, one major version at a time**.
 
-> ### Angular codebase containing real world examples (CRUD, auth, advanced patterns, etc) that adheres to the [RealWorld](https://github.com/gothinkster/realworld-example-apps) spec and API.
+Every stage is a separate, merged and tagged unit with its own decision record: what was diagnosed before touching anything, what `ng update` changed, what broke, how it was verified, and how the result compares with the upstream project's own upgrade.
 
-<a href="https://stackblitz.com/edit/angular-realworld" target="_blank"><img width="187" src="https://github.com/gothinkster/realworld/blob/master/media/edit_on_blitz.png?raw=true" /></a>&nbsp;&nbsp;<a href="https://thinkster.io/tutorials/building-real-world-angular-2-apps" target="_blank"><img width="384" src="https://raw.githubusercontent.com/gothinkster/realworld/master/media/learn-btn-hr.png" /></a>
+## Approach
 
-### [Demo](https://angular.realworld.io)&nbsp;&nbsp;&nbsp;&nbsp;[RealWorld](https://github.com/gothinkster/realworld)
+- **Safety net first.** Characterization tests lock the current behavior (including existing bugs) before any upgrade.
+- **Migrating ≠ fixing.** Bugs found along the way are locked with explicit `KNOWN BUG (locked)` specs, not silently fixed during an upgrade.
+- **One major at a time.** Upgrade and modernization are separate changes; one concept per change.
+- **Peer-driven versions.** Third-party versions are chosen by `peerDependencies` matching the Angular major, not by the latest suggestion.
+- **Verify, don't trust.** Every stage is checked with build, tests, coverage and mutation checks (break the code on purpose, confirm the tests fail). AI-assisted work is re-verified independently against git.
+- **Compare with an answer key.** Each stage is compared with the corresponding upstream upgrade commit.
 
-This codebase was created to demonstrate a fully fledged application built with Angular that interacts with an actual backend server including CRUD operations, authentication, routing, pagination, and more. We've gone to great lengths to adhere to the [Angular Styleguide](https://angular.io/styleguide) & best practices.
+## Stages
 
-Additionally, there is an Angular 1.5 version of this codebase that you can [fork](https://github.com/gothinkster/angularjs-realworld-example-app) and/or [learn how to recreate](https://thinkster.io/angularjs-es6-tutorial).
+| #   | Stage                                                   | Tag            | Decision record (EN / ES)                                                                                                     |
+| --- | ------------------------------------------------------- | -------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| 00  | Characterization tests (baseline Angular 15.2)          | `v15-baseline` | [EN](docs/migration-log/en/00-characterization-tests.md) / [ES](docs/migration-log/es/00-tests-de-caracterizacion.md)         |
+| 01  | Angular 15 → 16                                         | `v16-upgraded` | [EN](docs/migration-log/en/01-upgrade-angular-16.md) / [ES](docs/migration-log/es/01-upgrade-angular-16.md)                   |
+| 02  | Angular 16 → 17                                         | `v17-upgraded` | [EN](docs/migration-log/en/02-upgrade-angular-17.md) / [ES](docs/migration-log/es/02-upgrade-angular-17.md)                   |
+| 03  | Builder: webpack → esbuild `application` (Angular 17.3) | `v17-esbuild`  | [EN](docs/migration-log/en/03-esbuild-application-builder.md) / [ES](docs/migration-log/es/03-builder-esbuild-application.md) |
+| 04  | Angular 17 → 18                                         | `v18-upgraded` | [EN](docs/migration-log/en/04-upgrade-angular-18.md) / [ES](docs/migration-log/es/04-upgrade-angular-18.md)                   |
 
-# How it works
+Task checklists with verification evidence for each stage live in [`docs/tasks/`](docs/tasks/). Current state and next step: [`PROJECT_CONTEXT.md`](PROJECT_CONTEXT.md).
 
-We're currently working on some docs for the codebase (explaining where functionality is located, how it works, etc) but the codebase should be straightforward to follow as is. We've also released a [step-by-step tutorial w/ screencasts](https://thinkster.io/tutorials/building-real-world-angular-2-apps) that teaches you how to recreate the codebase from scratch.
+## Current stack
 
-### Making requests to the backend API
+Angular 18.2 · TypeScript 5.4 · RxJS 7 · rx-angular 18 · esbuild `application` builder · Karma + Jasmine.
 
-For convenience, we have a live API server running at https://conduit.productionready.io/api for the application to make requests against. You can view [the API spec here](https://github.com/GoThinkster/productionready/blob/master/api) which contains all routes & responses for the server.
+## Getting started
 
-The source code for the backend server (available for Node, Rails and Django) can be found in the [main RealWorld repo](https://github.com/gothinkster/realworld).
+Requires Node 18 (see `.nvmrc`) and npm.
 
-If you want to change the API URL to a local server, simply edit `src/environments/environment.ts` and change `api_url` to the local server's URL (i.e. `localhost:3000/api`). Please note you will probably need to use a proxy in order to avoid Cross-Origin Resource (CORS) issues. (more info: [Proxying to a backend server](https://angular.io/guide/build#proxying-to-a-backend-server) )
+```bash
+nvm use
+npm ci
+npm start        # dev server at http://localhost:4200
+npm test         # Karma unit tests
+npm run build    # production build into dist/
+```
 
-# Getting started
+> **Note:** the public RealWorld API and theme stylesheet the app depends on are no longer available. Restoring them is out of scope for this project (maintenance, not migration), so the app is validated through its test suite rather than against a live backend.
 
-Make sure you have the [Angular CLI](https://github.com/angular/angular-cli#installation) installed globally. We use [Yarn](https://yarnpkg.com) to manage the dependencies, so we strongly recommend you to use it. you can install it from [Here](https://yarnpkg.com/en/docs/install), then run `yarn install` to resolve all dependencies (might take a minute).
+## About the application
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+The app is "Conduit", a social blogging site (a Medium.com clone) that follows the [RealWorld](https://github.com/gothinkster/realworld) spec: JWT authentication, CRUD articles, comments, paginated article lists, favorites, and following other users.
 
-### Building the project
+## Credits and license
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
-
-## Functionality overview
-
-The example application is a social blogging site (i.e. a Medium.com clone) called "Conduit". It uses a custom API for all requests, including authentication. You can view a live demo over at https://angular.realworld.io
-
-**General functionality:**
-
-- Authenticate users via JWT (login/signup pages + logout button on settings page)
-- CRU\* users (sign up & settings page - no deleting required)
-- CRUD Articles
-- CR\*D Comments on articles (no updating required)
-- GET and display paginated lists of articles
-- Favorite articles
-- Follow other users
-
-**The general page breakdown looks like this:**
-
-- Home page (URL: /#/ )
-  - List of tags
-  - List of articles pulled from either Feed, Global, or by Tag
-  - Pagination for list of articles
-- Sign in/Sign up pages (URL: /#/login, /#/register )
-  - Uses JWT (store the token in localStorage)
-  - Authentication can be easily switched to session/cookie based
-- Settings page (URL: /#/settings )
-- Editor page to create/edit articles (URL: /#/editor, /#/editor/article-slug-here )
-- Article page (URL: /#/article/article-slug-here )
-  - Delete article button (only shown to article's author)
-  - Render markdown from server client side
-  - Comments section at bottom of page
-  - Delete comment button (only shown to comment's author)
-- Profile page (URL: /#/profile/:username, /#/profile/:username/favorites )
-  - Show basic user info
-  - List of articles populated from author's created articles or author's favorited articles
-
-<br />
-
-[![Brought to you by Thinkster](https://raw.githubusercontent.com/gothinkster/realworld/master/media/end.png)](https://thinkster.io)
+Based on [gothinkster/angular-realworld-example-app](https://github.com/gothinkster/angular-realworld-example-app) by Thinkster, pinned at commit `e28c896`. Distributed under the original [MIT License](LICENSE).

@@ -60,6 +60,8 @@ describe("ArticlePreviewComponent (characterization)", () => {
     create(value);
 
     value.tagList = ["c"];
+    // Zoneless: a direct field write does not notify Angular; mark the view first.
+    fixture.componentRef.changeDetectorRef.markForCheck();
     fixture.detectChanges();
 
     expect(tags()).toEqual(["c"]);

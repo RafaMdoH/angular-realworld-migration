@@ -30,7 +30,7 @@ The safety net does not cover most of the affected templates: only 3 of the 10 h
 - [x] T3 Run `control-flow` migration; review diff per template (`track` expressions, `as` / `else` aliases)
 - [x] T4 Verify: same specs green with unchanged assertions, build, bundle metrics
 - [x] T5 Migration log `docs/migration-log/{es,en}/08-*.md`, README, `PROJECT_CONTEXT.md`
-- [ ] T6 Merge `--no-ff` + tag (with user approval); CI green on GitHub
+- [x] T6 Merge `--no-ff` + tag (with user approval); CI green on GitHub
 
 ## Acceptance criteria
 
@@ -52,4 +52,4 @@ The safety net does not cover most of the affected templates: only 3 of the 10 h
 
 ## Next step
 
-T6 merge + tag `v20-control-flow` (with user approval).
+Done. Merged into `main` (`fbb4e20`), tagged `v20-control-flow`; CI green on GitHub (120/120).

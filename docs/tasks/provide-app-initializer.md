@@ -23,7 +23,7 @@ Twelfth stage. `APP_INITIALIZER` has been deprecated since Angular 19. `provideA
 - [x] T1 Diagnosis: current wiring, available schematics, safety-net gap
 - [x] T2 Wiring spec (integration) + mutation check on the old wiring
 - [x] T3 Refactor to `provideAppInitializer()` + mutation check on the new wiring
-- [ ] T4 Migration log `docs/migration-log/{es,en}/12-*.md`, README, `PROJECT_CONTEXT.md`
+- [x] T4 Migration log `docs/migration-log/{es,en}/12-*.md`, README, `PROJECT_CONTEXT.md`
 - [ ] T5 Merge `--no-ff` + tag (with user approval); CI green on GitHub
 
 ## Acceptance criteria
@@ -41,7 +41,8 @@ Twelfth stage. `APP_INITIALIZER` has been deprecated since Angular 19. `provideA
 - T1 (inline): `@angular/core@22` schematics: no `provide-initializer` (list: `cleanup-unused-imports`, `control-flow-migration`, `inject-migration`, `output-migration`, `route-lazy-loading`, `self-closing-tags-migration`, `signal-input-migration`, `signal-queries-migration`, `standalone-migration`, and others). `app.module.spec.ts` covered `initAuth` (3 specs) but not its registration.
 - T2 (`054cc02`): 2 integration specs in `app.module.spec.ts` ("AppModule app initializer wiring"): `TestBed` imports `AppModule` with `JwtService` / `UserService` spies and awaits `ApplicationInitStatus.donePromise`; with a token the current user is loaded once, without a token the API is not called. Green on the old wiring (122/122). Mutation: removing the `APP_INITIALIZER` provider made the suite fail; file restored.
 - T3 (`57ee61b`): `provideAppInitializer(() => initAuth(inject(JwtService), inject(UserService))())`; `APP_INITIALIZER` import removed; 0 occurrences left in `src/`. 122/122 green; coverage 76.98 / 74 / 68.48 / 75.72 (was 76.92 / 74 / 68.29 / 75.65 with 120 specs). No compiler warnings. Initial total 357.58 kB raw / 99.59 kB transfer (v22 stage: 357.60 / 99.56). Mutation: removing the `provideAppInitializer(...)` call made both wiring specs fail (`TOTAL: 2 FAILED`); file restored.
+- T4: `docs/migration-log/en/12-provide-app-initializer.md`, `docs/migration-log/es/12-provide-app-initializer.md`, `README.md` (stage 12 row), `PROJECT_CONTEXT.md` (stage 12 row, tests, tags, next step); Prettier check on all five files.
 
 ## Next step
 
-T4 docs.
+T5 merge + tag `v22-app-initializer` (with user approval).

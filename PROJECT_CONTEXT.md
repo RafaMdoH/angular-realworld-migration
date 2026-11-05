@@ -16,29 +16,30 @@ Documented, real Angular migration (v15 → current, one major at a time) as a r
 | Item                 | Value                                                                                                                                                            |
 | -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Integration branch   | `main` (formerly `main-v15`)                                                                                                                                     |
-| Tags                 | `v15-baseline` … `v19-upgraded`, `v19-node22`, `v20-upgraded`, `v20-control-flow` (`v21-upgraded` pending stage 09 merge)                                        |
+| Tags                 | `v15-baseline` … `v19-upgraded`, `v19-node22`, `v20-upgraded`, `v20-control-flow`, `v21-upgraded` (`v21-angular-build` pending stage 10 merge)                   |
 | Angular / CLI        | 21.2.26 / 21.2.29                                                                                                                                                |
 | TypeScript / zone.js | 5.9.3 / 0.15.1 (zone.js change detection opted in via `provideZoneChangeDetection()`)                                                                            |
 | rx-angular           | template 21.2.1, cdk 21.1.1 (template pins cdk exactly `21.1.1`)                                                                                                 |
-| Builder              | esbuild `build-angular:application` (Karma still webpack)                                                                                                        |
+| Builder              | `@angular/build:application` (esbuild); tests via `@angular/build:karma` (stage 10)                                                                              |
 | Node                 | 22 (`nvm use`, per `.nvmrc`; `engines.node` `^22.12.0`). Node 24 officially supported by Angular 20+ (follow-up)                                                 |
 | Tests                | 120 specs (116 characterization + 4 interceptor-chain integration), Karma, all green; coverage 76.92% / 74% / 68.29% / 75.65% (stmts / branches / funcs / lines) |
 
 ## Completed stages
 
-| #   | Stage                                             | Task doc                                    | Migration log                           |
-| --- | ------------------------------------------------- | ------------------------------------------- | --------------------------------------- |
-| 00  | Characterization tests (safety net)               | `docs/tasks/characterization-tests.md`      | `docs/migration-log/{es,en}/00-*.md`    |
-| 01  | Upgrade 15 → 16                                   | `docs/tasks/upgrade-angular-16.md`          | `docs/migration-log/{es,en}/01-*.md`    |
-| 02  | Upgrade 16 → 17                                   | `docs/tasks/upgrade-angular-17.md`          | `docs/migration-log/{es,en}/02-*.md`    |
-| 03  | Builder webpack → esbuild `application` (on 17.3) | `docs/tasks/esbuild-application-builder.md` | `docs/migration-log/{es,en}/03-*.md`    |
-| 04  | Upgrade 17 → 18                                   | `docs/tasks/upgrade-angular-18.md`          | `docs/migration-log/{es,en}/04-*.md`    |
-| 04b | Interceptor chain integration spec                | `docs/tasks/interceptor-chain-spec.md`      | `docs/migration-log/{es,en}/04-*.md` §8 |
-| 05  | Upgrade 18 → 19                                   | `docs/tasks/upgrade-angular-19.md`          | `docs/migration-log/{es,en}/05-*.md`    |
-| 06  | Runtime Node 18 → 22 (on Angular 19.2)            | `docs/tasks/upgrade-node-22.md`             | `docs/migration-log/{es,en}/06-*.md`    |
-| 07  | Upgrade 19 → 20                                   | `docs/tasks/upgrade-angular-20.md`          | `docs/migration-log/{es,en}/07-*.md`    |
-| 08  | Built-in control flow (on Angular 20.3)           | `docs/tasks/migrate-control-flow.md`        | `docs/migration-log/{es,en}/08-*.md`    |
-| 09  | Upgrade 20 → 21                                   | `docs/tasks/upgrade-angular-21.md`          | `docs/migration-log/{es,en}/09-*.md`    |
+| #   | Stage                                                      | Task doc                                    | Migration log                           |
+| --- | ---------------------------------------------------------- | ------------------------------------------- | --------------------------------------- |
+| 00  | Characterization tests (safety net)                        | `docs/tasks/characterization-tests.md`      | `docs/migration-log/{es,en}/00-*.md`    |
+| 01  | Upgrade 15 → 16                                            | `docs/tasks/upgrade-angular-16.md`          | `docs/migration-log/{es,en}/01-*.md`    |
+| 02  | Upgrade 16 → 17                                            | `docs/tasks/upgrade-angular-17.md`          | `docs/migration-log/{es,en}/02-*.md`    |
+| 03  | Builder webpack → esbuild `application` (on 17.3)          | `docs/tasks/esbuild-application-builder.md` | `docs/migration-log/{es,en}/03-*.md`    |
+| 04  | Upgrade 17 → 18                                            | `docs/tasks/upgrade-angular-18.md`          | `docs/migration-log/{es,en}/04-*.md`    |
+| 04b | Interceptor chain integration spec                         | `docs/tasks/interceptor-chain-spec.md`      | `docs/migration-log/{es,en}/04-*.md` §8 |
+| 05  | Upgrade 18 → 19                                            | `docs/tasks/upgrade-angular-19.md`          | `docs/migration-log/{es,en}/05-*.md`    |
+| 06  | Runtime Node 18 → 22 (on Angular 19.2)                     | `docs/tasks/upgrade-node-22.md`             | `docs/migration-log/{es,en}/06-*.md`    |
+| 07  | Upgrade 19 → 20                                            | `docs/tasks/upgrade-angular-20.md`          | `docs/migration-log/{es,en}/07-*.md`    |
+| 08  | Built-in control flow (on Angular 20.3)                    | `docs/tasks/migrate-control-flow.md`        | `docs/migration-log/{es,en}/08-*.md`    |
+| 09  | Upgrade 20 → 21                                            | `docs/tasks/upgrade-angular-21.md`          | `docs/migration-log/{es,en}/09-*.md`    |
+| 10  | Builder package build-angular → `@angular/build` (on 21.2) | `docs/tasks/angular-build-package.md`       | `docs/migration-log/{es,en}/10-*.md`    |
 
 ## Decisions (do not re-ask)
 
@@ -67,6 +68,6 @@ Documented, real Angular migration (v15 → current, one major at a time) as a r
 
 ## Next step
 
-Stage 09 (Angular 20.3 → 21.2) complete, tag `v21-upgraded`. Angular 22 is available (`latest` 22.2.4; 22.0.0 released 2026-06-03): it requires TypeScript `>=6.0 <6.1` and Node `^22.22.3 || ^24.15.0 || >=26`, and deprecates `@angular-devkit/build-angular` ("Angular's Webpack support is deprecated"). Planned order: (1) stage 10, builder package `@angular-devkit/build-angular` → `@angular/build` (in progress, `docs/tasks/angular-build-package.md`); (2) Angular 21 → 22 + TypeScript 6.0 (rx-angular 22 uses `^22` for cdk, which also resolves the exact cdk pin); (3) `APP_INITIALIZER` → `provideAppInitializer()` and Node 24; (4) Karma → Vitest; (5) zoneless change detection. Still open from earlier stages: `article-list` `RangeError` when `limit` is unset (not locked); `npm audit` 35 findings (no critical) after stage 10.
+Stage 09 (Angular 20.3 → 21.2) complete, tag `v21-upgraded`. Stage 10 (builder package → `@angular/build`) complete on its branch, merge and tag `v21-angular-build` pending. Angular 22 is available (`latest` 22.2.4; 22.0.0 released 2026-06-03): it requires TypeScript `>=6.0 <6.1` and Node `^22.22.3 || ^24.15.0 || >=26`, and deprecates `@angular-devkit/build-angular` ("Angular's Webpack support is deprecated"). Planned order: (1) stage 10, builder package `@angular-devkit/build-angular` → `@angular/build` (done, pending merge; `docs/tasks/angular-build-package.md`); (2) next stage: Angular 21 → 22 + TypeScript 6.0 (rx-angular 22 uses `^22` for cdk, which also resolves the exact cdk pin); (3) `APP_INITIALIZER` → `provideAppInitializer()` and Node 24; (4) Karma → Vitest; (5) zoneless change detection. Still open from earlier stages: `article-list` `RangeError` when `limit` is unset (not locked); `npm audit` 35 findings (no critical) after stage 10.
 
 Every step: diagnosis checklist (Node/TS/zone.js matrix, third-party peers, test coverage of touched code, smoke test) → feature branch + `docs/tasks/*.md` → verify build + tests → compare with upstream → migration log es/en → merge with `--no-ff` + tag.

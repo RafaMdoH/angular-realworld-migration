@@ -25,7 +25,7 @@ Tenth stage. Since stage 03 the app is built by the esbuild `application` builde
 - [x] T1 Diagnosis: current builders, deprecation evidence, builders available in `@angular/build`
 - [x] T2 Migration: builders + dependency; clean install
 - [x] T3 Verify: tests, build, dev server starts, metrics; install size / package count
-- [ ] T4 Migration log `docs/migration-log/{es,en}/10-*.md`, README, `PROJECT_CONTEXT.md`
+- [x] T4 Migration log `docs/migration-log/{es,en}/10-*.md`, README, `PROJECT_CONTEXT.md`
 - [ ] T5 Merge `--no-ff` + tag (with user approval); CI green on GitHub
 
 ## Acceptance criteria
@@ -42,8 +42,9 @@ Tenth stage. Since stage 03 the app is built by the esbuild `application` builde
 
 - T1 (inline): `angular.json` uses `@angular-devkit/build-angular:{application,dev-server,extract-i18n,karma}`; `package.json` has `@angular-devkit/build-angular ^21.2.29`. `@angular/build@22` builders: `application`, `dev-server`, `extract-i18n`, `karma`, `ng-packagr`, `unit-test`. Deprecation confirmed on `@angular-devkit/build-angular@latest` (22.2.6). Baseline (stage 09 T4): 120/120, coverage 76.92 / 74 / 68.29 / 75.65, build 2.3 / 2.3 / 2.3 s, initial 346.08 kB raw / 97.59 kB transfer.
 - T2 (`8a1f5ff`): `ng update @angular/cli --name use-application-builder` (official optional migration). `angular.json`: `@angular-devkit/build-angular:{application,dev-server,extract-i18n,karma}` → `@angular/build:*`. `package.json`: `@angular-devkit/build-angular ^21.2.29` → `@angular/build ^21.2.29`. No other files changed; no `src/` changes.
-- T3: clean `npm ci`: 1093 → 710 installed packages (−35%), `node_modules` 511 MB → 381 MB; `webpack` no longer installed. 120/120 green, coverage unchanged. No compiler warnings. Prod build 2.5 / 2.3 / 2.4 s; initial total 346.08 kB raw / 97.59 kB transfer (identical). `ng serve` starts and serves `index.html` (HTTP 200, `<app-root>`). `npm audit`: 40 → 35 findings (moderate 27 → 22; high 12 unchanged; no critical). The "65 findings (2 critical)" recorded in stage 06 had already dropped to 40 through the Angular upgrades.
+- T3: clean `npm ci`: 1093 → 710 installed packages (−35%), `node_modules` 511 MB → 381 MB; `webpack` no longer installed. 120/120 green, coverage unchanged. No compiler warnings. Prod build 2.5 / 2.3 / 2.4 s; initial total 346.08 kB raw / 97.59 kB transfer; all 7 output files keep the stage 09 content hashes (`main-U5C3E52R`, `polyfills-5CFQRCPP`, `chunk-WTYHNFYV`, `chunk-2VMXMS7J`, `chunk-TPA577M5`, `chunk-ENI4ZRH6`, `chunk-FXMRX7MQ`), so the output is identical. `ng serve` starts and serves `index.html` (HTTP 200, `<app-root>`). `npm audit`: 40 → 35 findings (moderate 27 → 22; high 12 unchanged; no critical). The "65 findings (2 critical)" recorded in stage 06 had already dropped to 40 through the Angular upgrades.
+- T4: migration log `docs/migration-log/en/10-angular-build-package.md` and `docs/migration-log/es/10-paquete-angular-build.md`; `README.md` (stage row, current stack); `PROJECT_CONTEXT.md` (stage row, builder, tags, next step).
 
 ## Next step
 
-T4 docs.
+T5 merge + tag `v21-angular-build` (with user approval).

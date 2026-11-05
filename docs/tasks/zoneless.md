@@ -31,9 +31,9 @@ Existing specs call `fixture.detectChanges()` manually after each change, which 
 - [x] T1 Diagnosis: inventory, API stability, test-design limitation
 - [x] T2 Subscription audit (11 components + `ShowAuthedDirective`)
 - [x] T3 Zoneless regression specs (RED on current code)
-- [ ] T4 Selective `markForCheck()` (GREEN)
-- [ ] T5 App switch: zoneless provider, remove zone.js (polyfills, dependency)
-- [ ] T6 Verify: full suite under zoneless, build, bundle (`polyfills`), `ng serve` smoke
+- [x] T4 Selective `markForCheck()` (GREEN)
+- [x] T5 App switch: zoneless provider, remove zone.js (polyfills, dependency)
+- [x] T6 Verify: full suite under zoneless, build, bundle (`polyfills`), `ng serve` smoke
 - [ ] T7 Migration log `docs/migration-log/{es,en}/15-*.md` (with ADR), README, `PROJECT_CONTEXT.md`
 - [ ] T8 Merge `--no-ff` + tag (with user approval); CI green on GitHub
 
@@ -60,11 +60,17 @@ Existing specs call `fixture.detectChanges()` manually after each change, which 
   - Spec gaps: no specs for profile-articles, profile-favorites, settings; buttons only indirectly.
 
 - T3 (delegated writer; trigger: 13 new spec files): `*.zoneless.spec.ts` next to each component, `TestBed` with `provideZonelessChangeDetection()`, async sources as `Subject`s emitted after the first render, `await fixture.whenStable()`, never `detectChanges()`. Harness facts: zoneless fixtures auto-detect by default (first render needs no `detectChanges()`); an unflushed `HttpClient` request blocks `whenStable()`, so services are stubbed with `Subject`s; finishing an `HttpClient` request removes a pending task but marks no view dirty; `rxLet` rendering and an `AsyncPipe` Promise are not tracked by `whenStable()`, so those two controls poll with `vi.waitFor`; the directive control renders a binding (`{{ label }}`), not static text, so it proves a refresh.
+
   - Result: 143 tests, **14 RED** (all stale DOM: e.g. `expected undefined to be 'My title'`, button class still `disabled`), 5 controls GREEN (show-authed show / hide, home tags via `rxLet`, favorite success via `(toggle)`, markdown `| async`), KNOWN BUG (locked) settings form spec GREEN (new `settings.component.spec.ts`), 122 existing specs GREEN.
   - Audit refinement: the add-comment success branch (`article.component.ts:126`) passed when the user typed first, because `commentControl.reset("")` flips pristine / dirty, and those form-state classes are signal-backed, which schedules a refresh. That is incidental, so a second spec sets the value programmatically (control stays pristine): RED (`expected [ 'comment 1' ] to deeply equal [ 'new one', 'comment 1' ]`). Decision: `markForCheck()` on both branches, as the audit said.
   - Expected warning while zone.js is still loaded: `NG0914: The application is using zoneless change detection, but is still loading Zone.js`.
   - This commit intentionally contains failing specs (RED evidence); T4 turns them GREEN.
 
+- T4 (`35e9874`, delegated writer; trigger: 10 component files): `ChangeDetectorRef` added as a constructor parameter (all 10 components use constructor injection) and `this.cdr.markForCheck()` at the 14 audited call sites (auth 1, article 4, editor 2, profile 1, profile-articles 1, profile-favorites 1, settings 1, article-list 1, favorite-button 1, follow-button 1); 10 files, +52 / −12; no template or spec change. 143/143 green. Parent mutation check: removing the `markForCheck()` in `profile.component.ts` makes exactly "renders the profile after it emits asynchronously" fail; restored.
+- T5 (`990252d`): `src/main.ts` `provideZoneChangeDetection()` → `provideZonelessChangeDetection()`; `angular.json` `polyfills` removed from the build options and the `testing` configuration; `zone.js` uninstalled. With zone.js gone, `TestBed` runs zoneless for every spec, and 3 existing characterization specs failed with `NG0100 ExpressionChangedAfterItHasBeenChecked`: they write a field directly (`component.comments = ...` twice in `article.component.spec.ts`, `value.tagList = ...` in `article-preview.component.spec.ts`) and then call `fixture.detectChanges()` without notifying Angular. In the app those writes happen inside notified subscriptions or event handlers. Harness fix (test-only, assertions unchanged): `fixture.componentRef.changeDetectorRef.markForCheck()` before `fixture.detectChanges()` in those 3 specs. Checks after the fix: stage 14 mutation V2 (`track $index`) still fails 2 specs; setting the same `tagList` instead of a new one makes the preview spec fail.
+  - Process note: while restoring a temporary mutation, `git checkout` on `article-preview.component.spec.ts` also reverted the uncommitted harness fix; it was reapplied and re-verified before committing.
+- T6: 32 files, 143/143 green with no `NG0914` warning; coverage 87.17 / 79.66 / 77.45 / 85.82 (stage 14: 80.55 / 71.18 / 68.48 / 78.78; the increase comes from the 21 new specs). Prod build 1.6 / 1.5 / 1.5 s, no warnings. Initial total 319.70 kB raw / 87.46 kB transfer (before: 357.68 / 99.63, −37.98 kB raw / −12.17 kB transfer); no `polyfills` chunk any more; no `__Zone_` symbol anywhere in `dist/`. `ng serve` (HTTP 200) and headless Chrome `--dump-dom`: the app bootstraps zoneless (`ng-version="22.2.4"`) and renders the header (`conduit`, `Sign in`, `Sign up` via `ShowAuthedDirective`), `Global Feed` and `Popular Tags`; feed data does not load because the public API is gone (documented since stage 00).
+
 ## Next step
 
-T4: selective `markForCheck()` (delegated writer).
+T7 docs (ADR).

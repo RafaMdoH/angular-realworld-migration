@@ -34,7 +34,7 @@ Existing specs call `fixture.detectChanges()` manually after each change, which 
 - [x] T4 Selective `markForCheck()` (GREEN)
 - [x] T5 App switch: zoneless provider, remove zone.js (polyfills, dependency)
 - [x] T6 Verify: full suite under zoneless, build, bundle (`polyfills`), `ng serve` smoke
-- [ ] T7 Migration log `docs/migration-log/{es,en}/15-*.md` (with ADR), README, `PROJECT_CONTEXT.md`
+- [x] T7 Migration log `docs/migration-log/{es,en}/15-*.md` (with ADR), README, `PROJECT_CONTEXT.md`
 - [ ] T8 Merge `--no-ff` + tag (with user approval); CI green on GitHub
 
 ## Acceptance criteria
@@ -70,7 +70,8 @@ Existing specs call `fixture.detectChanges()` manually after each change, which 
 - T5 (`990252d`): `src/main.ts` `provideZoneChangeDetection()` → `provideZonelessChangeDetection()`; `angular.json` `polyfills` removed from the build options and the `testing` configuration; `zone.js` uninstalled. With zone.js gone, `TestBed` runs zoneless for every spec, and 3 existing characterization specs failed with `NG0100 ExpressionChangedAfterItHasBeenChecked`: they write a field directly (`component.comments = ...` twice in `article.component.spec.ts`, `value.tagList = ...` in `article-preview.component.spec.ts`) and then call `fixture.detectChanges()` without notifying Angular. In the app those writes happen inside notified subscriptions or event handlers. Harness fix (test-only, assertions unchanged): `fixture.componentRef.changeDetectorRef.markForCheck()` before `fixture.detectChanges()` in those 3 specs. Checks after the fix: stage 14 mutation V2 (`track $index`) still fails 2 specs; setting the same `tagList` instead of a new one makes the preview spec fail.
   - Process note: while restoring a temporary mutation, `git checkout` on `article-preview.component.spec.ts` also reverted the uncommitted harness fix; it was reapplied and re-verified before committing.
 - T6: 32 files, 143/143 green with no `NG0914` warning; coverage 87.17 / 79.66 / 77.45 / 85.82 (stage 14: 80.55 / 71.18 / 68.48 / 78.78; the increase comes from the 21 new specs). Prod build 1.6 / 1.5 / 1.5 s, no warnings. Initial total 319.70 kB raw / 87.46 kB transfer (before: 357.68 / 99.63, −37.98 kB raw / −12.17 kB transfer); no `polyfills` chunk any more; no `__Zone_` symbol anywhere in `dist/`. `ng serve` (HTTP 200) and headless Chrome `--dump-dom`: the app bootstraps zoneless (`ng-version="22.2.4"`) and renders the header (`conduit`, `Sign in`, `Sign up` via `ShowAuthedDirective`), `Global Feed` and `Popular Tags`; feed data does not load because the public API is gone (documented since stage 00).
+- T7 (delegated writer; trigger: 5 documentation files): `docs/migration-log/en/15-zoneless.md` and `docs/migration-log/es/15-zoneless.md` (with ADR: zoneless compatibility without a simultaneous state refactor), `README.md` (stage 15 row, current stack), `PROJECT_CONTEXT.md` (state, tests, tags, decisions, locked finding 10, next step), this task doc.
 
 ## Next step
 
-T7 docs (ADR).
+T8 merge `--no-ff` + tag `v22-zoneless` (with user approval).

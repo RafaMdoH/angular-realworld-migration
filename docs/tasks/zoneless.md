@@ -29,7 +29,7 @@ Existing specs call `fixture.detectChanges()` manually after each change, which 
 ## Checklist
 
 - [x] T1 Diagnosis: inventory, API stability, test-design limitation
-- [ ] T2 Subscription audit (11 components + `ShowAuthedDirective`)
+- [x] T2 Subscription audit (11 components + `ShowAuthedDirective`)
 - [ ] T3 Zoneless regression specs (RED on current code)
 - [ ] T4 Selective `markForCheck()` (GREEN)
 - [ ] T5 App switch: zoneless provider, remove zone.js (polyfills, dependency)
@@ -51,6 +51,13 @@ Existing specs call `fixture.detectChanges()` manually after each change, which 
 - Carried over from stage 14: T7 done (merged `c1cc12f`, tag `v22-vitest`, CI green: 19 files, 122/122). Finding: CI coverage 80.32 / 71.18 / 68.48 / 78.53 vs local 80.55 / 71.18 / 68.48 / 78.78; the only per-file difference (clover) is `markdown.pipe.ts` (3/3 statements local, 2/3 CI): `transform` awaits `import("marked")` and no spec awaits the pipe, so whether line 10 runs before teardown depends on timing. Follow-up: a spec that awaits `MarkdownPipe.transform`.
 - T1 (inline): component inventory above; API tags read from `node_modules/@angular/core/types/core.d.ts`.
 
+- T2 (read-only explorer; trigger: 12 files + framework internals): 20 subscriptions / async continuations audited. **13 sites need `markForCheck()`**: auth `:95` (error branch), article `:81` (load), `:126` (add comment, both branches), `:143` (delete comment), editor `:60` (edit-mode load, `tagList`), `:104` (create error), profile `:52`, profile-articles `:35`, profile-favorites `:35`, settings `:77` (update error), article-list `:67`, favorite-button `:60` (error branch), follow-button `:59` (error branch).
+  - Already notified: child `(toggle)` outputs (template listeners call `markViewDirty` on the child view and its ancestors, so the buttons' success branches are covered because every usage binds `(toggle)`); `ShowAuthedDirective` (`createEmbeddedView` / `clear` notify the zoneless scheduler on view attach / detach); home tags via `rxLet`; `| async` in header, article-comment and the markdown body (Promise).
+  - Not template state: subscriptions that only navigate (article delete, success branches of auth / editor / settings).
+  - Auth state is synchronous at first render (`currentUser` is a `BehaviorSubject`; `provideAppInitializer` resolves before bootstrap).
+  - New finding (pre-existing defect, to be locked, not fixed): `settings.component.ts:57` passes the Observable returned by `getCurrentUser()` to `patchValue` (hidden by `as Partial<User>`), so the settings form is never filled and the request is never sent. Verified in code.
+  - Spec gaps: no specs for profile-articles, profile-favorites, settings; buttons only indirectly.
+
 ## Next step
 
-T2 (read-only explorer).
+T3 (delegated writer): zoneless regression specs, 13 RED + controls.

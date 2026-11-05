@@ -11,18 +11,18 @@ Documented, real Angular migration (v15 → current, one major at a time) as a r
 - Upstream: `gothinkster/angular-realworld-example-app` (remote `upstream`), pinned at `e28c896` (Angular 15.2.3).
 - Upstream's own upgrade commits are the "answer key": `0d28f5c` (v16), `bd914dc` (rx-angular rename), `e0a5940`, `6d97f15` (v17.2), `a6f16d0` (v19), `2351be8` (v20), `33bf8c3` (v21).
 
-## Current state (2026-11-01)
+## Current state (2026-11-05)
 
-| Item                 | Value                                                                                                     |
-| -------------------- | --------------------------------------------------------------------------------------------------------- |
-| Integration branch   | `main` (formerly `main-v15`)                                                                              |
-| Tags                 | `v15-baseline` … `v17-esbuild`, `v18-upgraded`                                                            |
-| Angular / CLI        | 18.2.14 / 18.2.21                                                                                         |
-| TypeScript / zone.js | 5.4 / 0.14.10                                                                                             |
-| rx-angular           | template 18.0.3, cdk 18.0.0                                                                               |
-| Builder              | esbuild `build-angular:application` (Karma still webpack)                                                 |
-| Node                 | 18 (`.nvmrc`; always `source ~/.nvm/nvm.sh && nvm use 18`)                                                |
-| Tests                | 76 specs (72 characterization + 4 interceptor-chain integration), Karma, all green; coverage 57.41% stmts |
+| Item                 | Value                                                                                                      |
+| -------------------- | ---------------------------------------------------------------------------------------------------------- |
+| Integration branch   | `main` (formerly `main-v15`)                                                                               |
+| Tags                 | `v15-baseline` … `v18-upgraded`, `v19-upgraded`                                                            |
+| Angular / CLI        | 19.2.25 / 19.2.27                                                                                          |
+| TypeScript / zone.js | 5.8.3 / 0.15.1                                                                                             |
+| rx-angular           | template 19.2.2, cdk 19.1.0                                                                                |
+| Builder              | esbuild `build-angular:application` (Karma still webpack)                                                  |
+| Node                 | 18 (`.nvmrc`; always `source ~/.nvm/nvm.sh && nvm use 18`). Angular 19 is the last major accepting Node 18 |
+| Tests                | 76 specs (72 characterization + 4 interceptor-chain integration), Karma, all green; coverage 57.41% stmts  |
 
 ## Completed stages
 
@@ -34,6 +34,7 @@ Documented, real Angular migration (v15 → current, one major at a time) as a r
 | 03  | Builder webpack → esbuild `application` (on 17.3) | `docs/tasks/esbuild-application-builder.md` | `docs/migration-log/{es,en}/03-*.md`    |
 | 04  | Upgrade 17 → 18                                   | `docs/tasks/upgrade-angular-18.md`          | `docs/migration-log/{es,en}/04-*.md`    |
 | 04b | Interceptor chain integration spec                | `docs/tasks/interceptor-chain-spec.md`      | `docs/migration-log/{es,en}/04-*.md` §8 |
+| 05  | Upgrade 18 → 19                                   | `docs/tasks/upgrade-angular-19.md`          | `docs/migration-log/{es,en}/05-*.md`    |
 
 ## Decisions (do not re-ask)
 
@@ -58,6 +59,6 @@ Documented, real Angular migration (v15 → current, one major at a time) as a r
 
 ## Next step
 
-Stage 04 merged (`bf3bd96`, tag `v18-upgraded`). Follow-up interceptor chain coverage (integration spec) merged as `758f757` (no tag: test-only PR). Next: upgrade 18 → 19 (versions only). Gotcha for every `ng update` on Node 18: prefix `NG_DISABLE_VERSION_CHECK=true` or the CLI spawns a temporary latest CLI that requires Node >=22.
+Stage 05 (Angular 18 → 19) complete, tag `v19-upgraded`. Next: upgrade 19 → 20, which first requires moving Node 18 → 20 (Angular 20 drops Node 18; rx-angular 19 tooling already declares Node 20). Open follow-ups from stage 05: `APP_INITIALIZER` → `provideAppInitializer()`, unused `AsyncPipe` imports (TS-998113). Gotcha for every `ng update` on Node 18: prefix `NG_DISABLE_VERSION_CHECK=true`.
 
 Every step: diagnosis checklist (Node/TS/zone.js matrix, third-party peers, test coverage of touched code, smoke test) → feature branch + `docs/tasks/*.md` → verify build + tests → compare with upstream → migration log es/en → merge with `--no-ff` + tag.

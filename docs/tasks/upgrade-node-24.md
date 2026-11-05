@@ -25,7 +25,7 @@ Thirteenth stage. Node 22 is in maintenance LTS until April 2027; Node 24 is sup
 - [x] T1 Diagnosis: Angular 22 Node support, current `.nvmrc` / `engines`, installed Node 24
 - [x] T2 Switch to Node 24: `.nvmrc`, `engines`, clean install
 - [x] T3 Verify: tests, build, `ng version` support status, metrics vs Node 22
-- [ ] T4 Migration log `docs/migration-log/{es,en}/13-*.md`, README, `PROJECT_CONTEXT.md`
+- [x] T4 Migration log `docs/migration-log/{es,en}/13-*.md`, README, `PROJECT_CONTEXT.md`
 - [ ] T5 Merge `--no-ff` + tag (with user approval); CI green on GitHub
 
 ## Acceptance criteria
@@ -43,7 +43,8 @@ Thirteenth stage. Node 22 is in maintenance LTS until April 2027; Node 24 is sup
 - T1 (inline): `.nvmrc` = 22; `engines.node` = `^22.12.0`; Node 24.19.0 installed via nvm. `@angular/core@22.2.4` and `@angular/build@22.2.6` engines: `^22.22.3 || ^24.15.0 || >=26.0.0`. The `SUPPORTED_NODE_MAJORS` constant used in stage 06 was not found in `@angular/cli@22` sources; support is checked with `ng version` in T3. Baseline (stage 12, Node 22.23.4): 122/122, coverage 76.98 / 74 / 68.48 / 75.72, initial 357.58 kB raw / 99.59 kB transfer.
 - T2 (`027f333`): Node 24.19.0 / npm 11.17.0; `.nvmrc` = 24; `engines.node` = `^24.15.0`. `npm ci` clean: no `EBADENGINE` / `ERESOLVE`, lockfile unchanged; 586 packages installed (595 with npm 10 on Node 22). npm 11 prints `allow-scripts` warnings for 5 packages with install scripts (`@parcel/watcher`, `esbuild`, `fsevents`, `lmdb`, `msgpackr-extract`); build and tests are unaffected.
 - T3: `ng version` reports `Node.js: 24.19.0` with no unsupported marker. 122/122 green; coverage unchanged (76.98 / 74 / 68.48 / 75.72). No compiler warnings. Prod build 2.8 / 1.4 / 1.5 s. Initial total 357.58 kB raw / 99.59 kB transfer. Building with Node 22 and Node 24 on the same `node_modules` produces the same 16 JS output files with identical content hashes (`main-FIQHQIDM.js`, `polyfills-5CFQRCPP.js`, `chunk-DvJnFojZ.js`, …). `npm audit`: 20 (unchanged).
+- T4: migration log `docs/migration-log/en/13-upgrade-node-24.md` and `docs/migration-log/es/13-upgrade-node-24.md`; `README.md` (stage 13 row, Getting started requires Node 24); `PROJECT_CONTEXT.md` (Node row, stage 13 row, tags, next step); this task file.
 
 ## Next step
 
-T4 docs.
+T5 merge + tag `v22-node24` (with user approval).

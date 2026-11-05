@@ -28,7 +28,7 @@ Fifth stage. Upgrade only: new v19 APIs (`provideAppInitializer`, `linkedSignal`
 - [x] T3 `ng update @angular/core@19 @angular/cli@19` + review automatic migrations
 - [x] T4 `@rx-angular/cdk@19.1.0` + `@rx-angular/template@19.2.2`
 - [x] T5 Verify: tests, build, metrics; compare with upstream `a6f16d0`
-- [ ] T6 Migration log `docs/migration-log/{es,en}/05-*.md`
+- [x] T6 Migration log `docs/migration-log/{es,en}/05-*.md`
 - [ ] T7 Update `PROJECT_CONTEXT.md` and README stage table; merge `--no-ff` + tag `v19-upgraded` (with user approval)
 
 ## Acceptance criteria
@@ -59,4 +59,4 @@ Fifth stage. Upgrade only: new v19 APIs (`provideAppInitializer`, `linkedSignal`
 
 ## Next step
 
-T6 migration log.
+T7 context + README; merge `--no-ff` + tag `v19-upgraded` and push (with user approval).

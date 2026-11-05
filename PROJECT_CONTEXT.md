@@ -77,6 +77,6 @@ Documented, real Angular migration (v15 → current, one major at a time) as a r
 
 ## Next step
 
-Stage 15 (zoneless change detection on Angular 22.2) merged into `main` (`86a71e0`) and tagged `v22-zoneless`; CI green (32 files, 143/143). The planned modernization sequence is complete. Next and last: the **migration closure** stage, plan in `docs/tasks/migration-closure.md` (classify `npm audit` findings — 8 as of 2026-11-05, not 20; one end-to-end flow with a mocked API or a documented limitation; final README with results and limitations; technical closure document; tag `v1.0.0`). No further modernization.
+Stage 15 (zoneless change detection on Angular 22.2) merged into `main` (`86a71e0`) and tagged `v22-zoneless`; CI green (32 files, 143/143). The planned modernization sequence is complete. Next and last: the **migration closure** stage, plan in `docs/tasks/migration-closure.md` (T1 done: `npm audit` 8 → 4 via lockfile-only `npm audit fix`; the remaining 4 come from `ng-morph@4` in `@rx-angular` schematics, never in the bundle, accepted with reason and tracked; next T2: one end-to-end flow with a mocked API or a documented limitation; final README with results and limitations; technical closure document; tag `v1.0.0`). No further modernization.
 
 Every step: diagnosis checklist (Node/TS/zone.js matrix, third-party peers, test coverage of touched code, smoke test) → feature branch + `docs/tasks/*.md` → verify build + tests → compare with upstream → migration log es/en → merge with `--no-ff` + tag.

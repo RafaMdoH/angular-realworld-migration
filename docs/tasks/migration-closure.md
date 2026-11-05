@@ -17,7 +17,7 @@ The planned sequence is complete (stages 00–15: Angular 15 → 22.2, TypeScrip
 - [ ] Zoneless works and its documentation reflects the real state (stage 15 T8 closed).
 - [ ] Production build and automated tests pass.
 - [ ] CI verifies changes and shows results.
-- [ ] Security findings are classified and each has a decision.
+- [x] Security findings are classified and each has a decision.
 - [ ] README presents goal, strategy, results and limitations.
 - [ ] There is evidence of functional validation, or a documented limitation.
 
@@ -43,7 +43,7 @@ The planned sequence is complete (stages 00–15: Angular 15 → 22.2, TypeScrip
 
 ## Checklist
 
-- [ ] T1 Classify `npm audit` findings; decision per finding; fix the stale count
+- [x] T1 Classify `npm audit` findings; decision per finding; fix the stale count
 - [ ] T2 End-to-end flow with mocked API, or documented limitation (decide after a short spike)
 - [ ] T3 Final README (results, limitations, out of scope)
 - [ ] T4 Technical closure document (incl. AI-assisted section from verified incidents)
@@ -62,7 +62,21 @@ The planned sequence is complete (stages 00–15: Angular 15 → 22.2, TypeScrip
 ## Progress
 
 - Plan agreed with the user on 2026-11-05 (closure stage, no further modernization; external publication outside this repository). Execution starts in a new session.
+- T1 (inline; trigger evidence: one lockfile, bounded audit output). `npm audit fix` without `--force`: only `package-lock.json` changed (no `package.json` range changed). `npm audit` 8 → 4 (5 moderate / 3 high → 2 moderate / 2 high); `--omit=dev` 7 → 4. Prod build OK; 32 files, 143/143 green; none of the affected packages appears in `dist/`.
+
+  | Package                | Severity | Path                                                                                           | Reaches browser bundle | Decision                                             |
+  | ---------------------- | -------- | ---------------------------------------------------------------------------------------------- | ---------------------- | ---------------------------------------------------- |
+  | `ajv`                  | moderate | `ng-morph` → `@angular-devkit/core@18`                                                         | No                     | Fixed by lockfile update (8.17.1 → 8.20.0)           |
+  | `picomatch`            | high     | `ng-morph` → `@angular-devkit/core@18`; `tinyglobby`                                           | No                     | Fixed by lockfile update (→ 2.3.2 / 4.0.7)           |
+  | `@angular-devkit/core` | moderate | `ng-morph` (via `ajv`, `picomatch`)                                                            | No                     | Fixed by lockfile update (18.2.21 → 22.2.6, deduped) |
+  | `yaml`                 | moderate | `lint-staged` (dev only)                                                                       | No                     | Fixed by lockfile update (→ 2.9.1)                   |
+  | `minimatch`            | high     | `@rx-angular/{cdk,template}` → `ng-morph@4.9.1` (pins `10.0.3`); `@ts-morph/common` (`^9.0.4`) | No                     | Accepted with reason, tracked                        |
+  | `ng-morph`             | high     | `@rx-angular/{cdk,template}` (`^4.0.3`)                                                        | No                     | Accepted with reason, tracked                        |
+  | `ts-morph`             | moderate | `ng-morph@4.9.1` (pins `24.0.0`)                                                               | No                     | Accepted with reason, tracked                        |
+  | `@ts-morph/common`     | moderate | `ts-morph@24` (`~0.25.0`)                                                                      | No                     | Accepted with reason, tracked                        |
+
+  Reason for the 4 accepted findings (user decision, option A): `ng-morph` is used only by `@rx-angular/*/schematics` (`ng add` / `ng update`), never by the application build or the browser bundle; the advisories are ReDoS / glob-matching issues on developer-controlled glob patterns. The real fix is `ng-morph@5` (`minimatch 10.2.6`, `ts-morph 27`), which `@rx-angular` 22 does not allow. Forcing it with npm `overrides` was rejected: it imposes major versions `ng-morph` does not declare, and the schematics cannot be verified without running them. Tracking: re-check when `@rx-angular` moves to `ng-morph@5`.
 
 ## Next step
 
-T1.
+T2 (short spike: end-to-end flow with mocked API, or documented limitation).

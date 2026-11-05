@@ -3,6 +3,7 @@ import {
   OnDestroy,
   OnInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
 } from "@angular/core";
 import {
   Validators,
@@ -41,7 +42,8 @@ export class AuthComponent implements OnInit, OnDestroy {
   constructor(
     private readonly route: ActivatedRoute,
     private readonly router: Router,
-    private readonly userService: UserService
+    private readonly userService: UserService,
+    private readonly cdr: ChangeDetectorRef
   ) {
     // use FormBuilder to create a form group
     this.authForm = new FormGroup<AuthForm>({
@@ -97,6 +99,7 @@ export class AuthComponent implements OnInit, OnDestroy {
       error: (err) => {
         this.errors = err;
         this.isSubmitting = false;
+        this.cdr.markForCheck();
       },
     });
   }

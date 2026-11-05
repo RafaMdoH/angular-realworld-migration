@@ -3,6 +3,7 @@ import {
   OnDestroy,
   OnInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
 } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { ArticleListComponent } from "../../shared/article-helpers/article-list.component";
@@ -25,7 +26,8 @@ export class ProfileArticlesComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
-    private readonly profileService: ProfileService
+    private readonly profileService: ProfileService,
+    private readonly cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -41,6 +43,7 @@ export class ProfileArticlesComponent implements OnInit, OnDestroy {
               author: this.profile.username,
             },
           };
+          this.cdr.markForCheck();
         },
       });
   }

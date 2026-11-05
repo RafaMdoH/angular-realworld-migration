@@ -3,6 +3,7 @@ import {
   OnDestroy,
   OnInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
 } from "@angular/core";
 import { FormControl, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
@@ -62,7 +63,8 @@ export class ArticleComponent implements OnInit, OnDestroy {
     private readonly articleService: ArticlesService,
     private readonly commentsService: CommentsService,
     private readonly router: Router,
-    private readonly userService: UserService
+    private readonly userService: UserService,
+    private readonly cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -83,6 +85,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
         this.comments = comments;
         this.currentUser = currentUser;
         this.canModify = currentUser?.username === article.author.username;
+        this.cdr.markForCheck();
       });
   }
 
@@ -128,10 +131,12 @@ export class ArticleComponent implements OnInit, OnDestroy {
           this.comments.unshift(comment);
           this.commentControl.reset("");
           this.isSubmitting = false;
+          this.cdr.markForCheck();
         },
         error: (errors) => {
           this.isSubmitting = false;
           this.commentFormErrors = errors;
+          this.cdr.markForCheck();
         },
       });
   }
@@ -142,6 +147,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.comments = this.comments.filter((item) => item !== comment);
+        this.cdr.markForCheck();
       });
   }
 

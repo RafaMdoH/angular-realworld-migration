@@ -3,6 +3,7 @@ import {
   OnDestroy,
   OnInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
 } from "@angular/core";
 import {
   FormControl,
@@ -50,7 +51,8 @@ export class SettingsComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly router: Router,
-    private readonly userService: UserService
+    private readonly userService: UserService,
+    private readonly cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -80,6 +82,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
         error: (err) => {
           this.errors = err;
           this.isSubmitting = false;
+          this.cdr.markForCheck();
         },
       });
   }

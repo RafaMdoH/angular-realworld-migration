@@ -3,6 +3,7 @@ import {
   OnDestroy,
   OnInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
 } from "@angular/core";
 import {
   FormControl,
@@ -47,7 +48,8 @@ export class EditorComponent implements OnInit, OnDestroy {
     private readonly articleService: ArticlesService,
     private readonly route: ActivatedRoute,
     private readonly router: Router,
-    private readonly userService: UserService
+    private readonly userService: UserService,
+    private readonly cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -61,6 +63,7 @@ export class EditorComponent implements OnInit, OnDestroy {
           if (user.username === article.author.username) {
             this.tagList = article.tagList;
             this.articleForm.patchValue(article);
+            this.cdr.markForCheck();
           } else {
             void this.router.navigate(["/"]);
           }
@@ -106,6 +109,7 @@ export class EditorComponent implements OnInit, OnDestroy {
         error: (err) => {
           this.errors = err;
           this.isSubmitting = false;
+          this.cdr.markForCheck();
         },
       });
   }

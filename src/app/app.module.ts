@@ -1,4 +1,4 @@
-import { APP_INITIALIZER, NgModule } from "@angular/core";
+import { inject, NgModule, provideAppInitializer } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 
 import { AppComponent } from "./app.component";
@@ -27,12 +27,9 @@ export function initAuth(jwtService: JwtService, userService: UserService) {
   bootstrap: [AppComponent],
   imports: [BrowserModule, FooterComponent, HeaderComponent, AppRoutingModule],
   providers: [
-    {
-      provide: APP_INITIALIZER,
-      useFactory: initAuth,
-      deps: [JwtService, UserService],
-      multi: true,
-    },
+    provideAppInitializer(() =>
+      initAuth(inject(JwtService), inject(UserService))()
+    ),
     { provide: HTTP_INTERCEPTORS, useClass: ApiInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },

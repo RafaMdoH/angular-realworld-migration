@@ -25,9 +25,9 @@ Fifth stage. Upgrade only: new v19 APIs (`provideAppInitializer`, `linkedSignal`
 
 - [x] T1 Diagnosis: compatibility matrix + third-party peers + standalone inventory
 - [x] T2 Baseline on v18: tests + build metrics
-- [ ] T3 `ng update @angular/core@19 @angular/cli@19` + review automatic migrations
-- [ ] T4 `@rx-angular/cdk@19.1.0` + `@rx-angular/template@19.2.2`
-- [ ] T5 Verify: tests, build, metrics; compare with upstream `a6f16d0`
+- [x] T3 `ng update @angular/core@19 @angular/cli@19` + review automatic migrations
+- [x] T4 `@rx-angular/cdk@19.1.0` + `@rx-angular/template@19.2.2`
+- [x] T5 Verify: tests, build, metrics; compare with upstream `a6f16d0`
 - [ ] T6 Migration log `docs/migration-log/{es,en}/05-*.md`
 - [ ] T7 Update `PROJECT_CONTEXT.md` and README stage table; merge `--no-ff` + tag `v19-upgraded` (with user approval)
 
@@ -46,6 +46,17 @@ Fifth stage. Upgrade only: new v19 APIs (`provideAppInitializer`, `linkedSignal`
 
 - T2: 76/76 green; coverage 57.41% stmts / 74% branches / 51.82% funcs / 55.36% lines; prod build 3.6 / 2.4 / 2.4 s; initial total 335.06 kB raw / 93.72 kB transfer.
 
+- T3 (`50343a8`): Angular 19.2.25 / CLI 19.2.27, TypeScript 5.8.3, zone.js ~0.15.1. `standalone` migration: 18 × `standalone: true` removed, `AppComponent` → `standalone: false` (after Prettier: 1 insertion, 18 deletions in `src`). One spec touched (`show-authed.directive.spec.ts` host component): only `standalone: true` removed, assertions unchanged. Migration left `standalone: true` in `ShowAuthedDirective` and `MarkdownPipe` (redundant, harmless; upstream `a6f16d0` shows the same result) — left as is. Optional migrations not run: `provide-initializer`, `use-application-builder` (already on the application builder).
+- T4 (`05ba2dc`): `@rx-angular/cdk@19.1.0`, `@rx-angular/template@19.2.2`. Transitive `ng-morph@4.9.1` → `minimatch@10` declares Node `20 || >=22` (npm `EBADENGINE` warning on Node 18); tooling-only (schematics), not in the bundle.
+- T5: 76/76 green, coverage unchanged (57.41% stmts / 74% branches / 51.82% funcs / 55.36% lines). Prod build 2.9 / 2.5 / 2.4 s. Initial total 333.23 kB raw / 94.20 kB transfer (v18: 335.06 / 93.72). New v19 diagnostic TS-998113 (unused standalone imports): `AsyncPipe` in `HomeComponent` and `ProfileComponent` — warnings only, left as follow-up.
+- Upstream `a6f16d0` comparison: same Angular 19.2 line (19.2.14), TS ~5.8.3, zone.js ~0.15.1, same `standalone` result. Differences: upstream kept `@rx-angular/*` 18.0.0 (peer `@angular/core ^18`, unsupported on 19) and removed unused imports in the same commit; this stage moved rx-angular to 19 and kept the import cleanup out of scope.
+
+## Follow-ups (out of scope)
+
+- `APP_INITIALIZER` → `provideAppInitializer()` (deprecated in v19; optional migration `provide-initializer`).
+- Remove unused `AsyncPipe` imports flagged by TS-998113.
+- Node 20+ required by the next major (Angular 20) and already by rx-angular 19 tooling.
+
 ## Next step
 
-T3 `ng update`.
+T6 migration log.

@@ -9,20 +9,20 @@ Documented, real Angular migration (v15 → current, one major at a time) as a r
 ## Source
 
 - Upstream: `gothinkster/angular-realworld-example-app` (remote `upstream`), pinned at `e28c896` (Angular 15.2.3).
-- Upstream's own upgrade commits are the "answer key": `0d28f5c` (v16), `bd914dc` (rx-angular rename), `e0a5940`, `6d97f15` (v17.2), `a6f16d0` (v19), `2351be8` (v20), `33bf8c3` (v21).
+- Upstream's own upgrade commits are the "answer key": `0d28f5c` (v16), `bd914dc` (rx-angular rename), `e0a5940`, `6d97f15` (v17.2), `a6f16d0` (v19), `a420aa2` (v20), `2351be8` (v20.3 minor), `33bf8c3` (v21).
 
 ## Current state (2026-11-05)
 
-| Item                 | Value                                                                                                                                    |
-| -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| Integration branch   | `main` (formerly `main-v15`)                                                                                                             |
-| Tags                 | `v15-baseline` … `v18-upgraded`, `v19-upgraded` (`v19-node22` pending stage 06 merge)                                                    |
-| Angular / CLI        | 19.2.25 / 19.2.27                                                                                                                        |
-| TypeScript / zone.js | 5.8.3 / 0.15.1                                                                                                                           |
-| rx-angular           | template 19.2.2, cdk 19.1.0                                                                                                              |
-| Builder              | esbuild `build-angular:application` (Karma still webpack)                                                                                |
-| Node                 | 22 (`nvm use`, per `.nvmrc`; `engines.node` `^22.12.0`). Officially supported by Angular 19 and 20; no `NG_DISABLE_VERSION_CHECK` needed |
-| Tests                | 76 specs (72 characterization + 4 interceptor-chain integration), Karma, all green; coverage 57.41% stmts                                |
+| Item                 | Value                                                                                                               |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| Integration branch   | `main` (formerly `main-v15`)                                                                                        |
+| Tags                 | `v15-baseline` … `v19-upgraded`, `v19-node22` (`v20-upgraded` pending stage 07 merge)                               |
+| Angular / CLI        | 20.3.35 / 20.3.42                                                                                                   |
+| TypeScript / zone.js | 5.8.3 / 0.15.1                                                                                                      |
+| rx-angular           | template 20.1.0, cdk 20.1.1                                                                                         |
+| Builder              | esbuild `build-angular:application` (Karma still webpack)                                                           |
+| Node                 | 22 (`nvm use`, per `.nvmrc`; `engines.node` `^22.12.0`). Node 24 now officially supported by Angular 20 (follow-up) |
+| Tests                | 76 specs (72 characterization + 4 interceptor-chain integration), Karma, all green; coverage 57.41% stmts           |
 
 ## Completed stages
 
@@ -36,6 +36,7 @@ Documented, real Angular migration (v15 → current, one major at a time) as a r
 | 04b | Interceptor chain integration spec                | `docs/tasks/interceptor-chain-spec.md`      | `docs/migration-log/{es,en}/04-*.md` §8 |
 | 05  | Upgrade 18 → 19                                   | `docs/tasks/upgrade-angular-19.md`          | `docs/migration-log/{es,en}/05-*.md`    |
 | 06  | Runtime Node 18 → 22 (on Angular 19.2)            | `docs/tasks/upgrade-node-22.md`             | `docs/migration-log/{es,en}/06-*.md`    |
+| 07  | Upgrade 19 → 20                                   | `docs/tasks/upgrade-angular-20.md`          | `docs/migration-log/{es,en}/07-*.md`    |
 
 ## Decisions (do not re-ask)
 
@@ -46,6 +47,7 @@ Documented, real Angular migration (v15 → current, one major at a time) as a r
 - Dead external deps (theme CSS 404, `api.realworld.io` 530) are OUT OF SCOPE (maintenance, not migration). Accepted risk: no manual visual/runtime validation.
 - Published history: documentation files (`docs/migration-log`, `docs/tasks`, `PROJECT_CONTEXT.md`) were stripped from past commits with `git filter-repo` (own commits only; upstream history untouched) and added in one final commit. Commit hashes in the docs refer to the published history.
 - Node 22 over Node 24 for stage 06: Angular CLI 19 reports Node 24 as `(Unsupported)` (`SUPPORTED_NODE_MAJORS = [18, 20, 22]`) even though its `engines` accepts it. `engines` is the floor npm checks, not the official support matrix. Node 24 moves to a later stage on Angular 20+.
+- rx-angular 20 (not 22) for stage 07: 22.0.0, suggested by `ng update`, requires `@angular/core >=22`. Builder package switch (`@angular-devkit/build-angular` → `@angular/build`) deferred to its own change, unlike upstream `a420aa2`.
 - Migration logs are decision records (es/en): diagnosis, changes, findings, verification, upstream comparison. Personal study material lives outside the repository.
 
 ## Locked findings (not fixed)
@@ -61,6 +63,6 @@ Documented, real Angular migration (v15 → current, one major at a time) as a r
 
 ## Next step
 
-Stage 06 (runtime Node 18 → 22, on Angular 19.2) done on `feature/upgrade-node-22`; pending merge `--no-ff` + tag `v19-node22` (with user approval). Next: stage 07, upgrade Angular 19 → 20 (`ng update` already lists Angular 20.3.9 and rx-angular 22.0.0). Open follow-ups: Node 24 once on Angular 20+ (Node 22 maintenance LTS ends April 2027); `npm audit` 65 findings (2 critical), pre-existing; from stage 05: `APP_INITIALIZER` → `provideAppInitializer()`, unused `AsyncPipe` imports (TS-998113).
+Stage 07 (Angular 19.2 → 20.3) done on `feature/upgrade-angular-20`; pending merge `--no-ff` + tag `v20-upgraded` (with user approval). Next: stage 08, upgrade Angular 20 → 21 (the next major). Open follow-ups (see `docs/tasks/upgrade-angular-20.md`): builder package `@angular-devkit/build-angular` → `@angular/build` (`use-application-builder`); `*ngIf` / `*ngFor` → built-in control flow (`control-flow-migration`); `APP_INITIALIZER` → `provideAppInitializer()`; unused `AsyncPipe` imports (NG8113, formerly TS-998113); Node 24 (now officially supported); `npm audit` 65 findings (2 critical), pre-existing.
 
 Every step: diagnosis checklist (Node/TS/zone.js matrix, third-party peers, test coverage of touched code, smoke test) → feature branch + `docs/tasks/*.md` → verify build + tests → compare with upstream → migration log es/en → merge with `--no-ff` + tag.

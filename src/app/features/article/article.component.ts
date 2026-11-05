@@ -1,4 +1,9 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+  ChangeDetectionStrategy,
+} from "@angular/core";
 import { FormControl, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { User } from "../../core/models/user.model";
@@ -23,6 +28,7 @@ import { Profile } from "../../core/models/profile.model";
 @Component({
   selector: "app-article-page",
   templateUrl: "./article.component.html",
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     ArticleMetaComponent,
     RouterLink,

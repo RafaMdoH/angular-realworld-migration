@@ -1,4 +1,9 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+  ChangeDetectionStrategy,
+} from "@angular/core";
 import {
   FormControl,
   FormGroup,
@@ -24,6 +29,7 @@ interface SettingsForm {
 @Component({
   selector: "app-settings-page",
   templateUrl: "./settings.component.html",
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ListErrorsComponent, ReactiveFormsModule],
 })
 export class SettingsComponent implements OnInit, OnDestroy {

@@ -1,4 +1,10 @@
-import { Component, inject, OnDestroy, OnInit } from "@angular/core";
+import {
+  Component,
+  inject,
+  OnDestroy,
+  OnInit,
+  ChangeDetectionStrategy,
+} from "@angular/core";
 import { Router } from "@angular/router";
 import { TagsService } from "../../core/services/tags.service";
 import { ArticleListConfig } from "../../core/models/article-list-config.model";
@@ -14,6 +20,7 @@ import { ShowAuthedDirective } from "../../shared/show-authed.directive";
   selector: "app-home-page",
   templateUrl: "./home.component.html",
   styleUrls: ["./home.component.css"],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [NgClass, ArticleListComponent, RxLet, ShowAuthedDirective],
 })
 export class HomeComponent implements OnInit, OnDestroy {

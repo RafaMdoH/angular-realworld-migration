@@ -1,4 +1,9 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+  ChangeDetectionStrategy,
+} from "@angular/core";
 import {
   ActivatedRoute,
   Router,
@@ -16,6 +21,7 @@ import { FollowButtonComponent } from "../../shared/buttons/follow-button.compon
 @Component({
   selector: "app-profile-page",
   templateUrl: "./profile.component.html",
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [FollowButtonComponent, RouterLink, RouterLinkActive, RouterOutlet],
 })
 export class ProfileComponent implements OnInit, OnDestroy {

@@ -30,12 +30,13 @@ Every stage is a separate, merged and tagged unit with its own decision record: 
 | 08  | Built-in control flow (Angular 20.3)                             | `v20-control-flow`  | [EN](docs/migration-log/en/08-control-flow-migration.md) / [ES](docs/migration-log/es/08-migracion-control-flow.md)           |
 | 09  | Angular 20 → 21                                                  | `v21-upgraded`      | [EN](docs/migration-log/en/09-upgrade-angular-21.md) / [ES](docs/migration-log/es/09-upgrade-angular-21.md)                   |
 | 10  | Builder package: build-angular → `@angular/build` (Angular 21.2) | `v21-angular-build` | [EN](docs/migration-log/en/10-angular-build-package.md) / [ES](docs/migration-log/es/10-paquete-angular-build.md)             |
+| 11  | Angular 21 → 22 (+ TypeScript 6.0)                               | `v22-upgraded`      | [EN](docs/migration-log/en/11-upgrade-angular-22.md) / [ES](docs/migration-log/es/11-upgrade-angular-22.md)                   |
 
 Task checklists with verification evidence for each stage live in [`docs/tasks/`](docs/tasks/). Current state and next step: [`PROJECT_CONTEXT.md`](PROJECT_CONTEXT.md).
 
 ## Current stack
 
-Angular 21.2 · TypeScript 5.9 · RxJS 7 · rx-angular 21 · zone.js change detection · `@angular/build` (esbuild `application` builder) · Karma + Jasmine.
+Angular 22.2 · TypeScript 6.0 · RxJS 7 · rx-angular 22 · zone.js change detection · `@angular/build` (esbuild `application` builder) · Karma + Jasmine.
 
 ## Getting started
 

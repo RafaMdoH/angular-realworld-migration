@@ -4,6 +4,7 @@ import {
   Input,
   OnDestroy,
   Output,
+  ChangeDetectionStrategy,
 } from "@angular/core";
 import { Router } from "@angular/router";
 import { EMPTY, Subject, switchMap } from "rxjs";
@@ -16,6 +17,7 @@ import { Article } from "../../core/models/article.model";
 @Component({
   selector: "app-favorite-button",
   templateUrl: "./favorite-button.component.html",
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [NgClass],
 })
 export class FavoriteButtonComponent implements OnDestroy {

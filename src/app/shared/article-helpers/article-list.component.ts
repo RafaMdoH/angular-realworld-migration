@@ -1,4 +1,9 @@
-import { Component, Input, OnDestroy } from "@angular/core";
+import {
+  Component,
+  Input,
+  OnDestroy,
+  ChangeDetectionStrategy,
+} from "@angular/core";
 import { ArticlesService } from "../../core/services/articles.service";
 import { ArticleListConfig } from "../../core/models/article-list-config.model";
 import { Article } from "../../core/models/article.model";
@@ -12,6 +17,7 @@ import { takeUntil } from "rxjs/operators";
   selector: "app-article-list",
   styleUrls: ["article-list.component.css"],
   templateUrl: "./article-list.component.html",
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ArticlePreviewComponent, NgClass],
 })
 export class ArticleListComponent implements OnDestroy {

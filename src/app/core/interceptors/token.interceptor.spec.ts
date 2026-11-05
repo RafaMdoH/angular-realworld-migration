@@ -4,6 +4,7 @@ import {
   HttpClient,
   provideHttpClient,
   withInterceptorsFromDi,
+  withXhr,
 } from "@angular/common/http";
 import {
   HttpTestingController,
@@ -23,7 +24,7 @@ describe("TokenInterceptor (characterization)", () => {
       imports: [],
       providers: [
         { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
     });

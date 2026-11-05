@@ -10,6 +10,7 @@ import { UserService } from "../../core/services/user.service";
 import {
   provideHttpClient,
   withInterceptorsFromDi,
+  withXhr,
 } from "@angular/common/http";
 
 // rx-angular's *rxLet renders through its own scheduler, outside the
@@ -36,7 +37,7 @@ describe("HomeComponent (characterization)", () => {
           provide: UserService,
           useValue: { isAuthenticated: isAuthenticated$.asObservable() },
         },
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
     });

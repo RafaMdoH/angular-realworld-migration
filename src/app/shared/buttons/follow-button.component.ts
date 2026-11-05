@@ -4,6 +4,7 @@ import {
   Input,
   OnDestroy,
   Output,
+  ChangeDetectionStrategy,
 } from "@angular/core";
 import { Router } from "@angular/router";
 import { switchMap, takeUntil } from "rxjs/operators";
@@ -16,6 +17,7 @@ import { NgClass } from "@angular/common";
 @Component({
   selector: "app-follow-button",
   templateUrl: "./follow-button.component.html",
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [NgClass],
 })
 export class FollowButtonComponent implements OnDestroy {

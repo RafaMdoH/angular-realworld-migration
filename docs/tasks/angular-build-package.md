@@ -26,7 +26,7 @@ Tenth stage. Since stage 03 the app is built by the esbuild `application` builde
 - [x] T2 Migration: builders + dependency; clean install
 - [x] T3 Verify: tests, build, dev server starts, metrics; install size / package count
 - [x] T4 Migration log `docs/migration-log/{es,en}/10-*.md`, README, `PROJECT_CONTEXT.md`
-- [ ] T5 Merge `--no-ff` + tag (with user approval); CI green on GitHub
+- [x] T5 Merge `--no-ff` + tag (with user approval); CI green on GitHub
 
 ## Acceptance criteria
 
@@ -47,4 +47,4 @@ Tenth stage. Since stage 03 the app is built by the esbuild `application` builde
 
 ## Next step
 
-T5 merge + tag `v21-angular-build` (with user approval).
+Done. Merged into `main` (`2329703`), tagged `v21-angular-build`; CI green on GitHub (120/120).

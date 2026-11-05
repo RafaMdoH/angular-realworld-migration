@@ -43,7 +43,7 @@ describe("HomeComponent (characterization)", () => {
     });
     controller = TestBed.inject(HttpTestingController);
     router = TestBed.inject(Router);
-    spyOn(router, "navigate").and.resolveTo(true);
+    vi.spyOn(router, "navigate").mockResolvedValue(true);
     fixture = TestBed.createComponent(HomeComponent);
   };
 
@@ -63,7 +63,7 @@ describe("HomeComponent (characterization)", () => {
       "angular",
       "rxjs",
     ]);
-    expect(fixture.componentInstance.tagsLoaded).toBeTrue();
+    expect(fixture.componentInstance.tagsLoaded).toBe(true);
   });
 
   it("shows the empty message when there are no tags", async () => {
@@ -109,6 +109,6 @@ describe("HomeComponent (characterization)", () => {
 
     expect(router.navigate).toHaveBeenCalledWith(["/login"]);
     expect(fixture.componentInstance.listConfig.type).toBe("all");
-    expect(fixture.componentInstance.isAuthenticated).toBeTrue();
+    expect(fixture.componentInstance.isAuthenticated).toBe(true);
   });
 });

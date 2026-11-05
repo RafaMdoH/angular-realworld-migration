@@ -40,15 +40,15 @@ describe("ShowAuthedDirective (characterization)", () => {
   it("renders only the authed block when the user starts authenticated", () => {
     create(true);
 
-    expect(has("authed")).toBeTrue();
-    expect(has("guest")).toBeFalse();
+    expect(has("authed")).toBe(true);
+    expect(has("guest")).toBe(false);
   });
 
   it("renders only the guest block when the user starts unauthenticated", () => {
     create(false);
 
-    expect(has("authed")).toBeFalse();
-    expect(has("guest")).toBeTrue();
+    expect(has("authed")).toBe(false);
+    expect(has("guest")).toBe(true);
   });
 
   it("removes the authed block when auth turns false", () => {
@@ -56,8 +56,8 @@ describe("ShowAuthedDirective (characterization)", () => {
 
     setAuth(false);
 
-    expect(has("authed")).toBeFalse();
-    expect(has("guest")).toBeTrue();
+    expect(has("authed")).toBe(false);
+    expect(has("guest")).toBe(true);
   });
 
   it("shows the authed block when auth turns true after starting false", () => {
@@ -65,8 +65,8 @@ describe("ShowAuthedDirective (characterization)", () => {
 
     setAuth(true);
 
-    expect(has("authed")).toBeTrue();
-    expect(has("guest")).toBeFalse();
+    expect(has("authed")).toBe(true);
+    expect(has("guest")).toBe(false);
   });
 
   it("KNOWN BUG (locked): does not re-render after auth toggles back", () => {
@@ -77,7 +77,7 @@ describe("ShowAuthedDirective (characterization)", () => {
 
     // authRef is never reset after viewContainer.clear(), so the view that
     // should reappear is never created again.
-    expect(has("authed")).toBeFalse();
+    expect(has("authed")).toBe(false);
   });
 
   it("KNOWN BUG (locked): guest block also does not re-render after false -> true -> false", () => {
@@ -86,6 +86,6 @@ describe("ShowAuthedDirective (characterization)", () => {
     setAuth(true);
     setAuth(false);
 
-    expect(has("guest")).toBeFalse();
+    expect(has("guest")).toBe(false);
   });
 });

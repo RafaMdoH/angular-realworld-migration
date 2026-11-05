@@ -1,3 +1,4 @@
+import type { MockedObject } from "vitest";
 import { TestBed } from "@angular/core/testing";
 import {
   HttpTestingController,
@@ -25,12 +26,14 @@ describe("UserService (characterization)", () => {
   let service: UserService;
   let jwt: JwtService;
   let http: HttpTestingController;
-  let router: jasmine.SpyObj<Router>;
+  let router: MockedObject<Router>;
 
   beforeEach(() => {
     window.localStorage.clear();
-    router = jasmine.createSpyObj<Router>("Router", ["navigate"]);
-    router.navigate.and.resolveTo(true);
+    router = {
+      navigate: vi.fn().mockName("Router.navigate"),
+    } as unknown as MockedObject<Router>;
+    router.navigate.mockResolvedValue(true);
     TestBed.configureTestingModule({
       imports: [],
       providers: [
@@ -63,12 +66,16 @@ describe("UserService (characterization)", () => {
 
   it("starts unauthenticated with a null user", () => {
     expect(latestUser()).toBeNull();
-    expect(latestAuth()).toBeFalse();
+    expect(latestAuth()).toBe(false);
   });
 
   it("login posts credentials wrapped in { user } and sets auth", () => {
     const credentials = { email: "a@b.c", password: "pw" };
-    let result: { user: User } | undefined;
+    let result:
+      | {
+          user: User;
+        }
+      | undefined;
 
     service.login(credentials).subscribe((r) => (result = r));
     const req = http.expectOne("/users/login");
@@ -79,7 +86,7 @@ describe("UserService (characterization)", () => {
     expect(result).toEqual({ user });
     expect(jwt.getToken()).toBe("tok-1");
     expect(latestUser()).toEqual(user);
-    expect(latestAuth()).toBeTrue();
+    expect(latestAuth()).toBe(true);
   });
 
   it("register posts credentials wrapped in { user } and sets auth", () => {
@@ -107,7 +114,7 @@ describe("UserService (characterization)", () => {
 
     expect(error).toBeDefined();
     expect(jwt.getToken()).toBeUndefined();
-    expect(latestAuth()).toBeFalse();
+    expect(latestAuth()).toBe(false);
   });
 
   it("logout purges auth and navigates to /", () => {
@@ -117,7 +124,8 @@ describe("UserService (characterization)", () => {
 
     expect(jwt.getToken()).toBeUndefined();
     expect(latestUser()).toBeNull();
-    expect(router.navigate).toHaveBeenCalledOnceWith(["/"]);
+    expect(router.navigate).toHaveBeenCalledTimes(1);
+    expect(router.navigate).toHaveBeenCalledWith(["/"]);
   });
 
   it("getCurrentUser GETs /user and sets auth on success", () => {
@@ -181,7 +189,7 @@ describe("UserService (characterization)", () => {
 
     expect(jwt.getToken()).toBeUndefined();
     expect(latestUser()).toBeNull();
-    expect(latestAuth()).toBeFalse();
+    expect(latestAuth()).toBe(false);
   });
 
   it("currentUser skips consecutive duplicate emissions", () => {

@@ -36,33 +36,33 @@ describe("AppRoutingModule guards (characterization)", () => {
 
   describe("when NOT authenticated", () => {
     it("allows /login", async () => {
-      expect(await navigate("/login")).toBeTrue();
+      expect(await navigate("/login")).toBe(true);
       expect(router.url).toBe("/login");
     });
 
     it("allows /register", async () => {
-      expect(await navigate("/register")).toBeTrue();
+      expect(await navigate("/register")).toBe(true);
       expect(router.url).toBe("/register");
     });
 
     it("blocks /settings and stays on the previous url", async () => {
-      expect(await navigate("/settings")).toBeFalse();
+      expect(await navigate("/settings")).toBe(false);
       expect(router.url).toBe("/");
     });
 
     it("blocks /editor", async () => {
-      expect(await navigate("/editor")).toBeFalse();
+      expect(await navigate("/editor")).toBe(false);
       expect(router.url).toBe("/");
     });
 
     it("blocks /editor/:slug", async () => {
-      expect(await navigate("/editor/some-slug")).toBeFalse();
+      expect(await navigate("/editor/some-slug")).toBe(false);
       expect(router.url).toBe("/");
     });
 
     it("allows public routes (home and article)", async () => {
-      expect(await navigate("/")).toBeTrue();
-      expect(await navigate("/article/some-slug")).toBeTrue();
+      expect(await navigate("/")).toBe(true);
+      expect(await navigate("/article/some-slug")).toBe(true);
       expect(router.url).toBe("/article/some-slug");
     });
   });
@@ -71,27 +71,27 @@ describe("AppRoutingModule guards (characterization)", () => {
     beforeEach(() => isAuthenticated.next(true));
 
     it("blocks /login", async () => {
-      expect(await navigate("/login")).toBeFalse();
+      expect(await navigate("/login")).toBe(false);
       expect(router.url).toBe("/");
     });
 
     it("blocks /register", async () => {
-      expect(await navigate("/register")).toBeFalse();
+      expect(await navigate("/register")).toBe(false);
       expect(router.url).toBe("/");
     });
 
     it("allows /settings", async () => {
-      expect(await navigate("/settings")).toBeTrue();
+      expect(await navigate("/settings")).toBe(true);
       expect(router.url).toBe("/settings");
     });
 
     it("allows /editor", async () => {
-      expect(await navigate("/editor")).toBeTrue();
+      expect(await navigate("/editor")).toBe(true);
       expect(router.url).toBe("/editor");
     });
 
     it("allows /editor/:slug", async () => {
-      expect(await navigate("/editor/some-slug")).toBeTrue();
+      expect(await navigate("/editor/some-slug")).toBe(true);
       expect(router.url).toBe("/editor/some-slug");
     });
   });

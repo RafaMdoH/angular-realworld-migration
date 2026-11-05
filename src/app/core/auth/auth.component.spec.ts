@@ -1,3 +1,4 @@
+import type { MockedObject } from "vitest";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { ActivatedRoute, Router } from "@angular/router";
 import { RouterTestingModule } from "@angular/router/testing";
@@ -15,7 +16,7 @@ describe("AuthComponent (characterization)", () => {
     image: "",
   };
 
-  let userService: jasmine.SpyObj<UserService>;
+  let userService: MockedObject<UserService>;
   let router: Router;
   let fixture: ComponentFixture<AuthComponent>;
   let component: AuthComponent;
@@ -32,17 +33,17 @@ describe("AuthComponent (characterization)", () => {
       ],
     });
     router = TestBed.inject(Router);
-    spyOn(router, "navigate").and.resolveTo(true);
+    vi.spyOn(router, "navigate").mockResolvedValue(true);
     fixture = TestBed.createComponent(AuthComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }
 
   beforeEach(() => {
-    userService = jasmine.createSpyObj<UserService>("UserService", [
-      "login",
-      "register",
-    ]);
+    userService = {
+      login: vi.fn().mockName("UserService.login"),
+      register: vi.fn().mockName("UserService.register"),
+    } as unknown as MockedObject<UserService>;
   });
 
   describe("login page", () => {
@@ -61,51 +62,56 @@ describe("AuthComponent (characterization)", () => {
         "email",
         "password",
       ]);
-      expect(component.authForm.valid).toBeFalse();
+      expect(component.authForm.valid).toBe(false);
 
       component.authForm.setValue({ email: "a@b.c", password: "pw" });
 
-      expect(component.authForm.valid).toBeTrue();
+      expect(component.authForm.valid).toBe(true);
     });
 
     it("logs in with the form value and navigates to / on success", () => {
-      userService.login.and.returnValue(of({ user }));
+      userService.login.mockReturnValue(of({ user }));
       component.authForm.setValue({ email: "a@b.c", password: "pw" });
 
       component.submitForm();
 
-      expect(userService.login).toHaveBeenCalledOnceWith({
+      expect(userService.login).toHaveBeenCalledTimes(1);
+
+      expect(userService.login).toHaveBeenCalledWith({
         email: "a@b.c",
         password: "pw",
       });
       expect(userService.register).not.toHaveBeenCalled();
-      expect(router.navigate).toHaveBeenCalledOnceWith(["/"]);
+      expect(router.navigate).toHaveBeenCalledTimes(1);
+      expect(router.navigate).toHaveBeenCalledWith(["/"]);
     });
 
     it("stores the error and re-enables the form on failure", () => {
       const err = { errors: { "email or password": "is invalid" } };
-      userService.login.and.returnValue(throwError(() => err));
+      userService.login.mockReturnValue(throwError(() => err));
 
       component.submitForm();
 
       expect(component.errors).toBe(err);
-      expect(component.isSubmitting).toBeFalse();
+      expect(component.isSubmitting).toBe(false);
       expect(router.navigate).not.toHaveBeenCalled();
     });
 
     it("stays in submitting state and clears old errors while the request is pending", () => {
-      userService.login.and.returnValue(new Subject() as Observable<any>);
+      userService.login.mockReturnValue(new Subject() as Observable<any>);
       component.errors = { errors: { old: "error" } };
 
       component.submitForm();
 
-      expect(component.isSubmitting).toBeTrue();
+      expect(component.isSubmitting).toBe(true);
       expect(component.errors).toEqual({ errors: {} });
     });
 
     it("stops listening to the pending request after destroy", () => {
-      const pending = new Subject<{ user: User }>();
-      userService.login.and.returnValue(pending);
+      const pending = new Subject<{
+        user: User;
+      }>();
+      userService.login.mockReturnValue(pending);
 
       component.submitForm();
       fixture.destroy();
@@ -128,11 +134,11 @@ describe("AuthComponent (characterization)", () => {
       ]);
 
       component.authForm.patchValue({ email: "a@b.c", password: "pw" });
-      expect(component.authForm.valid).toBeFalse();
+      expect(component.authForm.valid).toBe(false);
     });
 
     it("registers with the form value and navigates to / on success", () => {
-      userService.register.and.returnValue(of({ user }));
+      userService.register.mockReturnValue(of({ user }));
       component.authForm.setValue({
         email: "a@b.c",
         password: "pw",
@@ -141,13 +147,16 @@ describe("AuthComponent (characterization)", () => {
 
       component.submitForm();
 
-      expect(userService.register).toHaveBeenCalledOnceWith({
+      expect(userService.register).toHaveBeenCalledTimes(1);
+
+      expect(userService.register).toHaveBeenCalledWith({
         email: "a@b.c",
         password: "pw",
         username: "alice",
       });
       expect(userService.login).not.toHaveBeenCalled();
-      expect(router.navigate).toHaveBeenCalledOnceWith(["/"]);
+      expect(router.navigate).toHaveBeenCalledTimes(1);
+      expect(router.navigate).toHaveBeenCalledWith(["/"]);
     });
   });
 
@@ -155,6 +164,6 @@ describe("AuthComponent (characterization)", () => {
     create("anything");
 
     expect(component.title).toBe("Sign up");
-    expect(component.authForm.contains("username")).toBeFalse();
+    expect(component.authForm.contains("username")).toBe(false);
   });
 });

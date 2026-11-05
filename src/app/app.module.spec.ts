@@ -1,3 +1,4 @@
+import type { MockedObject } from "vitest";
 import { ApplicationInitStatus } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { EMPTY, of } from "rxjs";
@@ -6,12 +7,16 @@ import { JwtService } from "./core/services/jwt.service";
 import { UserService } from "./core/services/user.service";
 
 describe("initAuth (characterization)", () => {
-  let jwt: jasmine.SpyObj<JwtService>;
-  let user: jasmine.SpyObj<UserService>;
+  let jwt: MockedObject<JwtService>;
+  let user: MockedObject<UserService>;
 
   beforeEach(() => {
-    jwt = jasmine.createSpyObj<JwtService>("JwtService", ["getToken"]);
-    user = jasmine.createSpyObj<UserService>("UserService", ["getCurrentUser"]);
+    jwt = {
+      getToken: vi.fn().mockName("JwtService.getToken"),
+    } as unknown as MockedObject<JwtService>;
+    user = {
+      getCurrentUser: vi.fn().mockName("UserService.getCurrentUser"),
+    } as unknown as MockedObject<UserService>;
   });
 
   it("returns a factory and does not touch services until it is invoked", () => {
@@ -23,8 +28,8 @@ describe("initAuth (characterization)", () => {
 
   it("fetches the current user when a token exists", () => {
     const current$ = of({ user: {} as any });
-    jwt.getToken.and.returnValue("tok");
-    user.getCurrentUser.and.returnValue(current$);
+    jwt.getToken.mockReturnValue("tok");
+    user.getCurrentUser.mockReturnValue(current$);
 
     const result = initAuth(jwt, user)();
 
@@ -33,7 +38,7 @@ describe("initAuth (characterization)", () => {
   });
 
   it("returns EMPTY without calling the API when there is no token", () => {
-    jwt.getToken.and.returnValue(undefined as any);
+    jwt.getToken.mockReturnValue(undefined as any);
 
     const result = initAuth(jwt, user)();
 
@@ -43,8 +48,8 @@ describe("initAuth (characterization)", () => {
 });
 
 describe("AppModule app initializer wiring (integration)", () => {
-  let jwt: jasmine.SpyObj<JwtService>;
-  let user: jasmine.SpyObj<UserService>;
+  let jwt: MockedObject<JwtService>;
+  let user: MockedObject<UserService>;
 
   function bootstrapAppModule(): Promise<unknown> {
     TestBed.configureTestingModule({
@@ -58,13 +63,17 @@ describe("AppModule app initializer wiring (integration)", () => {
   }
 
   beforeEach(() => {
-    jwt = jasmine.createSpyObj<JwtService>("JwtService", ["getToken"]);
-    user = jasmine.createSpyObj<UserService>("UserService", ["getCurrentUser"]);
+    jwt = {
+      getToken: vi.fn().mockName("JwtService.getToken"),
+    } as unknown as MockedObject<JwtService>;
+    user = {
+      getCurrentUser: vi.fn().mockName("UserService.getCurrentUser"),
+    } as unknown as MockedObject<UserService>;
   });
 
   it("loads the current user during app initialization when a token exists", async () => {
-    jwt.getToken.and.returnValue("tok");
-    user.getCurrentUser.and.returnValue(of({ user: {} as any }));
+    jwt.getToken.mockReturnValue("tok");
+    user.getCurrentUser.mockReturnValue(of({ user: {} as any }));
 
     await bootstrapAppModule();
 
@@ -73,7 +82,7 @@ describe("AppModule app initializer wiring (integration)", () => {
   });
 
   it("does not call the API during app initialization when there is no token", async () => {
-    jwt.getToken.and.returnValue(undefined as any);
+    jwt.getToken.mockReturnValue(undefined as any);
 
     await bootstrapAppModule();
 

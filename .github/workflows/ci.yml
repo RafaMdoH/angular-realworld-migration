@@ -37,7 +37,7 @@ jobs:
         run: npx ng build
 
       - name: Unit tests with coverage
-        run: npx ng test --watch=false --browsers=ChromeHeadless --code-coverage
+        run: npx ng test --watch=false --coverage
 
       - name: Upload coverage report
         if: always()

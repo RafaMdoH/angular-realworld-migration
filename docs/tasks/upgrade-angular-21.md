@@ -26,7 +26,7 @@ Ninth stage. Upgrade only: zoneless change detection, signal forms, Vitest and o
 - [x] T2 `ng update @angular/core@21 @angular/cli@21` + review automatic migrations
 - [x] T3 `@rx-angular/cdk@21.1.1` + `@rx-angular/template@21.2.1`
 - [x] T4 Verify: tests, build, metrics; compare with upstream `33bf8c3`
-- [ ] T5 Migration log `docs/migration-log/{es,en}/09-*.md`, README, `PROJECT_CONTEXT.md`
+- [x] T5 Migration log `docs/migration-log/{es,en}/09-*.md`, README, `PROJECT_CONTEXT.md`
 - [ ] T6 Merge `--no-ff` + tag `v21-upgraded` (with user approval); CI green on GitHub
 
 ## Acceptance criteria
@@ -47,6 +47,8 @@ Ninth stage. Upgrade only: zoneless change detection, signal forms, Vitest and o
 - T4: 120/120 green, no spec changed; coverage unchanged (76.92 / 74 / 68.29 / 75.65). No compiler warnings. Prod build 2.3 / 2.3 / 2.3 s (first run after `ng update`: 2.6 s). Initial total 346.08 kB raw / 97.59 kB transfer (v20: 337.58 / 96.02, +8.50 kB raw / +1.57 kB transfer); `main` 8.47 → 8.51 kB, shared framework chunk 291.21 → 299.67 kB, `polyfills` unchanged. Cause of growth not investigated.
 - Upstream `33bf8c3` ("chore: upgrade to Angular 21 and latest dependencies", 2026-01-26; only `package.json` and lockfile changed): Angular 21.1.1, TypeScript ~5.9.3 (same). Differences: rx-angular 21.0.0 (peers matching this time), zone.js ~0.16.0, `@angular/build` 21.1.1, Vitest (`"test": "vitest"`) instead of Karma. Upstream's app at that commit bootstraps with `bootstrapApplication` + `app.config.ts`, uses `provideAppInitializer`, and `app.config.ts` has no `provideZoneChangeDetection`. These are earlier architectural changes upstream, not part of its v21 commit.
 
+- T5 (delegated writer; trigger: 2+ non-trivial docs): `docs/migration-log/en/09-upgrade-angular-21.md`, `docs/migration-log/es/09-upgrade-angular-21.md`, `README.md` (stage 09 row, current stack), `PROJECT_CONTEXT.md` (versions, tags, stage 09 row, zone.js decision, follow-ups, next step).
+
 ## Follow-ups (out of scope)
 
 - Zoneless change detection (v21 default; this app opts into zone.js via `provideZoneChangeDetection()`).
@@ -58,4 +60,4 @@ Ninth stage. Upgrade only: zoneless change detection, signal forms, Vitest and o
 
 ## Next step
 
-T5 docs.
+T6 merge `--no-ff` + tag `v21-upgraded` (with user approval).

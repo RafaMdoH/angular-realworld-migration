@@ -16,12 +16,12 @@ Documented, real Angular migration (v15 → current, one major at a time) as a r
 | Item                 | Value                                                                                                                                                            |
 | -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Integration branch   | `main` (formerly `main-v15`)                                                                                                                                     |
-| Tags                 | `v15-baseline` … `v19-upgraded`, `v19-node22`, `v20-upgraded` (`v20-control-flow` pending stage 08 merge)                                                        |
-| Angular / CLI        | 20.3.35 / 20.3.42                                                                                                                                                |
-| TypeScript / zone.js | 5.8.3 / 0.15.1                                                                                                                                                   |
-| rx-angular           | template 20.1.0, cdk 20.1.1                                                                                                                                      |
+| Tags                 | `v15-baseline` … `v19-upgraded`, `v19-node22`, `v20-upgraded`, `v20-control-flow` (`v21-upgraded` pending stage 09 merge)                                        |
+| Angular / CLI        | 21.2.26 / 21.2.29                                                                                                                                                |
+| TypeScript / zone.js | 5.9.3 / 0.15.1 (zone.js change detection opted in via `provideZoneChangeDetection()`)                                                                            |
+| rx-angular           | template 21.2.1, cdk 21.1.1 (template pins cdk exactly `21.1.1`)                                                                                                 |
 | Builder              | esbuild `build-angular:application` (Karma still webpack)                                                                                                        |
-| Node                 | 22 (`nvm use`, per `.nvmrc`; `engines.node` `^22.12.0`). Node 24 now officially supported by Angular 20 (follow-up)                                              |
+| Node                 | 22 (`nvm use`, per `.nvmrc`; `engines.node` `^22.12.0`). Node 24 officially supported by Angular 20+ (follow-up)                                                 |
 | Tests                | 120 specs (116 characterization + 4 interceptor-chain integration), Karma, all green; coverage 76.92% / 74% / 68.29% / 75.65% (stmts / branches / funcs / lines) |
 
 ## Completed stages
@@ -38,6 +38,7 @@ Documented, real Angular migration (v15 → current, one major at a time) as a r
 | 06  | Runtime Node 18 → 22 (on Angular 19.2)            | `docs/tasks/upgrade-node-22.md`             | `docs/migration-log/{es,en}/06-*.md`    |
 | 07  | Upgrade 19 → 20                                   | `docs/tasks/upgrade-angular-20.md`          | `docs/migration-log/{es,en}/07-*.md`    |
 | 08  | Built-in control flow (on Angular 20.3)           | `docs/tasks/migrate-control-flow.md`        | `docs/migration-log/{es,en}/08-*.md`    |
+| 09  | Upgrade 20 → 21                                   | `docs/tasks/upgrade-angular-21.md`          | `docs/migration-log/{es,en}/09-*.md`    |
 
 ## Decisions (do not re-ask)
 
@@ -49,6 +50,7 @@ Documented, real Angular migration (v15 → current, one major at a time) as a r
 - Published history: documentation files (`docs/migration-log`, `docs/tasks`, `PROJECT_CONTEXT.md`) were stripped from past commits with `git filter-repo` (own commits only; upstream history untouched) and added in one final commit. Commit hashes in the docs refer to the published history.
 - Node 22 over Node 24 for stage 06: Angular CLI 19 reports Node 24 as `(Unsupported)` (`SUPPORTED_NODE_MAJORS = [18, 20, 22]`) even though its `engines` accepts it. `engines` is the floor npm checks, not the official support matrix. Node 24 moves to a later stage on Angular 20+.
 - rx-angular 20 (not 22) for stage 07: 22.0.0, suggested by `ng update`, requires `@angular/core >=22`. Builder package switch (`@angular-devkit/build-angular` → `@angular/build`) deferred to its own change, unlike upstream `a420aa2`.
+- Angular 21 (stage 09): zone.js kept, via `provideZoneChangeDetection()` added by the official `bootstrap-options-migration` (v21 defaults to zoneless). Going zoneless is deferred to its own modernization change. Builder package switch, Vitest and `provideAppInitializer()` stay separate changes, unlike upstream, which adopted them before its v21 commit `33bf8c3`.
 - Migration logs are decision records (es/en): diagnosis, changes, findings, verification, upstream comparison. Personal study material lives outside the repository.
 
 ## Locked findings (not fixed)
@@ -65,6 +67,6 @@ Documented, real Angular migration (v15 → current, one major at a time) as a r
 
 ## Next step
 
-Stage 08 (built-in control flow on Angular 20.3) complete on `feature/migrate-control-flow`; pending merge `--no-ff` + tag `v20-control-flow` (with user approval). Next: stage 09, upgrade Angular 20 → 21 (requires TypeScript 5.8 → 5.9; `control-flow-migration` is mandatory in v21 and now has nothing left to convert). Open follow-ups (see `docs/tasks/upgrade-angular-20.md` and `docs/tasks/migrate-control-flow.md`): builder package `@angular-devkit/build-angular` → `@angular/build` (`use-application-builder`); `APP_INITIALIZER` → `provideAppInitializer()`; Node 24 (now officially supported); `article-list` `RangeError` when `limit` is unset (not locked); `npm audit` 65 findings (2 critical), pre-existing.
+Stage 09 (Angular 20.3 → 21.2) complete on `feature/upgrade-angular-21`; pending merge `--no-ff` + tag `v21-upgraded` (with user approval). Angular 21 is the current latest major line for this project. Next candidates are the open follow-ups (see `docs/tasks/upgrade-angular-21.md`): zoneless change detection (v21 default; the app opts into zone.js via `provideZoneChangeDetection()`); Karma → Vitest; builder package `@angular-devkit/build-angular` → `@angular/build` (`use-application-builder`); `APP_INITIALIZER` → `provideAppInitializer()`; pin `@rx-angular/cdk` to exactly `21.1.1` (template 21.2.1 pins it, `package.json` has `^21.1.1`; the lockfile protects `npm ci`); Node 24. Still open from earlier stages: `article-list` `RangeError` when `limit` is unset (not locked); `npm audit` 65 findings (2 critical), pre-existing.
 
 Every step: diagnosis checklist (Node/TS/zone.js matrix, third-party peers, test coverage of touched code, smoke test) → feature branch + `docs/tasks/*.md` → verify build + tests → compare with upstream → migration log es/en → merge with `--no-ff` + tag.

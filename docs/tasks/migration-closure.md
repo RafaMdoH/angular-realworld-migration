@@ -18,7 +18,7 @@ The planned sequence is complete (stages 00–15: Angular 15 → 22.2, TypeScrip
 - [ ] Production build and automated tests pass.
 - [ ] CI verifies changes and shows results.
 - [x] Security findings are classified and each has a decision.
-- [ ] README presents goal, strategy, results and limitations.
+- [x] README presents goal, strategy, results and limitations.
 - [x] There is evidence of functional validation, or a documented limitation.
 
 ## Scope
@@ -45,7 +45,7 @@ The planned sequence is complete (stages 00–15: Angular 15 → 22.2, TypeScrip
 
 - [x] T1 Classify `npm audit` findings; decision per finding; fix the stale count
 - [x] T2 End-to-end flow with mocked API, or documented limitation (decide after a short spike)
-- [ ] T3 Final README (results, limitations, out of scope)
+- [x] T3 Final README (results, limitations, out of scope)
 - [ ] T4 Technical closure document (incl. AI-assisted section from verified incidents)
 - [ ] T5 Close stage 15 T8; final `PROJECT_CONTEXT.md`; tag `v1.0.0` + GitHub Release (with user approval)
 
@@ -83,7 +83,11 @@ The planned sequence is complete (stages 00–15: Angular 15 → 22.2, TypeScrip
   - Finding: the locked home-page bug (`home.component.spec.ts`, "redirects an authenticated user to /login on init") is reproduced in a real browser: after sign-in the home page stays on "Global Feed" and calls `GET /articles`. The test asserts this and clicks "Your Feed" explicitly; the bug stays locked ("migrating ≠ fixing").
   - Test-first exception: test infrastructure only, no production behavior change, so there is no RED/GREEN cycle on production code. The test was shown to fail: with the `GET /articles/:slug/comments` fixture removed it failed (article `h1` not found, because the article page redirects home on the API error); restored, it passed.
   - Evidence: `npm run e2e` passed 1/1 (≈2.6–2.9 s wall time including the dev server, on four separate runs) and 5/5 with `--repeat-each=5`; `npx ng build` OK; `npx ng test --watch=false` 32 files, 143/143 (e2e files are not picked up); `npm audit` 4 (2 moderate / 2 high) and `--omit=dev` 4, unchanged from T1.
+- T3 (delegated writer; trigger: preparation reading across many docs). `README.md`: results table (before / after), consolidated limitations, out-of-scope table (mirrors this document), `npm run e2e` + `npx playwright install chromium` in "Getting started", Playwright in the current stack, stale "validated through its test suite" note updated. Test-first exception: documentation only; structural checks (Prettier, readback).
+  - Sources, "before": Angular 15.2.3 / TypeScript ~4.8.2 / zone.js ~0.12.0 / Karma / `@angular-devkit/build-angular:browser` from `git show v15-baseline:{package.json,angular.json}`; Node 18, 67 specs, coverage 44.78 / 56 / 41.46 / 42.02, `dist` 508 KB from `docs/migration-log/en/00-characterization-tests.md` §8. Not measured on v15 (first recorded value shown instead): initial bundle raw / transfer (332.17 / 92.64 kB, stage 03 log), installed packages / `node_modules` (1093 / 511 MB, stage 10 log), `npm audit` (65, 2 critical, stage 06 log).
+  - Sources, "after" (measured 2026-11-05, Node 24.19.0, npm 11): `npx ng build` initial total 319.70 kB raw / 87.46 kB transfer, `du -sh dist/angular-conduit` 528K; `npx ng test --watch=false --coverage` 32 files, 143/143, 87.17 / 79.66 / 77.45 / 85.82; clean `npm ci` (same method as stages 10 and 13) "added 460 packages", `du -sh node_modules` 321M; `npm audit` 4 (2 moderate, 2 high); `npm run e2e` 1 passed.
+  - Not verifiable: how the stage 00 `dist` size (508 KB) was measured (the README marks it); no v15 value exists for initial bundle, package count or `npm audit`. The E2E home-feed behavior was matched to locked finding 7 (`home.component.spec.ts` "KNOWN BUG (locked): redirects an authenticated user to /login on init", which also asserts `listConfig.type` `"all"`).
 
 ## Next step
 
-T3 (final README).
+T4 (technical closure document).

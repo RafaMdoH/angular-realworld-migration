@@ -25,6 +25,7 @@ Every stage is a separate, merged and tagged unit with its own decision record: 
 | 03  | Builder: webpack → esbuild `application` (Angular 17.3) | `v17-esbuild`  | [EN](docs/migration-log/en/03-esbuild-application-builder.md) / [ES](docs/migration-log/es/03-builder-esbuild-application.md) |
 | 04  | Angular 17 → 18                                         | `v18-upgraded` | [EN](docs/migration-log/en/04-upgrade-angular-18.md) / [ES](docs/migration-log/es/04-upgrade-angular-18.md)                   |
 | 05  | Angular 18 → 19                                         | `v19-upgraded` | [EN](docs/migration-log/en/05-upgrade-angular-19.md) / [ES](docs/migration-log/es/05-upgrade-angular-19.md)                   |
+| 06  | Runtime: Node 18 → 22 (Angular 19.2)                    | `v19-node22`   | [EN](docs/migration-log/en/06-upgrade-node-22.md) / [ES](docs/migration-log/es/06-upgrade-node-22.md)                         |
 
 Task checklists with verification evidence for each stage live in [`docs/tasks/`](docs/tasks/). Current state and next step: [`PROJECT_CONTEXT.md`](PROJECT_CONTEXT.md).
 
@@ -34,7 +35,7 @@ Angular 19.2 · TypeScript 5.8 · RxJS 7 · rx-angular 19 · esbuild `applicatio
 
 ## Getting started
 
-Requires Node 18 (see `.nvmrc`) and npm.
+Requires Node 22 (see `.nvmrc`) and npm.
 
 ```bash
 nvm use

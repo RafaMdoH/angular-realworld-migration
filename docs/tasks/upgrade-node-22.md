@@ -6,7 +6,7 @@ Move the runtime from Node 18 to Node 22 on Angular 19.2, with build and charact
 
 ## Problem / Why
 
-Sixth stage. Angular 20 requires Node `^20.19.0 || ^22.12.0 || >=24.0.0`, and rx-angular 19 tooling already requires Node 20+. Node 18 and Node 20 are both end-of-life (Node 20 since April 2026). Node 22 is the only major officially supported by **both** Angular 19 and Angular 20, so the runtime change can be isolated from the framework upgrade without passing through an unsupported combination: one concept per change.
+Sixth stage. Angular 20 requires Node `^20.19.0 || ^22.12.0 || >=24.0.0`, and rx-angular 19 tooling already requires Node 20+. Node 18 and Node 20 are both end-of-life (Node 20 since April 2026). Node 22 is the only non-EOL major officially supported by **both** Angular 19 and Angular 20, so the runtime change can be isolated from the framework upgrade without passing through an unsupported combination: one concept per change.
 
 ## Scope
 
@@ -26,7 +26,7 @@ Sixth stage. Angular 20 requires Node `^20.19.0 || ^22.12.0 || >=24.0.0`, and rx
 - [x] T1 Diagnosis: what depends on the Node version
 - [x] T2 Switch to Node 22: `.nvmrc`, `engines`, clean install from lockfile
 - [x] T3 Verify: tests, build, metrics vs Node 18; `ng` without `NG_DISABLE_VERSION_CHECK`; `EBADENGINE` gone
-- [ ] T4 Docs: README, `PROJECT_CONTEXT.md`, migration log `docs/migration-log/{es,en}/06-*.md`
+- [x] T4 Docs: README, `PROJECT_CONTEXT.md`, migration log `docs/migration-log/{es,en}/06-*.md`
 - [ ] T5 Merge `--no-ff` + tag `v19-node22` (with user approval); CI green on GitHub
 
 ## Acceptance criteria
@@ -46,6 +46,8 @@ Sixth stage. Angular 20 requires Node `^20.19.0 || ^22.12.0 || >=24.0.0`, and rx
 - T2 (inline): Node 22.23.4 / npm 10.9.9; `.nvmrc` = 22; `engines.node` = `^22.12.0`. `npm ci` clean: no `EBADENGINE` (the rx-angular `minimatch@10` warning from stage 05 is gone), lockfile unchanged.
 - T3 (inline): 76/76 green, coverage unchanged (57.41 / 74 / 51.82 / 55.36). Prod build 2.8 / 2.4 / 2.4 s. Initial total 333.23 kB raw / 94.20 kB transfer (byte-identical to Node 18; same `main` / `polyfills` hashes). `ng version` shows `Node: 22.23.4` without warning. `ng update` runs without `NG_DISABLE_VERSION_CHECK`; it lists Angular 20.3.9 and rx-angular 22.0.0.
 
+- T4 (delegated writer): wrote `docs/migration-log/en/06-upgrade-node-22.md` and `docs/migration-log/es/06-upgrade-node-22.md`; updated `README.md` (stage 06 row, Node 22 requirement) and `PROJECT_CONTEXT.md` (Node row, stage 06 row, Node 22 over 24 decision, next step).
+
 ## Follow-ups (out of scope)
 
 - Node 24 once on Angular 20+ (Node 22 maintenance LTS ends April 2027).
@@ -53,4 +55,4 @@ Sixth stage. Angular 20 requires Node `^20.19.0 || ^22.12.0 || >=24.0.0`, and rx
 
 ## Next step
 
-T4 docs.
+T5 merge + tag (with user approval).

@@ -7,7 +7,7 @@ import { ArticlesService } from "../../core/services/articles.service";
 import { CommentsService } from "../../core/services/comments.service";
 import { UserService } from "../../core/services/user.service";
 import { ArticleMetaComponent } from "../../shared/article-helpers/article-meta.component";
-import { AsyncPipe, NgClass, NgForOf, NgIf } from "@angular/common";
+import { AsyncPipe, NgClass } from "@angular/common";
 import { FollowButtonComponent } from "../../shared/buttons/follow-button.component";
 import { FavoriteButtonComponent } from "../../shared/buttons/favorite-button.component";
 import { MarkdownPipe } from "./markdown.pipe";
@@ -29,7 +29,6 @@ import { Profile } from "../../core/models/profile.model";
     NgClass,
     FollowButtonComponent,
     FavoriteButtonComponent,
-    NgForOf,
     MarkdownPipe,
     AsyncPipe,
     ListErrorsComponent,
@@ -37,7 +36,6 @@ import { Profile } from "../../core/models/profile.model";
     ArticleCommentComponent,
     ReactiveFormsModule,
     ShowAuthedDirective,
-    NgIf,
   ],
 })
 export class ArticleComponent implements OnInit, OnDestroy {

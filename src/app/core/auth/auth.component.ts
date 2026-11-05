@@ -6,7 +6,7 @@ import {
   ReactiveFormsModule,
 } from "@angular/forms";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
-import { NgIf } from "@angular/common";
+
 import { ListErrorsComponent } from "../../shared/list-errors.component";
 import { Errors } from "../models/errors.model";
 import { UserService } from "../services/user.service";
@@ -22,7 +22,7 @@ interface AuthForm {
 @Component({
   selector: "app-auth-page",
   templateUrl: "./auth.component.html",
-  imports: [RouterLink, NgIf, ListErrorsComponent, ReactiveFormsModule],
+  imports: [RouterLink, ListErrorsComponent, ReactiveFormsModule],
 })
 export class AuthComponent implements OnInit, OnDestroy {
   authType = "";

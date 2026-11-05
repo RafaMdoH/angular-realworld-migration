@@ -12,18 +12,11 @@ import { UserService } from "../../core/services/user.service";
 import { Profile } from "../../core/models/profile.model";
 import { ProfileService } from "../../core/services/profile.service";
 import { FollowButtonComponent } from "../../shared/buttons/follow-button.component";
-import { NgIf } from "@angular/common";
 
 @Component({
   selector: "app-profile-page",
   templateUrl: "./profile.component.html",
-  imports: [
-    FollowButtonComponent,
-    NgIf,
-    RouterLink,
-    RouterLinkActive,
-    RouterOutlet,
-  ],
+  imports: [FollowButtonComponent, RouterLink, RouterLinkActive, RouterOutlet],
 })
 export class ProfileComponent implements OnInit, OnDestroy {
   profile!: Profile;

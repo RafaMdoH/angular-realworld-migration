@@ -24,7 +24,7 @@ Twelfth stage. `APP_INITIALIZER` has been deprecated since Angular 19. `provideA
 - [x] T2 Wiring spec (integration) + mutation check on the old wiring
 - [x] T3 Refactor to `provideAppInitializer()` + mutation check on the new wiring
 - [x] T4 Migration log `docs/migration-log/{es,en}/12-*.md`, README, `PROJECT_CONTEXT.md`
-- [ ] T5 Merge `--no-ff` + tag (with user approval); CI green on GitHub
+- [x] T5 Merge `--no-ff` + tag (with user approval); CI green on GitHub
 
 ## Acceptance criteria
 
@@ -45,4 +45,4 @@ Twelfth stage. `APP_INITIALIZER` has been deprecated since Angular 19. `provideA
 
 ## Next step
 
-T5 merge + tag `v22-app-initializer` (with user approval).
+Done. Merged into `main` (`6a4252c`), tagged `v22-app-initializer`; CI green on GitHub (122/122).

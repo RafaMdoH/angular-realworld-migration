@@ -11,7 +11,6 @@ import { Subject } from "rxjs";
   selector: "app-profile-favorites",
   templateUrl: "./profile-favorites.component.html",
   imports: [ArticleListComponent],
-  standalone: true,
 })
 export class ProfileFavoritesComponent implements OnInit, OnDestroy {
   profile!: Profile;

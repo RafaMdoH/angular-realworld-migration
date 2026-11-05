@@ -8,7 +8,6 @@ import { ShowAuthedDirective } from "../../shared/show-authed.directive";
   selector: "app-layout-header",
   templateUrl: "./header.component.html",
   imports: [RouterLinkActive, RouterLink, AsyncPipe, NgIf, ShowAuthedDirective],
-  standalone: true,
 })
 export class HeaderComponent {
   currentUser$ = inject(UserService).currentUser;

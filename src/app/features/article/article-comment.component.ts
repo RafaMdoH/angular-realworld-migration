@@ -10,7 +10,6 @@ import { AsyncPipe, DatePipe, NgIf } from "@angular/common";
   selector: "app-article-comment",
   templateUrl: "./article-comment.component.html",
   imports: [RouterLink, DatePipe, NgIf, AsyncPipe],
-  standalone: true,
 })
 export class ArticleCommentComponent {
   @Input() comment!: Comment;

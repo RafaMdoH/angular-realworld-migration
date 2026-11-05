@@ -11,7 +11,6 @@ import { Subject } from "rxjs";
   selector: "app-profile-articles",
   templateUrl: "./profile-articles.component.html",
   imports: [ArticleListComponent],
-  standalone: true,
 })
 export class ProfileArticlesComponent implements OnInit, OnDestroy {
   profile!: Profile;

@@ -25,7 +25,6 @@ import { AsyncPipe, NgIf } from "@angular/common";
     RouterLinkActive,
     RouterOutlet,
   ],
-  standalone: true,
 })
 export class ProfileComponent implements OnInit, OnDestroy {
   profile!: Profile;

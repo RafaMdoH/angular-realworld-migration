@@ -6,7 +6,6 @@ import { UserService } from "../core/services/user.service";
 import { ShowAuthedDirective } from "./show-authed.directive";
 
 @Component({
-  standalone: true,
   imports: [ShowAuthedDirective],
   template: `
     <p id="authed" *appShowAuthed="true">authed</p>

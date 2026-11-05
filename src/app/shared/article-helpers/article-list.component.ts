@@ -13,7 +13,6 @@ import { takeUntil } from "rxjs/operators";
   styleUrls: ["article-list.component.css"],
   templateUrl: "./article-list.component.html",
   imports: [ArticlePreviewComponent, NgForOf, NgClass, NgIf],
-  standalone: true,
 })
 export class ArticleListComponent implements OnDestroy {
   query!: ArticleListConfig;

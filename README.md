@@ -17,16 +17,17 @@ Every stage is a separate, merged and tagged unit with its own decision record: 
 
 ## Stages
 
-| #   | Stage                                                   | Tag            | Decision record (EN / ES)                                                                                                     |
-| --- | ------------------------------------------------------- | -------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| 00  | Characterization tests (baseline Angular 15.2)          | `v15-baseline` | [EN](docs/migration-log/en/00-characterization-tests.md) / [ES](docs/migration-log/es/00-tests-de-caracterizacion.md)         |
-| 01  | Angular 15 → 16                                         | `v16-upgraded` | [EN](docs/migration-log/en/01-upgrade-angular-16.md) / [ES](docs/migration-log/es/01-upgrade-angular-16.md)                   |
-| 02  | Angular 16 → 17                                         | `v17-upgraded` | [EN](docs/migration-log/en/02-upgrade-angular-17.md) / [ES](docs/migration-log/es/02-upgrade-angular-17.md)                   |
-| 03  | Builder: webpack → esbuild `application` (Angular 17.3) | `v17-esbuild`  | [EN](docs/migration-log/en/03-esbuild-application-builder.md) / [ES](docs/migration-log/es/03-builder-esbuild-application.md) |
-| 04  | Angular 17 → 18                                         | `v18-upgraded` | [EN](docs/migration-log/en/04-upgrade-angular-18.md) / [ES](docs/migration-log/es/04-upgrade-angular-18.md)                   |
-| 05  | Angular 18 → 19                                         | `v19-upgraded` | [EN](docs/migration-log/en/05-upgrade-angular-19.md) / [ES](docs/migration-log/es/05-upgrade-angular-19.md)                   |
-| 06  | Runtime: Node 18 → 22 (Angular 19.2)                    | `v19-node22`   | [EN](docs/migration-log/en/06-upgrade-node-22.md) / [ES](docs/migration-log/es/06-upgrade-node-22.md)                         |
-| 07  | Angular 19 → 20                                         | `v20-upgraded` | [EN](docs/migration-log/en/07-upgrade-angular-20.md) / [ES](docs/migration-log/es/07-upgrade-angular-20.md)                   |
+| #   | Stage                                                   | Tag                | Decision record (EN / ES)                                                                                                     |
+| --- | ------------------------------------------------------- | ------------------ | ----------------------------------------------------------------------------------------------------------------------------- |
+| 00  | Characterization tests (baseline Angular 15.2)          | `v15-baseline`     | [EN](docs/migration-log/en/00-characterization-tests.md) / [ES](docs/migration-log/es/00-tests-de-caracterizacion.md)         |
+| 01  | Angular 15 → 16                                         | `v16-upgraded`     | [EN](docs/migration-log/en/01-upgrade-angular-16.md) / [ES](docs/migration-log/es/01-upgrade-angular-16.md)                   |
+| 02  | Angular 16 → 17                                         | `v17-upgraded`     | [EN](docs/migration-log/en/02-upgrade-angular-17.md) / [ES](docs/migration-log/es/02-upgrade-angular-17.md)                   |
+| 03  | Builder: webpack → esbuild `application` (Angular 17.3) | `v17-esbuild`      | [EN](docs/migration-log/en/03-esbuild-application-builder.md) / [ES](docs/migration-log/es/03-builder-esbuild-application.md) |
+| 04  | Angular 17 → 18                                         | `v18-upgraded`     | [EN](docs/migration-log/en/04-upgrade-angular-18.md) / [ES](docs/migration-log/es/04-upgrade-angular-18.md)                   |
+| 05  | Angular 18 → 19                                         | `v19-upgraded`     | [EN](docs/migration-log/en/05-upgrade-angular-19.md) / [ES](docs/migration-log/es/05-upgrade-angular-19.md)                   |
+| 06  | Runtime: Node 18 → 22 (Angular 19.2)                    | `v19-node22`       | [EN](docs/migration-log/en/06-upgrade-node-22.md) / [ES](docs/migration-log/es/06-upgrade-node-22.md)                         |
+| 07  | Angular 19 → 20                                         | `v20-upgraded`     | [EN](docs/migration-log/en/07-upgrade-angular-20.md) / [ES](docs/migration-log/es/07-upgrade-angular-20.md)                   |
+| 08  | Built-in control flow (Angular 20.3)                    | `v20-control-flow` | [EN](docs/migration-log/en/08-control-flow-migration.md) / [ES](docs/migration-log/es/08-migracion-control-flow.md)           |
 
 Task checklists with verification evidence for each stage live in [`docs/tasks/`](docs/tasks/). Current state and next step: [`PROJECT_CONTEXT.md`](PROJECT_CONTEXT.md).
 

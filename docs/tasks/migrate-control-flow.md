@@ -29,7 +29,7 @@ The safety net does not cover most of the affected templates: only 3 of the 10 h
 - [x] T2 Characterization specs for the 7 uncovered templates + mutation checks
 - [x] T3 Run `control-flow` migration; review diff per template (`track` expressions, `as` / `else` aliases)
 - [x] T4 Verify: same specs green with unchanged assertions, build, bundle metrics
-- [ ] T5 Migration log `docs/migration-log/{es,en}/08-*.md`, README, `PROJECT_CONTEXT.md`
+- [x] T5 Migration log `docs/migration-log/{es,en}/08-*.md`, README, `PROJECT_CONTEXT.md`
 - [ ] T6 Merge `--no-ff` + tag (with user approval); CI green on GitHub
 
 ## Acceptance criteria
@@ -48,7 +48,8 @@ The safety net does not cover most of the affected templates: only 3 of the 10 h
 - T2 (delegated writer; trigger: 7 non-trivial new files): 44 specs in 7 files (header 5, article 12, article-comment 7, profile 5, article-list 7, article-preview 4, list-errors 4). Every `*ngIf` / `*ngFor` branch of the 7 templates is locked through the DOM, including `as` aliases. Comments `trackBy: trackById`: DOM element identity is kept when the list is replaced by new objects with the same ids, and on reorder. KNOWN BUG (locked), 2 specs: `ListErrorsComponent` always renders an empty `ul.error-messages` (`errorList` is always an array, `[]` is truthy). 21 mutations (template branches inverted/removed/sliced, `trackBy` removed), each made the expected specs fail; templates restored (`git diff -- '*.html'` empty). Suite 120/120; coverage 76.92 / 74 / 68.29 / 75.65 (template branches are not counted in Branches). Not covered: `article-list` `RangeError` when `limit` is unset (component code, not template), `catchError` navigation paths in article/profile (no template branch).
 - T3 (`59ae6a4`): `ng g @angular/core:control-flow --path=src --format=true` on Angular 20.3.35. 10 templates + 10 component `.ts` files updated; no spec touched. 0 `*ngIf` / `*ngFor` left. `trackBy: trackById` → `track trackById($index, comment)` (same function, same semantics). Other `*ngFor` → `track <item>` (identity, same as the `*ngFor` default). `*ngIf="x | async as y"` → `@if (x | async; as y)`. `NgIf` / `NgForOf` removed from `imports` arrays and TypeScript imports. The migration's own formatting was normalized with Prettier: final diff 20 files, +84 / −99.
 - T4: 120/120 green with unchanged spec files (including both KNOWN BUG specs); coverage unchanged (76.92 / 74 / 68.29 / 75.65). No compiler warnings. Prod build 2.4 / 1.7 / 1.7 s. Initial total 337.58 kB raw / 96.02 kB transfer (v20 before: 341.45 / 96.52, −3.87 kB raw / −0.50 kB transfer); `main` 8.68 → 8.47 kB, shared framework chunk 294.87 → 291.21 kB (the `NgIf` / `NgForOf` directives no longer ship); `polyfills` unchanged.
+- T5 (delegated writer; trigger: 2+ non-trivial docs): `docs/migration-log/en/08-control-flow-migration.md`, `docs/migration-log/es/08-migracion-control-flow.md`, `README.md` (stage 08 row), `PROJECT_CONTEXT.md` (stage 08 row, tests/coverage, locked finding 9, follow-ups, next step).
 
 ## Next step
 
-T5 docs.
+T6 merge + tag `v20-control-flow` (with user approval).

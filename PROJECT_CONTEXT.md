@@ -13,16 +13,16 @@ Documented, real Angular migration (v15 → current, one major at a time) as a r
 
 ## Current state (2026-11-05)
 
-| Item                 | Value                                                                                                               |
-| -------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| Integration branch   | `main` (formerly `main-v15`)                                                                                        |
-| Tags                 | `v15-baseline` … `v19-upgraded`, `v19-node22` (`v20-upgraded` pending stage 07 merge)                               |
-| Angular / CLI        | 20.3.35 / 20.3.42                                                                                                   |
-| TypeScript / zone.js | 5.8.3 / 0.15.1                                                                                                      |
-| rx-angular           | template 20.1.0, cdk 20.1.1                                                                                         |
-| Builder              | esbuild `build-angular:application` (Karma still webpack)                                                           |
-| Node                 | 22 (`nvm use`, per `.nvmrc`; `engines.node` `^22.12.0`). Node 24 now officially supported by Angular 20 (follow-up) |
-| Tests                | 76 specs (72 characterization + 4 interceptor-chain integration), Karma, all green; coverage 57.41% stmts           |
+| Item                 | Value                                                                                                                                                            |
+| -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Integration branch   | `main` (formerly `main-v15`)                                                                                                                                     |
+| Tags                 | `v15-baseline` … `v19-upgraded`, `v19-node22`, `v20-upgraded` (`v20-control-flow` pending stage 08 merge)                                                        |
+| Angular / CLI        | 20.3.35 / 20.3.42                                                                                                                                                |
+| TypeScript / zone.js | 5.8.3 / 0.15.1                                                                                                                                                   |
+| rx-angular           | template 20.1.0, cdk 20.1.1                                                                                                                                      |
+| Builder              | esbuild `build-angular:application` (Karma still webpack)                                                                                                        |
+| Node                 | 22 (`nvm use`, per `.nvmrc`; `engines.node` `^22.12.0`). Node 24 now officially supported by Angular 20 (follow-up)                                              |
+| Tests                | 120 specs (116 characterization + 4 interceptor-chain integration), Karma, all green; coverage 76.92% / 74% / 68.29% / 75.65% (stmts / branches / funcs / lines) |
 
 ## Completed stages
 
@@ -37,6 +37,7 @@ Documented, real Angular migration (v15 → current, one major at a time) as a r
 | 05  | Upgrade 18 → 19                                   | `docs/tasks/upgrade-angular-19.md`          | `docs/migration-log/{es,en}/05-*.md`    |
 | 06  | Runtime Node 18 → 22 (on Angular 19.2)            | `docs/tasks/upgrade-node-22.md`             | `docs/migration-log/{es,en}/06-*.md`    |
 | 07  | Upgrade 19 → 20                                   | `docs/tasks/upgrade-angular-20.md`          | `docs/migration-log/{es,en}/07-*.md`    |
+| 08  | Built-in control flow (on Angular 20.3)           | `docs/tasks/migrate-control-flow.md`        | `docs/migration-log/{es,en}/08-*.md`    |
 
 ## Decisions (do not re-ask)
 
@@ -60,9 +61,10 @@ Documented, real Angular migration (v15 → current, one major at a time) as a r
 6. `EditorComponent.addTag` stores untrimmed tags.
 7. `HomeComponent` redirects authenticated users to `/login` (`tap` runs before `subscribe` assigns `isAuthenticated`).
 8. `ShowAuthedDirective` subscribes to `isAuthenticated` and never unsubscribes (memory leak).
+9. `ListErrorsComponent` always renders an empty `ul.error-messages` (`errorList` is always an array; `[]` is truthy).
 
 ## Next step
 
-Stage 07 (Angular 19.2 → 20.3) complete, tag `v20-upgraded`. Unused `AsyncPipe` imports (NG8113) removed in a follow-up refactor; the build has no compiler warnings. Next: stage 08, upgrade Angular 20 → 21 (the next major). Open follow-ups (see `docs/tasks/upgrade-angular-20.md`): builder package `@angular-devkit/build-angular` → `@angular/build` (`use-application-builder`); `*ngIf` / `*ngFor` → built-in control flow (`control-flow-migration`); `APP_INITIALIZER` → `provideAppInitializer()`; Node 24 (now officially supported); `npm audit` 65 findings (2 critical), pre-existing.
+Stage 08 (built-in control flow on Angular 20.3) complete on `feature/migrate-control-flow`; pending merge `--no-ff` + tag `v20-control-flow` (with user approval). Next: stage 09, upgrade Angular 20 → 21 (requires TypeScript 5.8 → 5.9; `control-flow-migration` is mandatory in v21 and now has nothing left to convert). Open follow-ups (see `docs/tasks/upgrade-angular-20.md` and `docs/tasks/migrate-control-flow.md`): builder package `@angular-devkit/build-angular` → `@angular/build` (`use-application-builder`); `APP_INITIALIZER` → `provideAppInitializer()`; Node 24 (now officially supported); `article-list` `RangeError` when `limit` is unset (not locked); `npm audit` 65 findings (2 critical), pre-existing.
 
 Every step: diagnosis checklist (Node/TS/zone.js matrix, third-party peers, test coverage of touched code, smoke test) → feature branch + `docs/tasks/*.md` → verify build + tests → compare with upstream → migration log es/en → merge with `--no-ff` + tag.

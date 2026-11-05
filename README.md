@@ -33,12 +33,13 @@ Every stage is a separate, merged and tagged unit with its own decision record: 
 | 11  | Angular 21 → 22 (+ TypeScript 6.0)                               | `v22-upgraded`        | [EN](docs/migration-log/en/11-upgrade-angular-22.md) / [ES](docs/migration-log/es/11-upgrade-angular-22.md)                   |
 | 12  | `APP_INITIALIZER` → `provideAppInitializer()` (Angular 22.2)     | `v22-app-initializer` | [EN](docs/migration-log/en/12-provide-app-initializer.md) / [ES](docs/migration-log/es/12-provide-app-initializer.md)         |
 | 13  | Runtime: Node 22 → 24 (Angular 22.2)                             | `v22-node24`          | [EN](docs/migration-log/en/13-upgrade-node-24.md) / [ES](docs/migration-log/es/13-upgrade-node-24.md)                         |
+| 14  | Tests: Karma + Jasmine → Vitest (Angular 22.2)                   | `v22-vitest`          | [EN](docs/migration-log/en/14-karma-to-vitest.md) / [ES](docs/migration-log/es/14-karma-a-vitest.md)                          |
 
 Task checklists with verification evidence for each stage live in [`docs/tasks/`](docs/tasks/). Current state and next step: [`PROJECT_CONTEXT.md`](PROJECT_CONTEXT.md).
 
 ## Current stack
 
-Angular 22.2 · TypeScript 6.0 · RxJS 7 · rx-angular 22 · zone.js change detection · `@angular/build` (esbuild `application` builder) · Karma + Jasmine.
+Angular 22.2 · TypeScript 6.0 · RxJS 7 · rx-angular 22 · zone.js change detection · `@angular/build` (esbuild `application` builder) · Vitest (jsdom).
 
 ## Getting started
 
@@ -48,7 +49,7 @@ Requires Node 24 (see `.nvmrc`) and npm.
 nvm use
 npm ci
 npm start        # dev server at http://localhost:4200
-npm test         # Karma unit tests
+npm test         # Vitest unit tests
 npm run build    # production build into dist/
 ```
 

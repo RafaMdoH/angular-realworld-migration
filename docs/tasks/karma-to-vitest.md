@@ -32,7 +32,7 @@ This stage rewrites the safety net itself (122 specs use Jasmine APIs), so it ca
 - [x] T3 Step 1: `migrate-karma-to-vitest` (configuration)
 - [x] T4 Step 2: `refactor-jasmine-vitest` + manual fixes; suite green
 - [x] T5 Safety-net equivalence: title diff, mutation sample, coverage comparison
-- [ ] T6 CI update; migration log `docs/migration-log/{es,en}/14-*.md`, README, `PROJECT_CONTEXT.md`
+- [x] T6 CI update; migration log `docs/migration-log/{es,en}/14-*.md`, README, `PROJECT_CONTEXT.md`
 - [ ] T7 Merge `--no-ff` + tag (with user approval); CI green on GitHub
 
 ## Acceptance criteria
@@ -69,6 +69,8 @@ This stage rewrites the safety net itself (122 specs use Jasmine APIs), so it ca
   | V8  | stage 00     | Token / Error interceptor order swapped             | not recorded | 1      |
   | V9  | stage 00     | logout without `destroyToken()`                     | not recorded | 3      |
 
+- T6: CI test command `npx ng test --watch=false --browsers=ChromeHeadless --code-coverage` → `npx ng test --watch=false --coverage` (`c23271b`; coverage artifact path `coverage/` unchanged). Docs: `docs/migration-log/en/14-karma-to-vitest.md`, `docs/migration-log/es/14-karma-a-vitest.md`, `README.md` (stage 14 row, current stack, `npm test` comment), `PROJECT_CONTEXT.md` (test row, builder, tags, stage 14 row, decision, next step).
+
 ## Next step
 
-T6: CI command updated (`npx ng test --watch=false --coverage`); docs.
+T7: merge `--no-ff` + tag `v22-vitest` (with user approval); CI green on GitHub.

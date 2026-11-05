@@ -27,7 +27,7 @@ Sixth stage. Angular 20 requires Node `^20.19.0 || ^22.12.0 || >=24.0.0`, and rx
 - [x] T2 Switch to Node 22: `.nvmrc`, `engines`, clean install from lockfile
 - [x] T3 Verify: tests, build, metrics vs Node 18; `ng` without `NG_DISABLE_VERSION_CHECK`; `EBADENGINE` gone
 - [x] T4 Docs: README, `PROJECT_CONTEXT.md`, migration log `docs/migration-log/{es,en}/06-*.md`
-- [ ] T5 Merge `--no-ff` + tag `v19-node22` (with user approval); CI green on GitHub
+- [x] T5 Merge `--no-ff` + tag `v19-node22` (with user approval); CI green on GitHub
 
 ## Acceptance criteria
 
@@ -55,4 +55,4 @@ Sixth stage. Angular 20 requires Node `^20.19.0 || ^22.12.0 || >=24.0.0`, and rx
 
 ## Next step
 
-T5 merge + tag (with user approval).
+Done. Merged into `main` (`a29ddbe`), tagged `v19-node22`; CI green on GitHub (Node 22.23.4, 76/76).

@@ -1,3 +1,4 @@
+import type { MockedObject } from "vitest";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { ActivatedRoute, provideRouter } from "@angular/router";
 import { BehaviorSubject, Observable, Subject, of } from "rxjs";
@@ -22,7 +23,7 @@ describe("ProfileComponent (characterization)", () => {
     image: "",
   });
 
-  let profileService: jasmine.SpyObj<ProfileService>;
+  let profileService: MockedObject<ProfileService>;
   let fixture: ComponentFixture<ProfileComponent>;
 
   const el = (): HTMLElement => fixture.nativeElement;
@@ -32,10 +33,10 @@ describe("ProfileComponent (characterization)", () => {
     el().querySelector(".user-info a.action-btn");
 
   function create(profile: Observable<Profile>, user: User | null): void {
-    profileService = jasmine.createSpyObj<ProfileService>("ProfileService", [
-      "get",
-    ]);
-    profileService.get.and.returnValue(profile);
+    profileService = {
+      get: vi.fn().mockName("ProfileService.get"),
+    } as unknown as MockedObject<ProfileService>;
+    profileService.get.mockReturnValue(profile);
     TestBed.configureTestingModule({
       imports: [ProfileComponent],
       providers: [
@@ -58,7 +59,9 @@ describe("ProfileComponent (characterization)", () => {
   it("renders nothing while the profile is loading", () => {
     create(new Subject<Profile>(), null);
 
-    expect(profileService.get).toHaveBeenCalledOnceWith("bob");
+    expect(profileService.get).toHaveBeenCalledTimes(1);
+
+    expect(profileService.get).toHaveBeenCalledWith("bob");
     expect(el().querySelector(".profile-page")).toBeNull();
   });
 

@@ -53,7 +53,7 @@ describe("AppModule HTTP interceptor chain (integration)", () => {
     http.get("/tags").subscribe();
 
     const req = controller.expectOne(`${API}/tags`);
-    expect(req.request.headers.has("Authorization")).toBeFalse();
+    expect(req.request.headers.has("Authorization")).toBe(false);
     req.flush({});
   });
 

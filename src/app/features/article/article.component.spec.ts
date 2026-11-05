@@ -1,3 +1,4 @@
+import type { MockedObject } from "vitest";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { ActivatedRoute, Router, provideRouter } from "@angular/router";
 import { BehaviorSubject, Observable, Subject, of } from "rxjs";
@@ -37,8 +38,8 @@ describe("ArticleComponent (characterization)", () => {
     image: "",
   });
 
-  let articles: jasmine.SpyObj<ArticlesService>;
-  let comments: jasmine.SpyObj<CommentsService>;
+  let articles: MockedObject<ArticlesService>;
+  let comments: MockedObject<CommentsService>;
   let fixture: ComponentFixture<ArticleComponent>;
   let component: ArticleComponent;
 
@@ -54,17 +55,17 @@ describe("ArticleComponent (characterization)", () => {
     user: User | null,
     commentList: Comment[] = []
   ): void {
-    articles = jasmine.createSpyObj<ArticlesService>("ArticlesService", [
-      "get",
-      "delete",
-    ]);
-    articles.get.and.returnValue(articleResponse);
-    comments = jasmine.createSpyObj<CommentsService>("CommentsService", [
-      "getAll",
-      "add",
-      "delete",
-    ]);
-    comments.getAll.and.returnValue(of(commentList));
+    articles = {
+      get: vi.fn().mockName("ArticlesService.get"),
+      delete: vi.fn().mockName("ArticlesService.delete"),
+    } as unknown as MockedObject<ArticlesService>;
+    articles.get.mockReturnValue(articleResponse);
+    comments = {
+      getAll: vi.fn().mockName("CommentsService.getAll"),
+      add: vi.fn().mockName("CommentsService.add"),
+      delete: vi.fn().mockName("CommentsService.delete"),
+    } as unknown as MockedObject<CommentsService>;
+    comments.getAll.mockReturnValue(of(commentList));
     const currentUser = new BehaviorSubject<User | null>(user);
     TestBed.configureTestingModule({
       imports: [ArticleComponent],
@@ -86,7 +87,7 @@ describe("ArticleComponent (characterization)", () => {
         },
       ],
     });
-    spyOn(TestBed.inject(Router), "navigate").and.resolveTo(true);
+    vi.spyOn(TestBed.inject(Router), "navigate").mockResolvedValue(true);
     fixture = TestBed.createComponent(ArticleComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -96,7 +97,9 @@ describe("ArticleComponent (characterization)", () => {
     it("renders nothing while the article is loading", () => {
       create(new Subject<Article>(), null);
 
-      expect(articles.get).toHaveBeenCalledOnceWith("my-slug");
+      expect(articles.get).toHaveBeenCalledTimes(1);
+
+      expect(articles.get).toHaveBeenCalledWith("my-slug");
       expect(el().querySelector(".article-page")).toBeNull();
     });
 
@@ -125,7 +128,7 @@ describe("ArticleComponent (characterization)", () => {
     it("shows edit and delete in both meta blocks for the author", () => {
       create(of(article()), userNamed("alice"));
 
-      expect(component.canModify).toBeTrue();
+      expect(component.canModify).toBe(true);
       expect(all('a[href="/editor/my-slug"]').length).toBe(2);
       expect(all("button.btn-outline-danger").length).toBe(2);
       expect(all("app-follow-button").length).toBe(0);
@@ -135,7 +138,7 @@ describe("ArticleComponent (characterization)", () => {
     it("shows follow and favorite in both meta blocks for another user", () => {
       create(of(article()), userNamed("bob"));
 
-      expect(component.canModify).toBeFalse();
+      expect(component.canModify).toBe(false);
       expect(all('a[href="/editor/my-slug"]').length).toBe(0);
       expect(all("button.btn-outline-danger").length).toBe(0);
       expect(all("app-follow-button").length).toBe(2);
@@ -198,7 +201,7 @@ describe("ArticleComponent (characterization)", () => {
 
     it("adds a posted comment at the top (in-place unshift)", () => {
       create(of(article()), userNamed("bob"), [comment("1")]);
-      comments.add.and.returnValue(of(comment("2", "new one")));
+      comments.add.mockReturnValue(of(comment("2", "new one")));
 
       component.addComment();
       fixture.detectChanges();
@@ -208,13 +211,15 @@ describe("ArticleComponent (characterization)", () => {
 
     it("removes a deleted comment and keeps the remaining node", () => {
       create(of(article()), userNamed("bob"), [comment("1"), comment("2")]);
-      comments.delete.and.returnValue(of(undefined));
+      comments.delete.mockReturnValue(of(undefined));
       const second = commentEls()[1];
 
       component.deleteComment(component.comments[0]);
       fixture.detectChanges();
 
-      expect(comments.delete).toHaveBeenCalledOnceWith("1", "my-slug");
+      expect(comments.delete).toHaveBeenCalledTimes(1);
+
+      expect(comments.delete).toHaveBeenCalledWith("1", "my-slug");
       expect(commentBodies()).toEqual(["comment 2"]);
       expect(commentEls()[0]).toBe(second);
     });

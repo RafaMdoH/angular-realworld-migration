@@ -1,3 +1,4 @@
+import type { MockedObject } from "vitest";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Subject, of, throwError } from "rxjs";
@@ -24,9 +25,9 @@ describe("EditorComponent (characterization)", () => {
     author: { username: "alice" },
   } as Article;
 
-  let articles: jasmine.SpyObj<ArticlesService>;
-  let userService: jasmine.SpyObj<UserService>;
-  let router: jasmine.SpyObj<Router>;
+  let articles: MockedObject<ArticlesService>;
+  let userService: MockedObject<UserService>;
+  let router: MockedObject<Router>;
   let fixture: ComponentFixture<EditorComponent>;
   let component: EditorComponent;
 
@@ -46,16 +47,18 @@ describe("EditorComponent (characterization)", () => {
   }
 
   beforeEach(() => {
-    articles = jasmine.createSpyObj<ArticlesService>("ArticlesService", [
-      "get",
-      "create",
-      "update",
-    ]);
-    userService = jasmine.createSpyObj<UserService>("UserService", [
-      "getCurrentUser",
-    ]);
-    router = jasmine.createSpyObj<Router>("Router", ["navigate"]);
-    router.navigate.and.resolveTo(true);
+    articles = {
+      get: vi.fn().mockName("ArticlesService.get"),
+      create: vi.fn().mockName("ArticlesService.create"),
+      update: vi.fn().mockName("ArticlesService.update"),
+    } as unknown as MockedObject<ArticlesService>;
+    userService = {
+      getCurrentUser: vi.fn().mockName("UserService.getCurrentUser"),
+    } as unknown as MockedObject<UserService>;
+    router = {
+      navigate: vi.fn().mockName("Router.navigate"),
+    } as unknown as MockedObject<Router>;
+    router.navigate.mockResolvedValue(true);
   });
 
   describe("new article (no slug)", () => {
@@ -111,7 +114,7 @@ describe("EditorComponent (characterization)", () => {
     });
 
     it("submitForm creates the article with form values and tags, then navigates to it", () => {
-      articles.create.and.returnValue(of({ ...article, slug: "new-slug" }));
+      articles.create.mockReturnValue(of({ ...article, slug: "new-slug" }));
       component.articleForm.patchValue({
         title: "T",
         description: "D",
@@ -121,57 +124,59 @@ describe("EditorComponent (characterization)", () => {
 
       component.submitForm();
 
-      expect(articles.create).toHaveBeenCalledOnceWith({
+      expect(articles.create).toHaveBeenCalledTimes(1);
+
+      expect(articles.create).toHaveBeenCalledWith({
         title: "T",
         description: "D",
         body: "B",
         tagList: ["a"],
       });
-      expect(router.navigate).toHaveBeenCalledOnceWith([
-        "/article/",
-        "new-slug",
-      ]);
+      expect(router.navigate).toHaveBeenCalledTimes(1);
+      expect(router.navigate).toHaveBeenCalledWith(["/article/", "new-slug"]);
     });
 
     it("submitForm adds the pending tag field value to the payload", () => {
-      articles.create.and.returnValue(of(article));
+      articles.create.mockReturnValue(of(article));
       component.tagField.setValue("pending");
 
       component.submitForm();
 
-      expect(articles.create.calls.mostRecent().args[0].tagList).toEqual([
+      expect(vi.mocked(articles.create).mock.lastCall![0].tagList).toEqual([
         "pending",
       ]);
     });
 
     it("submitForm stores errors and re-enables the form on failure", () => {
       const err = { errors: { title: "cannot be blank" } };
-      articles.create.and.returnValue(throwError(() => err));
+      articles.create.mockReturnValue(throwError(() => err));
 
       component.submitForm();
 
       expect(component.errors).toBe(err);
-      expect(component.isSubmitting).toBeFalse();
+      expect(component.isSubmitting).toBe(false);
       expect(router.navigate).not.toHaveBeenCalled();
     });
 
     it("submitForm marks the form as submitting while pending", () => {
-      articles.create.and.returnValue(new Subject<Article>());
+      articles.create.mockReturnValue(new Subject<Article>());
 
       component.submitForm();
 
-      expect(component.isSubmitting).toBeTrue();
+      expect(component.isSubmitting).toBe(true);
     });
   });
 
   describe("existing article (slug in route)", () => {
     it("loads the article and patches the form when the current user is the author", () => {
-      articles.get.and.returnValue(of(article));
-      userService.getCurrentUser.and.returnValue(of({ user }));
+      articles.get.mockReturnValue(of(article));
+      userService.getCurrentUser.mockReturnValue(of({ user }));
 
       create({ slug: "my-slug" });
 
-      expect(articles.get).toHaveBeenCalledOnceWith("my-slug");
+      expect(articles.get).toHaveBeenCalledTimes(1);
+
+      expect(articles.get).toHaveBeenCalledWith("my-slug");
       expect(component.tagList).toEqual(["x", "y"]);
       expect(component.articleForm.value.title).toBe("T");
       expect(component.articleForm.value.description).toBe("D");
@@ -180,29 +185,31 @@ describe("EditorComponent (characterization)", () => {
     });
 
     it("redirects to / when the current user is not the author", () => {
-      articles.get.and.returnValue(of(article));
-      userService.getCurrentUser.and.returnValue(
+      articles.get.mockReturnValue(of(article));
+      userService.getCurrentUser.mockReturnValue(
         of({ user: { ...user, username: "bob" } })
       );
 
       create({ slug: "my-slug" });
 
-      expect(router.navigate).toHaveBeenCalledOnceWith(["/"]);
+      expect(router.navigate).toHaveBeenCalledTimes(1);
+
+      expect(router.navigate).toHaveBeenCalledWith(["/"]);
       expect(component.tagList).toEqual([]);
       expect(component.articleForm.value.title).toBe("");
     });
 
     it("KNOWN BUG (locked): submitForm always calls create, never update, when editing", () => {
-      articles.get.and.returnValue(of(article));
-      userService.getCurrentUser.and.returnValue(of({ user }));
-      articles.create.and.returnValue(of(article));
+      articles.get.mockReturnValue(of(article));
+      userService.getCurrentUser.mockReturnValue(of({ user }));
+      articles.create.mockReturnValue(of(article));
       create({ slug: "my-slug" });
 
       component.submitForm();
 
       expect(articles.create).toHaveBeenCalledTimes(1);
       expect(articles.update).not.toHaveBeenCalled();
-      expect(articles.create.calls.mostRecent().args[0]).toEqual({
+      expect(vi.mocked(articles.create).mock.lastCall![0]).toEqual({
         title: "T",
         description: "D",
         body: "B",

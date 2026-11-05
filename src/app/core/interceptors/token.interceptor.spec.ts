@@ -52,7 +52,7 @@ describe("TokenInterceptor (characterization)", () => {
     http.get("/articles").subscribe();
 
     const req = controller.expectOne("/articles");
-    expect(req.request.headers.has("Authorization")).toBeFalse();
+    expect(req.request.headers.has("Authorization")).toBe(false);
     req.flush({});
   });
 

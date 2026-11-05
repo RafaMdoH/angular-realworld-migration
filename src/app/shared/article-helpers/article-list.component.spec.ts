@@ -1,3 +1,4 @@
+import type { MockedObject } from "vitest";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { provideRouter } from "@angular/router";
 import { Observable, Subject, of } from "rxjs";
@@ -7,7 +8,10 @@ import { ArticlesService } from "../../core/services/articles.service";
 import { UserService } from "../../core/services/user.service";
 import { ArticleListComponent } from "./article-list.component";
 
-type Page = { articles: Article[]; articlesCount: number };
+type Page = {
+  articles: Article[];
+  articlesCount: number;
+};
 
 describe("ArticleListComponent (characterization)", () => {
   const article = (slug: string): Article => ({
@@ -24,7 +28,7 @@ describe("ArticleListComponent (characterization)", () => {
   });
   const config = (): ArticleListConfig => ({ type: "all", filters: {} });
 
-  let articles: jasmine.SpyObj<ArticlesService>;
+  let articles: MockedObject<ArticlesService>;
   let fixture: ComponentFixture<ArticleListComponent>;
 
   const el = (): HTMLElement => fixture.nativeElement;
@@ -40,7 +44,7 @@ describe("ArticleListComponent (characterization)", () => {
     Array.from(el().querySelectorAll("nav ul.pagination li.page-item"));
 
   function create(response: Observable<Page>, limit = 10): void {
-    articles.query.and.returnValue(response);
+    articles.query.mockReturnValue(response);
     fixture = TestBed.createComponent(ArticleListComponent);
     fixture.componentRef.setInput("limit", limit);
     fixture.componentRef.setInput("config", config());
@@ -48,9 +52,9 @@ describe("ArticleListComponent (characterization)", () => {
   }
 
   beforeEach(() => {
-    articles = jasmine.createSpyObj<ArticlesService>("ArticlesService", [
-      "query",
-    ]);
+    articles = {
+      query: vi.fn().mockName("ArticlesService.query"),
+    } as unknown as MockedObject<ArticlesService>;
     TestBed.configureTestingModule({
       imports: [ArticleListComponent],
       providers: [
@@ -126,7 +130,7 @@ describe("ArticleListComponent (characterization)", () => {
     pageItems()[1].querySelector("button")!.click();
     fixture.detectChanges();
 
-    expect(articles.query.calls.mostRecent().args[0].filters).toEqual({
+    expect(vi.mocked(articles.query).mock.lastCall![0].filters).toEqual({
       limit: 10,
       offset: 10,
     });

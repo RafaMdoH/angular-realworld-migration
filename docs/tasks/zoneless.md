@@ -30,7 +30,7 @@ Existing specs call `fixture.detectChanges()` manually after each change, which 
 
 - [x] T1 Diagnosis: inventory, API stability, test-design limitation
 - [x] T2 Subscription audit (11 components + `ShowAuthedDirective`)
-- [ ] T3 Zoneless regression specs (RED on current code)
+- [x] T3 Zoneless regression specs (RED on current code)
 - [ ] T4 Selective `markForCheck()` (GREEN)
 - [ ] T5 App switch: zoneless provider, remove zone.js (polyfills, dependency)
 - [ ] T6 Verify: full suite under zoneless, build, bundle (`polyfills`), `ng serve` smoke
@@ -52,12 +52,19 @@ Existing specs call `fixture.detectChanges()` manually after each change, which 
 - T1 (inline): component inventory above; API tags read from `node_modules/@angular/core/types/core.d.ts`.
 
 - T2 (read-only explorer; trigger: 12 files + framework internals): 20 subscriptions / async continuations audited. **13 sites need `markForCheck()`**: auth `:95` (error branch), article `:81` (load), `:126` (add comment, both branches), `:143` (delete comment), editor `:60` (edit-mode load, `tagList`), `:104` (create error), profile `:52`, profile-articles `:35`, profile-favorites `:35`, settings `:77` (update error), article-list `:67`, favorite-button `:60` (error branch), follow-button `:59` (error branch).
+
   - Already notified: child `(toggle)` outputs (template listeners call `markViewDirty` on the child view and its ancestors, so the buttons' success branches are covered because every usage binds `(toggle)`); `ShowAuthedDirective` (`createEmbeddedView` / `clear` notify the zoneless scheduler on view attach / detach); home tags via `rxLet`; `| async` in header, article-comment and the markdown body (Promise).
   - Not template state: subscriptions that only navigate (article delete, success branches of auth / editor / settings).
   - Auth state is synchronous at first render (`currentUser` is a `BehaviorSubject`; `provideAppInitializer` resolves before bootstrap).
   - New finding (pre-existing defect, to be locked, not fixed): `settings.component.ts:57` passes the Observable returned by `getCurrentUser()` to `patchValue` (hidden by `as Partial<User>`), so the settings form is never filled and the request is never sent. Verified in code.
   - Spec gaps: no specs for profile-articles, profile-favorites, settings; buttons only indirectly.
 
+- T3 (delegated writer; trigger: 13 new spec files): `*.zoneless.spec.ts` next to each component, `TestBed` with `provideZonelessChangeDetection()`, async sources as `Subject`s emitted after the first render, `await fixture.whenStable()`, never `detectChanges()`. Harness facts: zoneless fixtures auto-detect by default (first render needs no `detectChanges()`); an unflushed `HttpClient` request blocks `whenStable()`, so services are stubbed with `Subject`s; finishing an `HttpClient` request removes a pending task but marks no view dirty; `rxLet` rendering and an `AsyncPipe` Promise are not tracked by `whenStable()`, so those two controls poll with `vi.waitFor`; the directive control renders a binding (`{{ label }}`), not static text, so it proves a refresh.
+  - Result: 143 tests, **14 RED** (all stale DOM: e.g. `expected undefined to be 'My title'`, button class still `disabled`), 5 controls GREEN (show-authed show / hide, home tags via `rxLet`, favorite success via `(toggle)`, markdown `| async`), KNOWN BUG (locked) settings form spec GREEN (new `settings.component.spec.ts`), 122 existing specs GREEN.
+  - Audit refinement: the add-comment success branch (`article.component.ts:126`) passed when the user typed first, because `commentControl.reset("")` flips pristine / dirty, and those form-state classes are signal-backed, which schedules a refresh. That is incidental, so a second spec sets the value programmatically (control stays pristine): RED (`expected [ 'comment 1' ] to deeply equal [ 'new one', 'comment 1' ]`). Decision: `markForCheck()` on both branches, as the audit said.
+  - Expected warning while zone.js is still loaded: `NG0914: The application is using zoneless change detection, but is still loading Zone.js`.
+  - This commit intentionally contains failing specs (RED evidence); T4 turns them GREEN.
+
 ## Next step
 
-T3 (delegated writer): zoneless regression specs, 13 RED + controls.
+T4: selective `markForCheck()` (delegated writer).

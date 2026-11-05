@@ -27,7 +27,7 @@ Seventh stage. Upgrade only: new v20 APIs and template syntax (control flow `@if
 - [x] T2 `ng update @angular/core@20 @angular/cli@20` + review automatic migrations
 - [x] T3 `@rx-angular/cdk@20.1.1` + `@rx-angular/template@20.1.0`
 - [x] T4 Verify: tests, build, metrics; compare with upstream (if an Angular 20 commit exists)
-- [ ] T5 Migration log `docs/migration-log/{es,en}/07-*.md`, README, `PROJECT_CONTEXT.md`
+- [x] T5 Migration log `docs/migration-log/{es,en}/07-*.md`, README, `PROJECT_CONTEXT.md`
 - [ ] T6 Merge `--no-ff` + tag `v20-upgraded` (with user approval); CI green on GitHub
 
 ## Acceptance criteria
@@ -47,6 +47,8 @@ Seventh stage. Upgrade only: new v20 APIs and template syntax (control flow `@if
 - T4: 76/76 green, coverage unchanged (57.41 / 74 / 51.82 / 55.36). Prod build 2.3 / 2.4 / 2.4 s. Initial total 341.45 kB raw / 96.52 kB transfer (v19: 333.23 / 94.20, +8.22 kB raw / +2.32 kB transfer). `main` (8.68 kB) and `polyfills` (34.59 kB, same hash) unchanged, so the growth is in the shared framework chunk (`chunk-*`, 294.87 kB raw on v20; the v19 chunk size was not recorded). Cause not investigated.
 - Upstream `a420aa2` ("chore: angular 20 update", 2025-05-29) comparison: Angular 20.0.0, `moduleResolution` → `bundler` (same). Differences: upstream switched the builder package from `@angular-devkit/build-angular` to `@angular/build` (builders `@angular/build:*`); kept `@rx-angular/*` 18.0.0 (peer `@angular/core ^18`, unsupported on 20); hand-converted one `*ngIf` to `@if` in the header, removed `NgIf` and other unused imports. This stage keeps `@angular-devkit/build-angular`, moves rx-angular to 20, and keeps template/import cleanup out of scope.
 
+- T5: `docs/migration-log/es/07-upgrade-angular-20.md`, `docs/migration-log/en/07-upgrade-angular-20.md`, `README.md` (stage 07 row, current stack), `PROJECT_CONTEXT.md` (version state, stage 07 row, decision, next step).
+
 ## Follow-ups (out of scope)
 
 - Builder package `@angular-devkit/build-angular` → `@angular/build` (optional migration `use-application-builder`; upstream did it in the v20 commit).
@@ -56,4 +58,4 @@ Seventh stage. Upgrade only: new v20 APIs and template syntax (control flow `@if
 
 ## Next step
 
-T5 docs.
+T6 merge + tag (with user approval).

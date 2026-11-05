@@ -35,7 +35,7 @@ Existing specs call `fixture.detectChanges()` manually after each change, which 
 - [x] T5 App switch: zoneless provider, remove zone.js (polyfills, dependency)
 - [x] T6 Verify: full suite under zoneless, build, bundle (`polyfills`), `ng serve` smoke
 - [x] T7 Migration log `docs/migration-log/{es,en}/15-*.md` (with ADR), README, `PROJECT_CONTEXT.md`
-- [ ] T8 Merge `--no-ff` + tag (with user approval); CI green on GitHub
+- [x] T8 Merge `--no-ff` + tag (with user approval); CI green on GitHub
 
 ## Acceptance criteria
 
@@ -72,6 +72,8 @@ Existing specs call `fixture.detectChanges()` manually after each change, which 
 - T6: 32 files, 143/143 green with no `NG0914` warning; coverage 87.17 / 79.66 / 77.45 / 85.82 (stage 14: 80.55 / 71.18 / 68.48 / 78.78; the increase comes from the 21 new specs). Prod build 1.6 / 1.5 / 1.5 s, no warnings. Initial total 319.70 kB raw / 87.46 kB transfer (before: 357.68 / 99.63, −37.98 kB raw / −12.17 kB transfer); no `polyfills` chunk any more; no `__Zone_` symbol anywhere in `dist/`. `ng serve` (HTTP 200) and headless Chrome `--dump-dom`: the app bootstraps zoneless (`ng-version="22.2.4"`) and renders the header (`conduit`, `Sign in`, `Sign up` via `ShowAuthedDirective`), `Global Feed` and `Popular Tags`; feed data does not load because the public API is gone (documented since stage 00).
 - T7 (delegated writer; trigger: 5 documentation files): `docs/migration-log/en/15-zoneless.md` and `docs/migration-log/es/15-zoneless.md` (with ADR: zoneless compatibility without a simultaneous state refactor), `README.md` (stage 15 row, current stack), `PROJECT_CONTEXT.md` (state, tests, tags, decisions, locked finding 10, next step), this task doc.
 
+- T8: merged into `main` with `--no-ff` (`86a71e0`) and tagged `v22-zoneless` (tag pushed); GitHub Actions CI on `86a71e0`: success (run 42100224253). Ticked during the migration closure stage.
+
 ## Next step
 
-T8 merge `--no-ff` + tag `v22-zoneless` (with user approval).
+None: stage closed. Project closure continues in `docs/tasks/migration-closure.md`.

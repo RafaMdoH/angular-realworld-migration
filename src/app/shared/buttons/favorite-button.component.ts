@@ -17,7 +17,6 @@ import { Article } from "../../core/models/article.model";
   selector: "app-favorite-button",
   templateUrl: "./favorite-button.component.html",
   imports: [NgClass],
-  standalone: true,
 })
 export class FavoriteButtonComponent implements OnDestroy {
   destroy$ = new Subject<void>();

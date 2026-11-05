@@ -17,7 +17,6 @@ import { NgClass } from "@angular/common";
   selector: "app-follow-button",
   templateUrl: "./follow-button.component.html",
   imports: [NgClass],
-  standalone: true,
 })
 export class FollowButtonComponent implements OnDestroy {
   @Input() profile!: Profile;

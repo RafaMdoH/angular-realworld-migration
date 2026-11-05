@@ -39,7 +39,6 @@ import { Profile } from "../../core/models/profile.model";
     ShowAuthedDirective,
     NgIf,
   ],
-  standalone: true,
 })
 export class ArticleComponent implements OnInit, OnDestroy {
   article!: Article;

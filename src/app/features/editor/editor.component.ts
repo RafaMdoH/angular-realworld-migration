@@ -24,7 +24,6 @@ interface ArticleForm {
   selector: "app-editor-page",
   templateUrl: "./editor.component.html",
   imports: [ListErrorsComponent, ReactiveFormsModule, NgForOf],
-  standalone: true,
 })
 export class EditorComponent implements OnInit, OnDestroy {
   tagList: string[] = [];

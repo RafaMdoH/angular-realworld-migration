@@ -22,7 +22,6 @@ import { ShowAuthedDirective } from "../../shared/show-authed.directive";
     NgForOf,
     ShowAuthedDirective,
   ],
-  standalone: true,
 })
 export class HomeComponent implements OnInit, OnDestroy {
   isAuthenticated = false;

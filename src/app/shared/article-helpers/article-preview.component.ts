@@ -9,7 +9,6 @@ import { NgForOf } from "@angular/common";
   selector: "app-article-preview",
   templateUrl: "./article-preview.component.html",
   imports: [ArticleMetaComponent, FavoriteButtonComponent, RouterLink, NgForOf],
-  standalone: true,
 })
 export class ArticlePreviewComponent {
   @Input() article!: Article;

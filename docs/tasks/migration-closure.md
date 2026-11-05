@@ -19,7 +19,7 @@ The planned sequence is complete (stages 00–15: Angular 15 → 22.2, TypeScrip
 - [ ] CI verifies changes and shows results.
 - [x] Security findings are classified and each has a decision.
 - [ ] README presents goal, strategy, results and limitations.
-- [ ] There is evidence of functional validation, or a documented limitation.
+- [x] There is evidence of functional validation, or a documented limitation.
 
 ## Scope
 
@@ -44,7 +44,7 @@ The planned sequence is complete (stages 00–15: Angular 15 → 22.2, TypeScrip
 ## Checklist
 
 - [x] T1 Classify `npm audit` findings; decision per finding; fix the stale count
-- [ ] T2 End-to-end flow with mocked API, or documented limitation (decide after a short spike)
+- [x] T2 End-to-end flow with mocked API, or documented limitation (decide after a short spike)
 - [ ] T3 Final README (results, limitations, out of scope)
 - [ ] T4 Technical closure document (incl. AI-assisted section from verified incidents)
 - [ ] T5 Close stage 15 T8; final `PROJECT_CONTEXT.md`; tag `v1.0.0` + GitHub Release (with user approval)
@@ -77,6 +77,13 @@ The planned sequence is complete (stages 00–15: Angular 15 → 22.2, TypeScrip
 
   Reason for the 4 accepted findings (user decision, option A): `ng-morph` is used only by `@rx-angular/*/schematics` (`ng add` / `ng update`), never by the application build or the browser bundle; the advisories are ReDoS / glob-matching issues on developer-controlled glob patterns. The real fix is `ng-morph@5` (`minimatch 10.2.6`, `ts-morph 27`), which `@rx-angular` 22 does not allow. Forcing it with npm `overrides` was rejected: it imposes major versions `ng-morph` does not declare, and the schematics cannot be verified without running them. Tracking: re-check when `@rx-angular` moves to `ng-morph@5`.
 
+- T2 (delegated writer; trigger: 2+ non-trivial files). One Playwright flow with a fully mocked API, no production source change.
+  - Dependency: `@playwright/test` `1.65.0` (pinned exactly, dev only; Chromium headless shell revision 1254). Added `playwright.config.ts` (chromium only, `webServer` = `npx ng serve --port 4200`, `reuseExistingServer` outside CI, retries 0 locally / 1 in CI, `trace: on-first-retry`), `e2e/sign-in-feed-article.e2e.ts`, `e2e/tsconfig.json` + `e2e/node-env.d.ts` (type-check without adding `@types/node`), npm script `e2e`, `.gitignore` entries for Playwright output, and three CI steps after the unit tests (install Chromium with deps, `npm run e2e`, upload `playwright-report/` on failure).
+  - Flow: `/login` → sign in → home → "Your Feed" → open article → title, markdown body and comment visible. Mocked endpoints (`https://api.realworld.io/api/**`): `POST /users/login` (request body asserted), `GET /user` (defensive: only requested at bootstrap when a token is already stored), `GET /tags`, `GET /articles`, `GET /articles/feed` (asserts `Authorization: Token <jwt>`), `GET /articles/:slug`, `GET /articles/:slug/comments`. Any unmocked API call gets HTTP 500 and fails the test; every other external host (dead theme stylesheet, fonts, icons) is aborted.
+  - Finding: the locked home-page bug (`home.component.spec.ts`, "redirects an authenticated user to /login on init") is reproduced in a real browser: after sign-in the home page stays on "Global Feed" and calls `GET /articles`. The test asserts this and clicks "Your Feed" explicitly; the bug stays locked ("migrating ≠ fixing").
+  - Test-first exception: test infrastructure only, no production behavior change, so there is no RED/GREEN cycle on production code. The test was shown to fail: with the `GET /articles/:slug/comments` fixture removed it failed (article `h1` not found, because the article page redirects home on the API error); restored, it passed.
+  - Evidence: `npm run e2e` passed 1/1 (≈2.6–2.9 s wall time including the dev server, on four separate runs) and 5/5 with `--repeat-each=5`; `npx ng build` OK; `npx ng test --watch=false` 32 files, 143/143 (e2e files are not picked up); `npm audit` 4 (2 moderate / 2 high) and `--omit=dev` 4, unchanged from T1.
+
 ## Next step
 
-T2 (short spike: end-to-end flow with mocked API, or documented limitation).
+T3 (final README).

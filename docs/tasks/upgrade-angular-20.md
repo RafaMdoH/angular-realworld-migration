@@ -28,7 +28,7 @@ Seventh stage. Upgrade only: new v20 APIs and template syntax (control flow `@if
 - [x] T3 `@rx-angular/cdk@20.1.1` + `@rx-angular/template@20.1.0`
 - [x] T4 Verify: tests, build, metrics; compare with upstream (if an Angular 20 commit exists)
 - [x] T5 Migration log `docs/migration-log/{es,en}/07-*.md`, README, `PROJECT_CONTEXT.md`
-- [ ] T6 Merge `--no-ff` + tag `v20-upgraded` (with user approval); CI green on GitHub
+- [x] T6 Merge `--no-ff` + tag `v20-upgraded` (with user approval); CI green on GitHub
 
 ## Acceptance criteria
 
@@ -53,9 +53,10 @@ Seventh stage. Upgrade only: new v20 APIs and template syntax (control flow `@if
 
 - Builder package `@angular-devkit/build-angular` → `@angular/build` (optional migration `use-application-builder`; upstream did it in the v20 commit).
 - `*ngIf` / `*ngFor` → built-in control flow (`control-flow-migration`).
-- `APP_INITIALIZER` → `provideAppInitializer()`; unused `AsyncPipe` imports (NG8113).
+- `APP_INITIALIZER` → `provideAppInitializer()`.
+- ~~Unused `AsyncPipe` imports (NG8113)~~: done in `refactor/remove-unused-async-pipe`.
 - Node 24 (now officially supported).
 
 ## Next step
 
-T6 merge + tag (with user approval).
+Done. Merged into `main` (`a263e38`), tagged `v20-upgraded`; CI green on GitHub (76/76, 341.45 kB initial).

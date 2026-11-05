@@ -3,12 +3,11 @@ import { Article } from "../../core/models/article.model";
 import { ArticleMetaComponent } from "./article-meta.component";
 import { FavoriteButtonComponent } from "../buttons/favorite-button.component";
 import { RouterLink } from "@angular/router";
-import { NgForOf } from "@angular/common";
 
 @Component({
   selector: "app-article-preview",
   templateUrl: "./article-preview.component.html",
-  imports: [ArticleMetaComponent, FavoriteButtonComponent, RouterLink, NgForOf],
+  imports: [ArticleMetaComponent, FavoriteButtonComponent, RouterLink],
 })
 export class ArticlePreviewComponent {
   @Input() article!: Article;

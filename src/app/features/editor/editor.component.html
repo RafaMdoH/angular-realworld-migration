@@ -43,10 +43,12 @@
                 (keyup.enter)="addTag()"
               />
               <div class="tag-list">
-                <span *ngFor="let tag of tagList" class="tag-default tag-pill">
+                @for (tag of tagList; track tag) {
+                <span class="tag-default tag-pill">
                   <i class="ion-close-round" (click)="removeTag(tag)"></i>
                   {{ tag }}
                 </span>
+                }
               </div>
             </fieldset>
 

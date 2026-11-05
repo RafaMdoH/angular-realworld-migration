@@ -4,12 +4,12 @@ import { User } from "../../core/models/user.model";
 import { RouterLink } from "@angular/router";
 import { map } from "rxjs/operators";
 import { Comment } from "../../core/models/comment.model";
-import { AsyncPipe, DatePipe, NgIf } from "@angular/common";
+import { AsyncPipe, DatePipe } from "@angular/common";
 
 @Component({
   selector: "app-article-comment",
   templateUrl: "./article-comment.component.html",
-  imports: [RouterLink, DatePipe, NgIf, AsyncPipe],
+  imports: [RouterLink, DatePipe, AsyncPipe],
 })
 export class ArticleCommentComponent {
   @Input() comment!: Comment;

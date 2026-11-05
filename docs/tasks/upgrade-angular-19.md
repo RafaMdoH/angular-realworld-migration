@@ -29,7 +29,7 @@ Fifth stage. Upgrade only: new v19 APIs (`provideAppInitializer`, `linkedSignal`
 - [x] T4 `@rx-angular/cdk@19.1.0` + `@rx-angular/template@19.2.2`
 - [x] T5 Verify: tests, build, metrics; compare with upstream `a6f16d0`
 - [x] T6 Migration log `docs/migration-log/{es,en}/05-*.md`
-- [ ] T7 Update `PROJECT_CONTEXT.md` and README stage table; merge `--no-ff` + tag `v19-upgraded` (with user approval)
+- [x] T7 Update `PROJECT_CONTEXT.md` and README stage table; merge `--no-ff` + tag `v19-upgraded` (with user approval)
 
 ## Acceptance criteria
 
@@ -50,6 +50,7 @@ Fifth stage. Upgrade only: new v19 APIs (`provideAppInitializer`, `linkedSignal`
 - T4 (`05ba2dc`): `@rx-angular/cdk@19.1.0`, `@rx-angular/template@19.2.2`. Transitive `ng-morph@4.9.1` → `minimatch@10` declares Node `20 || >=22` (npm `EBADENGINE` warning on Node 18); tooling-only (schematics), not in the bundle.
 - T5: 76/76 green, coverage unchanged (57.41% stmts / 74% branches / 51.82% funcs / 55.36% lines). Prod build 2.9 / 2.5 / 2.4 s. Initial total 333.23 kB raw / 94.20 kB transfer (v18: 335.06 / 93.72). New v19 diagnostic TS-998113 (unused standalone imports): `AsyncPipe` in `HomeComponent` and `ProfileComponent` — warnings only, left as follow-up.
 - Upstream `a6f16d0` comparison: same Angular 19.2 line (19.2.14), TS ~5.8.3, zone.js ~0.15.1, same `standalone` result. Differences: upstream kept `@rx-angular/*` 18.0.0 (peer `@angular/core ^18`, unsupported on 19) and removed unused imports in the same commit; this stage moved rx-angular to 19 and kept the import cleanup out of scope.
+- T7: `PROJECT_CONTEXT.md` and README stage table updated; merged `--no-ff` into `main` (`8a9c687`), tagged `v19-upgraded`. First CI run on GitHub green (build + 76/76, same coverage).
 
 ## Follow-ups (out of scope)
 
@@ -59,4 +60,4 @@ Fifth stage. Upgrade only: new v19 APIs (`provideAppInitializer`, `linkedSignal`
 
 ## Next step
 
-T7 context + README; merge `--no-ff` + tag `v19-upgraded` and push (with user approval).
+Done. Next stage: Node 18 → 20, then Angular 19 → 20.

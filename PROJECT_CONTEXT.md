@@ -13,16 +13,16 @@ Documented, real Angular migration (v15 → current, one major at a time) as a r
 
 ## Current state (2026-11-05)
 
-| Item                 | Value                                                                                                                                                            |
-| -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Integration branch   | `main` (formerly `main-v15`)                                                                                                                                     |
-| Tags                 | `v15-baseline` … `v19-upgraded`, `v19-node22`, `v20-upgraded`, `v20-control-flow`, `v21-upgraded`, `v21-angular-build` (`v22-upgraded` pending stage 11 merge)   |
-| Angular / CLI        | 22.2.4 / 22.2.6 (`@angular/build` 22.2.6)                                                                                                                        |
-| TypeScript / zone.js | 6.0.3 / 0.15.1 (zone.js change detection opted in via `provideZoneChangeDetection()`)                                                                            |
-| rx-angular           | template 22.0.0, cdk 22.0.0 (template peer cdk `^22.0.0`)                                                                                                        |
-| Builder              | `@angular/build:application` (esbuild); tests via `@angular/build:karma` (stage 10)                                                                              |
-| Node                 | 22 (`nvm use`, per `.nvmrc`; `engines.node` `^22.12.0`). Node 24 officially supported by Angular 20+ (follow-up)                                                 |
-| Tests                | 120 specs (116 characterization + 4 interceptor-chain integration), Karma, all green; coverage 76.92% / 74% / 68.29% / 75.65% (stmts / branches / funcs / lines) |
+| Item                 | Value                                                                                                                                                                                         |
+| -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Integration branch   | `main` (formerly `main-v15`)                                                                                                                                                                  |
+| Tags                 | `v15-baseline` … `v19-upgraded`, `v19-node22`, `v20-upgraded`, `v20-control-flow`, `v21-upgraded`, `v21-angular-build`, `v22-upgraded` (`v22-app-initializer` pending stage 12 merge)         |
+| Angular / CLI        | 22.2.4 / 22.2.6 (`@angular/build` 22.2.6)                                                                                                                                                     |
+| TypeScript / zone.js | 6.0.3 / 0.15.1 (zone.js change detection opted in via `provideZoneChangeDetection()`)                                                                                                         |
+| rx-angular           | template 22.0.0, cdk 22.0.0 (template peer cdk `^22.0.0`)                                                                                                                                     |
+| Builder              | `@angular/build:application` (esbuild); tests via `@angular/build:karma` (stage 10)                                                                                                           |
+| Node                 | 22 (`nvm use`, per `.nvmrc`; `engines.node` `^22.12.0`). Node 24 officially supported by Angular 20+ (follow-up)                                                                              |
+| Tests                | 122 specs (116 characterization + 6 integration: 4 interceptor-chain, 2 app-initializer wiring), Karma, all green; coverage 76.98% / 74% / 68.48% / 75.72% (stmts / branches / funcs / lines) |
 
 ## Completed stages
 
@@ -41,6 +41,7 @@ Documented, real Angular migration (v15 → current, one major at a time) as a r
 | 09  | Upgrade 20 → 21                                            | `docs/tasks/upgrade-angular-21.md`          | `docs/migration-log/{es,en}/09-*.md`    |
 | 10  | Builder package build-angular → `@angular/build` (on 21.2) | `docs/tasks/angular-build-package.md`       | `docs/migration-log/{es,en}/10-*.md`    |
 | 11  | Upgrade 21 → 22 + TypeScript 6.0                           | `docs/tasks/upgrade-angular-22.md`          | `docs/migration-log/{es,en}/11-*.md`    |
+| 12  | `APP_INITIALIZER` → `provideAppInitializer()` (on 22.2)    | `docs/tasks/provide-app-initializer.md`     | `docs/migration-log/{es,en}/12-*.md`    |
 
 ## Decisions (do not re-ask)
 
@@ -70,6 +71,6 @@ Documented, real Angular migration (v15 → current, one major at a time) as a r
 
 ## Next step
 
-Stage 11 (Angular 21.2 → 22.2 + TypeScript 6.0) complete on `feature/upgrade-angular-22`, merge and tag `v22-upgraded` pending (with user approval). Stage 10 merged and tagged `v21-angular-build`. Planned order: (1) builder package → `@angular/build` (done, stage 10); (2) Angular 21 → 22 + TypeScript 6.0 (done, pending merge; `docs/tasks/upgrade-angular-22.md`; rx-angular 22 resolved the exact cdk pin); (3) next: `APP_INITIALIZER` → `provideAppInitializer()` and Node 24; (4) Karma → Vitest (`migrate-karma-to-vitest` is optional in v22); (5) zoneless change detection. New follow-ups from stage 11: adopt v22 template `?.` semantics and remove the `$safeNavigationMigration` wrapper (`article.component.html`); review `ChangeDetectionStrategy.Eager` components when moving to OnPush / zoneless. Still open from earlier stages: `article-list` `RangeError` when `limit` is unset (not locked); `npm audit` 20 findings (no critical) after stage 11.
+Stage 12 (`APP_INITIALIZER` → `provideAppInitializer()` on Angular 22.2) complete on `feature/provide-app-initializer`, merge and tag `v22-app-initializer` pending (with user approval). Stage 11 merged and tagged `v22-upgraded`. Planned order: (1) builder package → `@angular/build` (done, stage 10); (2) Angular 21 → 22 + TypeScript 6.0 (done, stage 11); (3a) `APP_INITIALIZER` → `provideAppInitializer()` (done, pending merge; `docs/tasks/provide-app-initializer.md`); (3b) next: Node 22 → 24 (stage 13); (4) Karma → Vitest (`migrate-karma-to-vitest` is optional in v22); (5) zoneless change detection. Open follow-ups from stage 11: adopt v22 template `?.` semantics and remove the `$safeNavigationMigration` wrapper (`article.component.html`); review `ChangeDetectionStrategy.Eager` components when moving to OnPush / zoneless. Still open from earlier stages: `article-list` `RangeError` when `limit` is unset (not locked); `npm audit` 20 findings (no critical) after stage 11.
 
 Every step: diagnosis checklist (Node/TS/zone.js matrix, third-party peers, test coverage of touched code, smoke test) → feature branch + `docs/tasks/*.md` → verify build + tests → compare with upstream → migration log es/en → merge with `--no-ff` + tag.

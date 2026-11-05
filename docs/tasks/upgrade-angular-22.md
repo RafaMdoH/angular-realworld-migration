@@ -28,7 +28,7 @@ Eleventh stage. Angular 22 is the current `latest` line (22.2.4; 22.0.0 released
 - [x] T3 `@rx-angular/cdk@22` + `@rx-angular/template@22`
 - [x] T4 Verify: tests, build, metrics; compare with upstream (if an Angular 22 commit exists)
 - [x] T5 Migration log `docs/migration-log/{es,en}/11-*.md`, README, `PROJECT_CONTEXT.md`
-- [ ] T6 Merge `--no-ff` + tag `v22-upgraded` (with user approval); CI green on GitHub
+- [x] T6 Merge `--no-ff` + tag `v22-upgraded` (with user approval); CI green on GitHub
 
 ## Acceptance criteria
 
@@ -65,4 +65,4 @@ Eleventh stage. Angular 22 is the current `latest` line (22.2.4; 22.0.0 released
 
 ## Next step
 
-T6 merge + tag `v22-upgraded` (with user approval).
+Done. Merged into `main` (`f243bca`), tagged `v22-upgraded`; CI green on GitHub (120/120).

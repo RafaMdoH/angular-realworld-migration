@@ -1,0 +1,151 @@
+src/app/app-routing.module.spec.ts | describe | AppRoutingModule guards (characterization)
+src/app/app-routing.module.spec.ts | describe | when NOT authenticated
+src/app/app-routing.module.spec.ts | it | allows /login
+src/app/app-routing.module.spec.ts | it | allows /register
+src/app/app-routing.module.spec.ts | it | blocks /settings and stays on the previous url
+src/app/app-routing.module.spec.ts | it | blocks /editor
+src/app/app-routing.module.spec.ts | it | blocks /editor/:slug
+src/app/app-routing.module.spec.ts | it | allows public routes (home and article)
+src/app/app-routing.module.spec.ts | describe | when authenticated
+src/app/app-routing.module.spec.ts | it | blocks /login
+src/app/app-routing.module.spec.ts | it | blocks /register
+src/app/app-routing.module.spec.ts | it | allows /settings
+src/app/app-routing.module.spec.ts | it | allows /editor
+src/app/app-routing.module.spec.ts | it | allows /editor/:slug
+src/app/app.module.interceptors.spec.ts | describe | AppModule HTTP interceptor chain (integration)
+src/app/app.module.interceptors.spec.ts | it | registers the interceptors in the order Api, Token, Error
+src/app/app.module.interceptors.spec.ts | it | prefixes the API base URL and adds the Token header on one request
+src/app/app.module.interceptors.spec.ts | it | sends no Authorization header when there is no token
+src/app/app.module.interceptors.spec.ts | it | rethrows the error body instead of the HttpErrorResponse
+src/app/app.module.spec.ts | describe | initAuth (characterization)
+src/app/app.module.spec.ts | it | returns a factory and does not touch services until it is invoked
+src/app/app.module.spec.ts | it | fetches the current user when a token exists
+src/app/app.module.spec.ts | it | returns EMPTY without calling the API when there is no token
+src/app/app.module.spec.ts | describe | AppModule app initializer wiring (integration)
+src/app/app.module.spec.ts | it | loads the current user during app initialization when a token exists
+src/app/app.module.spec.ts | it | does not call the API during app initialization when there is no token
+src/app/core/auth/auth.component.spec.ts | describe | AuthComponent (characterization)
+src/app/core/auth/auth.component.spec.ts | describe | login page
+src/app/core/auth/auth.component.spec.ts | it | uses the last url segment as authType and titles it 'Sign in'
+src/app/core/auth/auth.component.spec.ts | it | has only email and password controls, both required
+src/app/core/auth/auth.component.spec.ts | it | logs in with the form value and navigates to / on success
+src/app/core/auth/auth.component.spec.ts | it | stores the error and re-enables the form on failure
+src/app/core/auth/auth.component.spec.ts | it | stays in submitting state and clears old errors while the request is pending
+src/app/core/auth/auth.component.spec.ts | it | stops listening to the pending request after destroy
+src/app/core/auth/auth.component.spec.ts | describe | register page
+src/app/core/auth/auth.component.spec.ts | it | titles it 'Sign up' and adds a required username control
+src/app/core/auth/auth.component.spec.ts | it | registers with the form value and navigates to / on success
+src/app/core/auth/auth.component.spec.ts | it | treats any non-login last segment as sign up (no other validation)
+src/app/core/interceptors/api.interceptor.spec.ts | describe | ApiInterceptor (characterization)
+src/app/core/interceptors/api.interceptor.spec.ts | it | prefixes relative urls with the RealWorld API base url
+src/app/core/interceptors/api.interceptor.spec.ts | it | prefixes absolute urls too (no check for an existing host)
+src/app/core/interceptors/api.interceptor.spec.ts | it | keeps method and body untouched
+src/app/core/interceptors/error.interceptor.spec.ts | describe | ErrorInterceptor (characterization)
+src/app/core/interceptors/error.interceptor.spec.ts | it | passes successful responses through unchanged
+src/app/core/interceptors/error.interceptor.spec.ts | it | rethrows only the error body (err.error) instead of the HttpErrorResponse
+src/app/core/interceptors/error.interceptor.spec.ts | it | rethrows null for an error response without a body
+src/app/core/interceptors/token.interceptor.spec.ts | describe | TokenInterceptor (characterization)
+src/app/core/interceptors/token.interceptor.spec.ts | it | adds an Authorization header with the Token scheme when a token exists
+src/app/core/interceptors/token.interceptor.spec.ts | it | does not add an Authorization header when there is no token
+src/app/core/interceptors/token.interceptor.spec.ts | it | reads the token on every request
+src/app/core/layout/header.component.spec.ts | describe | HeaderComponent (characterization)
+src/app/core/layout/header.component.spec.ts | it | shows the guest links and no profile item when logged out
+src/app/core/layout/header.component.spec.ts | it | shows the profile item with avatar and username when logged in
+src/app/core/layout/header.component.spec.ts | it | hides the avatar when the current user has no image
+src/app/core/layout/header.component.spec.ts | it | omits the profile item while authenticated but currentUser is null
+src/app/core/layout/header.component.spec.ts | it | updates the profile item when currentUser emits a new user
+src/app/core/services/jwt.service.spec.ts | describe | JwtService (characterization)
+src/app/core/services/jwt.service.spec.ts | it | returns undefined when no token is stored
+src/app/core/services/jwt.service.spec.ts | it | stores the token under the jwtToken localStorage key
+src/app/core/services/jwt.service.spec.ts | it | overwrites a previously stored token
+src/app/core/services/jwt.service.spec.ts | it | removes the token on destroy
+src/app/core/services/user.service.spec.ts | describe | UserService (characterization)
+src/app/core/services/user.service.spec.ts | it | starts unauthenticated with a null user
+src/app/core/services/user.service.spec.ts | it | login posts credentials wrapped in { user } and sets auth
+src/app/core/services/user.service.spec.ts | it | register posts credentials wrapped in { user } and sets auth
+src/app/core/services/user.service.spec.ts | it | login failure does not set auth
+src/app/core/services/user.service.spec.ts | it | logout purges auth and navigates to /
+src/app/core/services/user.service.spec.ts | it | getCurrentUser GETs /user and sets auth on success
+src/app/core/services/user.service.spec.ts | it | getCurrentUser purges auth on error
+src/app/core/services/user.service.spec.ts | it | getCurrentUser shares one request between subscribers (shareReplay)
+src/app/core/services/user.service.spec.ts | it | update PUTs { user } and updates the subject but does NOT save the token
+src/app/core/services/user.service.spec.ts | it | setAuth saves the token and emits the user
+src/app/core/services/user.service.spec.ts | it | purgeAuth destroys the token and emits null
+src/app/core/services/user.service.spec.ts | it | currentUser skips consecutive duplicate emissions
+src/app/features/article/article-comment.component.spec.ts | describe | ArticleCommentComponent (characterization)
+src/app/features/article/article-comment.component.spec.ts | it | renders nothing when there is no comment
+src/app/features/article/article-comment.component.spec.ts | it | renders the comment body, author and date when a comment is set
+src/app/features/article/article-comment.component.spec.ts | it | shows the delete option when the current user wrote the comment
+src/app/features/article/article-comment.component.spec.ts | it | emits delete(true) when the trash icon is clicked
+src/app/features/article/article-comment.component.spec.ts | it | hides the delete option for another user's comment
+src/app/features/article/article-comment.component.spec.ts | it | hides the delete option for anonymous users
+src/app/features/article/article-comment.component.spec.ts | it | toggles the delete option when the current user changes
+src/app/features/article/article.component.spec.ts | describe | ArticleComponent (characterization)
+src/app/features/article/article.component.spec.ts | describe | article page (*ngIf=article)
+src/app/features/article/article.component.spec.ts | it | renders nothing while the article is loading
+src/app/features/article/article.component.spec.ts | it | renders the title and one tag pill per tag, in order, once loaded
+src/app/features/article/article.component.spec.ts | it | renders an empty tag list when the article has no tags
+src/app/features/article/article.component.spec.ts | describe | meta actions (*ngIf=canModify / !canModify)
+src/app/features/article/article.component.spec.ts | it | shows edit and delete in both meta blocks for the author
+src/app/features/article/article.component.spec.ts | it | shows follow and favorite in both meta blocks for another user
+src/app/features/article/article.component.spec.ts | it | shows follow and favorite for anonymous users
+src/app/features/article/article.component.spec.ts | describe | comments (*ngFor trackBy: trackById)
+src/app/features/article/article.component.spec.ts | it | renders one comment per item, in order
+src/app/features/article/article.component.spec.ts | it | renders no comments for an empty list
+src/app/features/article/article.component.spec.ts | it | reuses the DOM nodes when the list is replaced by new objects with the same ids
+src/app/features/article/article.component.spec.ts | it | creates a new node only for a new id and moves reordered ones
+src/app/features/article/article.component.spec.ts | it | adds a posted comment at the top (in-place unshift)
+src/app/features/article/article.component.spec.ts | it | removes a deleted comment and keeps the remaining node
+src/app/features/editor/editor.component.spec.ts | describe | EditorComponent (characterization)
+src/app/features/editor/editor.component.spec.ts | describe | new article (no slug)
+src/app/features/editor/editor.component.spec.ts | it | does not load an article or the current user
+src/app/features/editor/editor.component.spec.ts | it | addTag adds a tag and resets the tag field
+src/app/features/editor/editor.component.spec.ts | it | addTag ignores empty and whitespace-only tags but still resets the field
+src/app/features/editor/editor.component.spec.ts | it | addTag ignores duplicate tags
+src/app/features/editor/editor.component.spec.ts | it | addTag does not trim the stored tag
+src/app/features/editor/editor.component.spec.ts | it | removeTag removes only the given tag
+src/app/features/editor/editor.component.spec.ts | it | submitForm creates the article with form values and tags, then navigates to it
+src/app/features/editor/editor.component.spec.ts | it | submitForm adds the pending tag field value to the payload
+src/app/features/editor/editor.component.spec.ts | it | submitForm stores errors and re-enables the form on failure
+src/app/features/editor/editor.component.spec.ts | it | submitForm marks the form as submitting while pending
+src/app/features/editor/editor.component.spec.ts | describe | existing article (slug in route)
+src/app/features/editor/editor.component.spec.ts | it | loads the article and patches the form when the current user is the author
+src/app/features/editor/editor.component.spec.ts | it | redirects to / when the current user is not the author
+src/app/features/editor/editor.component.spec.ts | it | KNOWN BUG (locked): submitForm always calls create, never update, when editing
+src/app/features/home/home.component.spec.ts | describe | HomeComponent (characterization)
+src/app/features/home/home.component.spec.ts | it | renders the tags returned by GET /tags through *rxLet
+src/app/features/home/home.component.spec.ts | it | shows the empty message when there are no tags
+src/app/features/home/home.component.spec.ts | it | filters the list by tag when a tag is clicked
+src/app/features/home/home.component.spec.ts | it | uses the global list for anonymous users
+src/app/features/home/home.component.spec.ts | it | KNOWN BUG (locked): redirects an authenticated user to /login on init
+src/app/features/profile/profile.component.spec.ts | describe | ProfileComponent (characterization)
+src/app/features/profile/profile.component.spec.ts | it | renders nothing while the profile is loading
+src/app/features/profile/profile.component.spec.ts | it | renders the profile info once loaded
+src/app/features/profile/profile.component.spec.ts | it | shows the follow button and no settings link for another user's profile
+src/app/features/profile/profile.component.spec.ts | it | shows the follow button and no settings link for anonymous users
+src/app/features/profile/profile.component.spec.ts | it | shows the settings link and no follow button on the user's own profile
+src/app/shared/article-helpers/article-list.component.spec.ts | describe | ArticleListComponent (characterization)
+src/app/shared/article-helpers/article-list.component.spec.ts | it | renders nothing before a config is set (NOT_LOADED)
+src/app/shared/article-helpers/article-list.component.spec.ts | it | shows only the loading message while the query is pending
+src/app/shared/article-helpers/article-list.component.spec.ts | it | renders one preview per article, in order, once loaded
+src/app/shared/article-helpers/article-list.component.spec.ts | it | shows the empty message when loaded with no articles
+src/app/shared/article-helpers/article-list.component.spec.ts | it | renders one page button per page, marking the current page active
+src/app/shared/article-helpers/article-list.component.spec.ts | it | hides the pagination when there is exactly one page
+src/app/shared/article-helpers/article-list.component.spec.ts | it | clicking a page button queries that page and moves the active class
+src/app/shared/article-helpers/article-preview.component.spec.ts | describe | ArticlePreviewComponent (characterization)
+src/app/shared/article-helpers/article-preview.component.spec.ts | it | renders one tag pill per tag, in order
+src/app/shared/article-helpers/article-preview.component.spec.ts | it | renders an empty tag list when the article has no tags
+src/app/shared/article-helpers/article-preview.component.spec.ts | it | re-renders the pills when tagList is replaced
+src/app/shared/article-helpers/article-preview.component.spec.ts | it | renders title, description and the article link
+src/app/shared/list-errors.component.spec.ts | describe | ListErrorsComponent (characterization)
+src/app/shared/list-errors.component.spec.ts | it | renders one <li> per error, in key order, as '<key> <message>'
+src/app/shared/list-errors.component.spec.ts | it | replaces the rendered items when the errors input changes
+src/app/shared/list-errors.component.spec.ts | it | KNOWN BUG (locked): renders an empty <ul> when errors is null
+src/app/shared/list-errors.component.spec.ts | it | KNOWN BUG (locked): renders an empty <ul> before any input is set
+src/app/shared/show-authed.directive.spec.ts | describe | ShowAuthedDirective (characterization)
+src/app/shared/show-authed.directive.spec.ts | it | renders only the authed block when the user starts authenticated
+src/app/shared/show-authed.directive.spec.ts | it | renders only the guest block when the user starts unauthenticated
+src/app/shared/show-authed.directive.spec.ts | it | removes the authed block when auth turns false
+src/app/shared/show-authed.directive.spec.ts | it | shows the authed block when auth turns true after starting false
+src/app/shared/show-authed.directive.spec.ts | it | KNOWN BUG (locked): does not re-render after auth toggles back
+src/app/shared/show-authed.directive.spec.ts | it | KNOWN BUG (locked): guest block also does not re-render after false -> true -> false

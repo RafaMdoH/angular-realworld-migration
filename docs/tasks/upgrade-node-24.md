@@ -26,7 +26,7 @@ Thirteenth stage. Node 22 is in maintenance LTS until April 2027; Node 24 is sup
 - [x] T2 Switch to Node 24: `.nvmrc`, `engines`, clean install
 - [x] T3 Verify: tests, build, `ng version` support status, metrics vs Node 22
 - [x] T4 Migration log `docs/migration-log/{es,en}/13-*.md`, README, `PROJECT_CONTEXT.md`
-- [ ] T5 Merge `--no-ff` + tag (with user approval); CI green on GitHub
+- [x] T5 Merge `--no-ff` + tag (with user approval); CI green on GitHub
 
 ## Acceptance criteria
 
@@ -47,4 +47,4 @@ Thirteenth stage. Node 22 is in maintenance LTS until April 2027; Node 24 is sup
 
 ## Next step
 
-T5 merge + tag `v22-node24` (with user approval).
+Done. Merged into `main` (`0ba1de9`), tagged `v22-node24`; CI green on GitHub (Node 24.22.2, 122/122).
